@@ -11,3 +11,5 @@ edition.workspace = true
 ethers = { workspace = true, features = ["rustls"] }
 tokio = { workspace = true, features = ["macros"] }
 eyre.workspace = true
+log4rs.workspace = true
+log.workspace = true
