@@ -11,7 +11,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("Starting...");
 
     // abigen_utils::rust_file_generation();
-    provider_utils::provider_calls().await?;
+    //provider_utils::provider_calls().await?;
+    provider_utils::contract_load().await?;
 
     info!("Done...");
 
