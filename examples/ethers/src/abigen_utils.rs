@@ -1,8 +1,6 @@
-use ethers::{
-    prelude::*
-};
+use ethers::prelude::*;
 use eyre::Result;
-use std::{path::Path};
+use std::path::Path;
 
 pub fn rust_file_generation() -> Result<()> {
     let abi_source = "./abi/ERC20.json";
@@ -10,6 +8,8 @@ pub fn rust_file_generation() -> Result<()> {
     if out_file.exists() {
         std::fs::remove_file(&out_file)?;
     }
-    Abigen::new("ERC20", abi_source)?.generate()?.write_to_file(out_file)?;
+    Abigen::new("ERC20", abi_source)?
+        .generate()?
+        .write_to_file(out_file)?;
     Ok(())
 }

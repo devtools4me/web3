@@ -1,7 +1,7 @@
 use ethers::{
     contract::{abigen, Abigen, ContractFactory},
     prelude::*,
-    utils
+    utils,
 };
 use eyre::Result;
 use log::*;
@@ -19,7 +19,10 @@ pub async fn provider_calls() -> Result<()> {
     info!("block_number={block_number}");
 
     let gas_price: U256 = provider.get_gas_price().await?;
-    info!("gas_price={}", utils::format_units(gas_price, "gwei").unwrap());
+    info!(
+        "gas_price={}",
+        utils::format_units(gas_price, "gwei").unwrap()
+    );
 
     let address_from = WETH_ADDR;
     let nonce = provider.get_transaction_count(address_from, None).await?;
@@ -30,10 +33,16 @@ pub async fn provider_calls() -> Result<()> {
         .with_chain_id(Chain::Moonbeam);
 
     let balance_from = provider.get_balance(address_from, None).await?;
-    info!("balance_from={}", utils::format_units(balance_from, "gwei").unwrap());
+    info!(
+        "balance_from={}",
+        utils::format_units(balance_from, "gwei").unwrap()
+    );
     let address_to = USDC_ADDR;
     let balance_to = provider.get_balance(address_to, None).await?;
-    info!("balance_to={}", utils::format_units(balance_to, "gwei").unwrap());
+    info!(
+        "balance_to={}",
+        utils::format_units(balance_to, "gwei").unwrap()
+    );
 
     Ok(())
 }

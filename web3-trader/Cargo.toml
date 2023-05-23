@@ -11,6 +11,13 @@ categories.workspace = true
 keywords.workspace = true
 exclude.workspace = true
 
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+path = "src/main.rs"
+name = "web3-trader"
+
 [package.metadata.docs.rs]
 all-features = true
 rustc-args = ["--cfg", "docsrs"]
@@ -21,3 +28,8 @@ all-features = true
 
 [dependencies]
 ethers.workspace = true
+tokio.workspace = true
+actix-web.workspace = true
+
+[dev-dependencies]
+reqwest.workspace = true
