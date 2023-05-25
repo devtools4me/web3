@@ -1,6 +1,6 @@
 #[tokio::test]
 async fn health_check_works() {
-    spawn_app();
+    spawn_app().await;
     let client = reqwest::Client::new();
     let response = client
         .get("http://127.0.0.1:8000/health_check")
@@ -12,6 +12,6 @@ async fn health_check_works() {
 }
 
 async fn spawn_app() {
-    let server = web3_trader::run();//.expect("Failed to bind address");
+    let server = web3_trader::run().expect("Failed to bind address");
     let _ = tokio::spawn(server);
 }
