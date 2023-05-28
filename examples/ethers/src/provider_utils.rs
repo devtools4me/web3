@@ -67,10 +67,10 @@ pub async fn contract_load() -> Result<()> {
     let address: Address = WETH_ADDR.parse()?;
     let contract = IERC20::new(address, client);
     let total_supply = contract.total_supply().call().await?;
-    info!("total_supply={total_supply}");
+    info!("total_supply={} eth", utils::format_units(total_supply, "ether").unwrap());
 
     let balance = contract.balance_of(MY_ADDR.parse()?).call().await?;
-    info!("balance={balance}");
+    info!("balance={} eth", utils::format_units(balance, "ether").unwrap());
 
     Ok(())
 }
