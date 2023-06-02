@@ -7,7 +7,7 @@ services:
     dockerfile_path: Dockerfile
     source_dir: .
     github:
-      branch: develop
+      branch: release
       deploy_on_push: true
       repo: devtools4me/web3
     health_check:
