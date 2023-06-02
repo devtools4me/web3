@@ -1,15 +1,50 @@
+bench = []
+test = []
+example = []
+
+[[bin]]
+path = "src/main.rs"
+name = "examples-ethers"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
 [package]
 name = "examples-ethers"
-version = "0.0.0"
+version = "0.0.1"
+autobins = true
+autoexamples = true
+autotests = true
+autobenches = true
 publish = false
 
-license.workspace = true
-rust-version.workspace = true
-edition.workspace = true
+[package.edition]
+workspace = true
 
-[dependencies]
-ethers = { workspace = true, features = ["rustls"] }
-tokio = { workspace = true, features = ["macros"] }
-eyre.workspace = true
-log4rs.workspace = true
-log.workspace = true
+[package.license]
+workspace = true
+
+[package.rust-version]
+workspace = true
+
+[dependencies.ethers]
+features = ["rustls"]
+workspace = true
+
+[dependencies.eyre]
+workspace = true
+
+[dependencies.log]
+workspace = true
+
+[dependencies.log4rs]
+workspace = true
+
+[dependencies.tokio]
+features = ["macros"]
+workspace = true

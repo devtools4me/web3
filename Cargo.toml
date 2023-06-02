@@ -1,53 +1,28 @@
-[workspace.package]
-version = "0.0.1"
-edition = "2021"
-rust-version = "1.65"
-license = "MIT OR Apache-2.0"
-categories = ["web3"]
-keywords = ["crypto", "web3", "trading"]
-exclude = [
-    ".github/",
-    "bin/",
-    "book/",
-    "**/tests/",
-    "**/test-data/",
-    "**/testdata/",
-    "examples",
-    "scripts/",
-]
-
-# https://docs.rs/about/metadata
-[workspace.metadata.docs.rs]
-all-features = true
-rustc-args = ["--cfg", "docsrs"]
-rustdoc-args = ["--cfg", "docsrs"]
-
-# https://github.com/integer32llc/rust-playground/blob/c6165a36923db5d99313e6056b5b610a2ede5bb0/top-crates/src/lib.rs#L175-L184
-[workspace.metadata.playground]
-all-features = true
-
 [workspace]
-members = [
-    "web3-trader",
-
-    # Example crates
-    "examples/*",
-]
-
-# Do not include example crates in default members
-default-members = [
-    "web3-trader",
-]
-
-# Explicitly set the resolver to version 2, which is the default for packages with edition >= 2021
-# https://doc.rust-lang.org/edition-guide/rust-2021/default-cargo-resolver.html
+members = ["web3-trader", "examples/*"]
+default-members = ["web3-trader"]
 resolver = "2"
 
 [workspace.dependencies]
-ethers = { version = "2.0", features = ["rustls"] }
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 actix-web = "4"
 eyre = "0.6"
-log4rs = "1.2.0"
 log = "0.4.14"
+log4rs = "1.2.0"
 reqwest = "0.11"
+
+[workspace.dependencies.ethers]
+version = "2.0"
+features = ["rustls"]
+
+[workspace.dependencies.tokio]
+version = "1"
+features = ["macros", "rt-multi-thread"]
+
+[workspace.package]
+edition = "2021"
+version = "0.0.1"
+keywords = ["crypto", "web3", "trading"]
+categories = ["web3"]
+license = "MIT OR Apache-2.0"
+exclude = [".github/", "bin/", "book/", "**/tests/", "**/test-data/", "**/testdata/", "examples", "scripts/"]
+rust-version = "1.65"
