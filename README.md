@@ -25,3 +25,11 @@ nightly-aarch64-apple-darwin installed - rustc 1.71.0-nightly (ce5919fce 2023-05
 stable-aarch64-apple-darwin (default)
 nightly-aarch64-apple-darwin
 ```
+
+* doctl
+
+```
+brew install doctl
+doctl auth init
+doctl apps create --spec spec.yaml
+```
