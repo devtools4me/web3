@@ -3,7 +3,7 @@ async fn health_check_works() {
     spawn_app().await;
     let client = reqwest::Client::new();
     let response = client
-        .get("http://127.0.0.1:8000/health_check")
+        .get("http://127.0.0.1:8080/health_check")
         .send()
         .await
         .expect("Failed to execute request.");
