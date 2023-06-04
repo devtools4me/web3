@@ -1,4 +1,5 @@
 use actix_web::{web, App, HttpResponse, HttpServer};
+use actix_web::middleware::Logger;
 use actix_web::dev::Server;
 
 async fn health_check() -> HttpResponse {
@@ -8,6 +9,7 @@ async fn health_check() -> HttpResponse {
 pub fn run() -> Result<Server, std::io::Error> {
     let server = HttpServer::new(|| {
             App::new()
+                .wrap(Logger::default())
                 .route("/health_check", web::get().to(health_check))
         })
         .bind("0.0.0.0:8080")?
