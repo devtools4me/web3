@@ -4,6 +4,7 @@ default-members = ["web3-trader"]
 resolver = "2"
 
 [workspace.dependencies]
+config = "0.11"
 actix-web = "4"
 eyre = "0.6"
 env_logger = "0.9"
@@ -11,6 +12,10 @@ log = "0.4.14"
 log4rs = "1.2.0"
 reqwest = "0.11"
 polars = "0.24.3"
+
+[workspace.dependencies.serde]
+version = "1"
+features = ["derive"]
 
 [workspace.dependencies.ethers]
 version = "2.0"

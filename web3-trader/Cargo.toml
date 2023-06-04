@@ -63,6 +63,15 @@ workspace = true
 [package.exclude]
 workspace = true
 
+[dependencies.log]
+workspace = true
+
+[dependencies.config]
+workspace = true
+
+[dependencies.serde]
+workspace = true
+
 [dependencies.actix-web]
 workspace = true
 

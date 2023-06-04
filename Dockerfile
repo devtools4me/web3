@@ -30,10 +30,11 @@ RUN apt-get update -y \
     && apt-get install -y --no-install-recommends openssl ca-certificates \
     && apt-get autoremove -y \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir ./conf
 
 COPY --from=builder /app/target/release/web3-trader web3-trader
-# COPY configuration configuration
+COPY conf/* ./conf
 ENV APP_ENVIRONMENT production
 
 EXPOSE 8080
