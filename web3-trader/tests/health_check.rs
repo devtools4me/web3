@@ -1,3 +1,5 @@
+use web3_trader::api;
+
 #[tokio::test]
 async fn health_check_works() {
     spawn_app().await;
@@ -12,6 +14,6 @@ async fn health_check_works() {
 }
 
 async fn spawn_app() {
-    let server = web3_trader::run().expect("Failed to bind address");
+    let server = api::run().expect("Failed to bind address");
     let _ = tokio::spawn(server);
 }

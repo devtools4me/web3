@@ -1,0 +1,55 @@
+bench = []
+test = []
+example = []
+
+[[bin]]
+path = "src/main.rs"
+name = "examples-polars"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
+[package]
+name = "examples-polars"
+version = "0.0.1"
+autobins = true
+autoexamples = true
+autotests = true
+autobenches = true
+publish = false
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.rust-version]
+workspace = true
+
+[dependencies.polars]
+workspace = true
+
+[dependencies.plotters]
+workspace = true
+
+[dependencies.chrono]
+workspace = true
+
+[dependencies.eyre]
+workspace = true
+
+[dependencies.log]
+workspace = true
+
+[dependencies.log4rs]
+workspace = true
+
+[dependencies.tokio]
+features = ["macros"]
+workspace = true
