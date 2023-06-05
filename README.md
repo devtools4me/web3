@@ -2,7 +2,7 @@
 
 [WEB3 Trader](web3-trader/README.md)
 
-## Tools
+## Build
 
 * cargo-expand
 
@@ -26,10 +26,38 @@ stable-aarch64-apple-darwin (default)
 nightly-aarch64-apple-darwin
 ```
 
+## Deployment
+
 * doctl
 
 ```
 brew install doctl
 doctl auth init
 doctl apps create --spec spec.yaml
+```
+
+## Hardhat
+
+* initial
+
+```
+mkdir hardhat
+cd hardhat
+npm install --save-dev hardhat
+npx hardhat
+npx hardhat test
+npx hardhat compile
+```
+
+* fork ETH main net
+
+```
+cd hardhat
+npx hardhat node --fork https://eth-mainnet.g.alchemy.com/v2/TtK-PVc3lbV2nb7V_qUwTUALYEEBAySG
+```
+
+* fork BNB Smart Chain
+
+```
+npx hardhat node --fork https://bsc-dataseed.binance.org/
 ```
