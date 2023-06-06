@@ -6,6 +6,7 @@ use ethers::{
 use eyre::Result;
 use log::*;
 use std::{convert::TryFrom, sync::Arc};
+use tokio::runtime::Runtime;
 
 const RPC_URL: &str =
     //"https://eth-mainnet.g.alchemy.com/v2/TtK-PVc3lbV2nb7V_qUwTUALYEEBAySG";
@@ -15,6 +16,11 @@ const USDC_ADDR: &str = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 const MY_ADDR: &str = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
 const PRIVATE_KEY: &str = "ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 const USDC_WHALE: &str = "0xcffad3200574698b78f32232aa9d63eabd290703";
+
+pub fn provider_calls_sync() {
+    info!("provider_calls_sync");
+    Runtime::new().unwrap().block_on(provider_calls()).unwrap();
+}
 
 pub async fn provider_calls() -> Result<()> {
     let provider = Provider::<Http>::try_from(RPC_URL)?;
@@ -63,6 +69,11 @@ abigen!(
             event Approval(address indexed owner, address indexed spender, uint256 value)
         ]"#,
     );
+
+pub fn contract_load_sync() {
+    info!("contract_load_sync");
+    Runtime::new().unwrap().block_on(contract_load()).unwrap();
+}
 
 pub async fn contract_load() -> Result<()> {
     let provider = Provider::<Http>::try_from(RPC_URL)?;

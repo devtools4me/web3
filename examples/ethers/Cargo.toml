@@ -48,3 +48,9 @@ workspace = true
 [dependencies.tokio]
 features = ["macros"]
 workspace = true
+
+[dependencies.clap]
+workspace = true
+
+[dependencies.dialoguer]
+workspace = true
