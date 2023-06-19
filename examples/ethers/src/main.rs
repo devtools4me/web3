@@ -2,6 +2,7 @@
 extern crate clap;
 
 mod provider_utils;
+mod eth_abi;
 
 use clap::{App, Arg};
 use dialoguer::{theme::ColorfulTheme, Select};
@@ -24,6 +25,7 @@ pub fn run() {
         let choices = [
             "Contract Load",
             "Provider Calls",
+            "Factory Pair",
             "Exit",
         ];
         let index = match Select::with_theme(&ColorfulTheme::default())
@@ -41,7 +43,8 @@ pub fn run() {
         match index {
             0 => provider_utils::contract_load_sync(),
             1 => provider_utils::provider_calls_sync(),
-            2 => break,
+            2 => provider_utils::factory_pair_sync(),
+            3 => break,
             _ => continue,
         };
     }

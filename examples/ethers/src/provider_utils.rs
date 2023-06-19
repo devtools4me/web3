@@ -1,5 +1,4 @@
 use ethers::{
-    contract::{abigen, Abigen, ContractFactory},
     prelude::*,
     utils,
 };
@@ -7,6 +6,8 @@ use eyre::Result;
 use log::*;
 use std::{convert::TryFrom, sync::Arc};
 use tokio::runtime::Runtime;
+use crate::eth_abi;
+use eth_abi::*;
 
 const RPC_URL: &str =
     //"https://eth-mainnet.g.alchemy.com/v2/TtK-PVc3lbV2nb7V_qUwTUALYEEBAySG";
@@ -16,6 +17,7 @@ const USDC_ADDR: &str = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 const MY_ADDR: &str = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
 const PRIVATE_KEY: &str = "ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 const USDC_WHALE: &str = "0xcffad3200574698b78f32232aa9d63eabd290703";
+const ADDR_ROUTER: &str = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 
 pub fn provider_calls_sync() {
     info!("provider_calls_sync");
@@ -56,20 +58,6 @@ pub async fn provider_calls() -> Result<()> {
     Ok(())
 }
 
-abigen!(
-        IERC20,
-        r#"[
-            function totalSupply() external view returns (uint256)
-            function balanceOf(address account) external view returns (uint256)
-            function transfer(address recipient, uint256 amount) external returns (bool)
-            function allowance(address owner, address spender) external view returns (uint256)
-            function approve(address spender, uint256 amount) external returns (bool)
-            function transferFrom( address sender, address recipient, uint256 amount) external returns (bool)
-            event Transfer(address indexed from, address indexed to, uint256 value)
-            event Approval(address indexed owner, address indexed spender, uint256 value)
-        ]"#,
-    );
-
 pub fn contract_load_sync() {
     info!("contract_load_sync");
     Runtime::new().unwrap().block_on(contract_load()).unwrap();
@@ -90,6 +78,40 @@ pub async fn contract_load() -> Result<()> {
     let usdc_contract = IERC20::new(usdc_address, Arc::clone(&client));
     let whale_balance = usdc_contract.balance_of(USDC_WHALE.parse()?).call().await?;
     info!("whale_balance={}", whale_balance);
+
+    Ok(())
+}
+
+pub fn factory_pair_sync() {
+    info!("factory_pair_sync");
+    Runtime::new().unwrap().block_on(factory_pair()).unwrap();
+}
+
+pub async fn factory_pair() -> Result<()> {
+    let provider = Provider::<Http>::try_from(RPC_URL)?;
+    let client = Arc::new(provider);
+    let router_address: Address = ADDR_ROUTER.parse()?;
+    let router_contract = IUniswapV2Router01::new(router_address, Arc::clone(&client));
+    let weth_address = router_contract.weth().call().await?;
+    info!("weth_address={}", weth_address);
+
+    let factory_address = router_contract.factory().call().await?;
+    info!("factory_address={}", factory_address);
+
+    let factory_contract = IUniswapV2Factory::new(factory_address, Arc::clone(&client));
+    let usdc_address: Address = USDC_ADDR.parse()?;
+    let pair_address = factory_contract.get_pair(weth_address, usdc_address).call().await?;
+    info!("pair_address={}", pair_address);
+
+    let pair_contract = IUniswapV2Pair::new(pair_address, Arc::clone(&client));
+    let symbol = pair_contract.symbol().call().await?;
+    info!("symbol={}", symbol);
+
+    let token0 = pair_contract.token_0().call().await?;
+    info!("token0={}", token0);
+
+    let token1 = pair_contract.token_1().call().await?;
+    info!("token1={}", token1);
 
     Ok(())
 }
