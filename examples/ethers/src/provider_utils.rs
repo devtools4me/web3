@@ -116,6 +116,29 @@ pub async fn factory_pair() -> Result<()> {
     Ok(())
 }
 
+pub fn eth_swap_sync() {
+    info!("eth_swap_sync");
+    Runtime::new().unwrap().block_on(eth_swap()).unwrap();
+}
+
+pub async fn eth_swap() -> Result<()> {
+    let provider = Provider::<Http>::try_from(RPC_URL)?;
+    let client = Arc::new(provider);
+    let from_address: Address = WETH_ADDR.parse()?;
+    let t0_contract = IERC20::new(from_address, Arc::clone(&client));
+    let to_address: Address = USDC_ADDR.parse()?;
+    let t1_contract = IERC20::new(to_address, Arc::clone(&client));
+    let router_address: Address = ADDR_ROUTER.parse()?;
+    let router_contract = IUniswapV2Router01::new(router_address, Arc::clone(&client));
+    let my_address: Address = MY_ADDR.parse()?;
+    let nonce = client.get_transaction_count(my_address, None).await?;
+    info!("nonce={}", nonce);
+    // client.cre
+    // client.send_transaction(, None).await?;
+
+    Ok(())
+}
+
 pub async fn fund_erc20() -> Result<()> {
     Ok(())
 }
