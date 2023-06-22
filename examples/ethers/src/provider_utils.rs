@@ -8,6 +8,7 @@ use std::{convert::TryFrom, sync::Arc};
 use tokio::runtime::Runtime;
 use crate::eth_abi;
 use eth_abi::*;
+use std::time::{Instant, Duration};
 
 const RPC_URL: &str =
     //"https://eth-mainnet.g.alchemy.com/v2/TtK-PVc3lbV2nb7V_qUwTUALYEEBAySG";
@@ -121,6 +122,12 @@ pub fn eth_swap_sync() {
     Runtime::new().unwrap().block_on(eth_swap()).unwrap();
 }
 
+pub fn deadline() -> U256 {
+    let start = Instant::now();
+    let elapsed = start.elapsed() + Duration::from_secs(60);
+    U256::from_dec_str(elapsed.as_millis().to_string().as_str()).unwrap()
+}
+
 pub async fn eth_swap() -> Result<()> {
     let provider = Provider::<Http>::try_from(RPC_URL)?;
     let client = Arc::new(provider);
@@ -130,11 +137,22 @@ pub async fn eth_swap() -> Result<()> {
     let t1_contract = IERC20::new(to_address, Arc::clone(&client));
     let router_address: Address = ADDR_ROUTER.parse()?;
     let router_contract = IUniswapV2Router01::new(router_address, Arc::clone(&client));
+    let amount_in = utils::parse_units(0.1, "ether").unwrap();
+    info!("amount_in={}", amount_in);
+    let amounts = router_contract.get_amounts_out(amount_in.into(), vec![from_address, to_address]).await?;
+    amounts
+        .iter()
+        .for_each(|x| println!("{}", x));
     let my_address: Address = MY_ADDR.parse()?;
-    let nonce = client.get_transaction_count(my_address, None).await?;
-    info!("nonce={}", nonce);
-    // client.cre
-    // client.send_transaction(, None).await?;
+    let result = router_contract.swap_exact_tokens_for_tokens(
+        amounts[0],
+        amounts[1],
+        vec![from_address, to_address],
+        my_address,
+        deadline()).await?;
+    result
+        .iter()
+        .for_each(|x| println!("{}", x));
 
     Ok(())
 }

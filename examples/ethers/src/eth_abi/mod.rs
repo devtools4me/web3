@@ -24,6 +24,7 @@ abigen!(
         r#"[
             function factory() external pure returns (address)
             function WETH() external pure returns (address)
+            function getAmountsOut(uint amountIn, address[] calldata path) external view returns (uint[] memory amounts)
             function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)
         ]"#,
     );
