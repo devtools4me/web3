@@ -8,7 +8,7 @@ use std::{convert::TryFrom, sync::Arc};
 use tokio::runtime::Runtime;
 use crate::eth_abi;
 use eth_abi::*;
-use std::time::{Instant, Duration};
+use std::time::{Duration, SystemTime};
 
 const RPC_URL: &str =
     //"https://eth-mainnet.g.alchemy.com/v2/TtK-PVc3lbV2nb7V_qUwTUALYEEBAySG";
@@ -122,10 +122,12 @@ pub fn eth_swap_sync() {
     Runtime::new().unwrap().block_on(eth_swap()).unwrap();
 }
 
-pub fn deadline() -> U256 {
-    let start = Instant::now();
-    let elapsed = start.elapsed() + Duration::from_secs(60);
-    U256::from_dec_str(elapsed.as_millis().to_string().as_str()).unwrap()
+pub fn now() -> Duration {
+    SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap()
+}
+
+pub fn deadline(deadline: u64) -> U256 {
+    U256::from(deadline + now().as_secs())
 }
 
 pub async fn eth_swap() -> Result<()> {
@@ -144,12 +146,28 @@ pub async fn eth_swap() -> Result<()> {
         .iter()
         .for_each(|x| println!("{}", x));
     let my_address: Address = MY_ADDR.parse()?;
+
+    let wallet = PRIVATE_KEY
+        .parse::<LocalWallet>()?
+        .with_chain_id(Chain::AnvilHardhat);
+    println!("Wallet: {:?}", wallet.address());
+
+    let tx = TransactionRequest::pay(from_address, amount_in);
+    let signer = SignerMiddleware::new(Provider::<Http>::try_from(RPC_URL)?, wallet);
+    let pending_tx = signer.send_transaction(tx, None).await?;
+    let receipt = pending_tx
+        .await?
+        .ok_or_else(|| eyre::format_err!("tx not included"))?;
+    let tx = client.get_transaction(receipt.transaction_hash).await?;
+    // println!("Sent transaction: {}\n", serde_json::to_string(&tx)?);
+    // println!("Receipt: {}\n", serde_json::to_string(&receipt)?);
+
     let result = router_contract.swap_exact_tokens_for_tokens(
         amounts[0],
         amounts[1],
         vec![from_address, to_address],
         my_address,
-        deadline()).await?;
+        deadline(60)).await?;
     result
         .iter()
         .for_each(|x| println!("{}", x));
