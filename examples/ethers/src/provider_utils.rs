@@ -117,6 +117,49 @@ pub async fn factory_pair() -> Result<()> {
     Ok(())
 }
 
+pub fn eth_send_sync() {
+    info!("eth_send_sync");
+    Runtime::new().unwrap().block_on(eth_send()).unwrap();
+}
+
+pub async fn eth_send() -> Result<()> {
+    let provider = Provider::<Http>::try_from(RPC_URL)?;
+    let from_address: Address = WETH_ADDR.parse()?;
+    let amount_in = utils::parse_units(0.1, "ether").unwrap();
+    info!("amount_in={}", amount_in);
+
+    let my_address: Address = MY_ADDR.parse()?;
+    let wallet = PRIVATE_KEY
+        .parse::<LocalWallet>()?
+        .with_chain_id(Chain::AnvilHardhat);
+    println!("Wallet: {:?}", wallet.address());
+
+    let balance_before = provider.get_balance(from_address, None).await?;
+    info!(
+        "balance_before={}",
+        utils::format_units(balance_before, "gwei").unwrap()
+    );
+
+    let tx = TransactionRequest::new().to(from_address).value(amount_in).from(my_address);
+    let signer = SignerMiddleware::new(Provider::<Http>::try_from(RPC_URL)?, wallet);
+    let pending_tx = signer.send_transaction(tx, None).await?;
+    let receipt = pending_tx
+        .await?
+        .ok_or_else(|| eyre::format_err!("tx not included"))?;
+    let tx = provider.get_transaction(receipt.transaction_hash).await?;
+    println!("tx: {:?}", tx);
+    // println!("Sent transaction: {}\n", serde_json::to_string(&tx)?);
+    // println!("Receipt: {}\n", serde_json::to_string(&receipt)?);
+
+    let balance_after = provider.get_balance(from_address, None).await?;
+    info!(
+        "balance_after={}",
+        utils::format_units(balance_after, "gwei").unwrap()
+    );
+
+    Ok(())
+}
+
 pub fn eth_swap_sync() {
     info!("eth_swap_sync");
     Runtime::new().unwrap().block_on(eth_swap()).unwrap();
@@ -132,7 +175,7 @@ pub fn deadline(deadline: u64) -> U256 {
 
 pub async fn eth_swap() -> Result<()> {
     let provider = Provider::<Http>::try_from(RPC_URL)?;
-    let client = Arc::new(provider);
+    let client = Arc::new(Provider::<Http>::try_from(RPC_URL)?);
     let from_address: Address = WETH_ADDR.parse()?;
     let t0_contract = IERC20::new(from_address, Arc::clone(&client));
     let to_address: Address = USDC_ADDR.parse()?;
@@ -152,15 +195,28 @@ pub async fn eth_swap() -> Result<()> {
         .with_chain_id(Chain::AnvilHardhat);
     println!("Wallet: {:?}", wallet.address());
 
-    let tx = TransactionRequest::pay(from_address, amount_in);
+    let balance_before = provider.get_balance(from_address, None).await?;
+    info!(
+        "balance_before={}",
+        utils::format_units(balance_before, "gwei").unwrap()
+    );
+
+    let tx = TransactionRequest::new().to(from_address).value(amount_in).from(my_address);
     let signer = SignerMiddleware::new(Provider::<Http>::try_from(RPC_URL)?, wallet);
     let pending_tx = signer.send_transaction(tx, None).await?;
     let receipt = pending_tx
         .await?
         .ok_or_else(|| eyre::format_err!("tx not included"))?;
     let tx = client.get_transaction(receipt.transaction_hash).await?;
+    println!("tx: {:?}", tx);
     // println!("Sent transaction: {}\n", serde_json::to_string(&tx)?);
     // println!("Receipt: {}\n", serde_json::to_string(&receipt)?);
+
+    let balance_after = provider.get_balance(from_address, None).await?;
+    info!(
+        "balance_after={}",
+        utils::format_units(balance_after, "gwei").unwrap()
+    );
 
     let result = router_contract.swap_exact_tokens_for_tokens(
         amounts[0],
