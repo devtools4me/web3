@@ -35,6 +35,9 @@ workspace = true
 [dependencies.dydx-v3-rust]
 workspace = true
 
+[dependencies.web3]
+workspace = true
+
 [dependencies.eyre]
 workspace = true
 

@@ -1,3 +1,5 @@
+mod dydx_utils;
+
 #[macro_use]
 extern crate clap;
 
@@ -20,7 +22,7 @@ fn main() {
 pub fn run() {
     loop {
         let choices = [
-            "Test",
+            "Get Markets",
             "Exit",
         ];
         let index = match Select::with_theme(&ColorfulTheme::default())
@@ -36,13 +38,9 @@ pub fn run() {
         info!("index={}", index);
 
         match index {
-            0 => do_test_sync(),
+            0 => dydx_utils::dydx_get_markets_sync(),
             1 => break,
             _ => continue,
         };
     }
-}
-
-pub fn do_test_sync() {
-    info!("do_test_sync");
 }
