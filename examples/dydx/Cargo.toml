@@ -38,6 +38,9 @@ workspace = true
 [dependencies.web3]
 workspace = true
 
+[dependencies.chrono]
+workspace = true
+
 [dependencies.eyre]
 workspace = true
 

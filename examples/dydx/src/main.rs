@@ -1,5 +1,5 @@
-mod dydx_utils;
 mod constants;
+mod dydx_utils;
 
 #[macro_use]
 extern crate clap;
@@ -25,7 +25,10 @@ pub fn run() {
         let choices = [
             "Get Markets",
             "Get Account",
-            "Exit",
+            "Get Candles",
+            "Get Time",
+            "Create Order",
+            "Exit"
         ];
         let index = match Select::with_theme(&ColorfulTheme::default())
             .with_prompt("Make your choice")
@@ -42,7 +45,10 @@ pub fn run() {
         match index {
             0 => dydx_utils::dydx_get_markets_sync(),
             1 => dydx_utils::dydx_get_account_sync(),
-            2 => break,
+            2 => dydx_utils::dydx_get_candles_sync(),
+            3 => dydx_utils::dydx_get_time_sync(),
+            4 => dydx_utils::dydx_create_order_sync(),
+            5 => break,
             _ => continue,
         };
     }

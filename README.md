@@ -26,6 +26,16 @@ stable-aarch64-apple-darwin (default)
 nightly-aarch64-apple-darwin
 ```
 
+* build faild
+
+*building for macOS-arm64 but attempting to link with file built for macOS-x86_64*
+
+```
+rustup show
+rustup target add x86_64-apple-darwin
+cargo build --target=x86_64-apple-darwin
+```
+
 ## Deployment
 
 * doctl
