@@ -28,6 +28,7 @@ pub fn run() {
             "Get Candles",
             "Get Time",
             "Create Order",
+            "Web3 Accounts",
             "Exit"
         ];
         let index = match Select::with_theme(&ColorfulTheme::default())
@@ -48,7 +49,8 @@ pub fn run() {
             2 => dydx_utils::dydx_get_candles_sync(),
             3 => dydx_utils::dydx_get_time_sync(),
             4 => dydx_utils::dydx_create_order_sync(),
-            5 => break,
+            5 => dydx_utils::web3_accounts_sync(),
+            6 => break,
             _ => continue,
         };
     }

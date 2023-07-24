@@ -10,6 +10,7 @@ use dydx_v3_rust::{
     types::*,
     ClientOptions, DydxClient,
 };
+use web3::Web3;
 use std::time::{SystemTime};
 
 pub fn dydx_create_order_sync() {
@@ -29,7 +30,7 @@ pub async fn dydx_create_order() -> Result<()> {
         passphrase: DYDX_API_PASSPHRASE,
     };
     let options: ClientOptions = ClientOptions {
-        network_id: None,
+        network_id: Some(NETWORK_ID),
         api_timeout: None,
         api_key_credentials: Some(api_key),
         stark_private_key: Some(STARK_PKEY),
@@ -73,7 +74,7 @@ pub async fn dydx_create_order() -> Result<()> {
         .create_order(params)
         .await
         .unwrap();
-    // info!("order_response={:?}", order_response);
+    info!("order_response={:?}", order_response);
 
     Ok(())
 }
@@ -185,5 +186,22 @@ pub async fn dydx_get_markets() -> Result<()> {
         .await
         .unwrap();
     info!("response={:?}", response);
+    Ok(())
+}
+
+pub fn web3_accounts_sync() {
+    info!("web3_accounts_sync");
+    Runtime::new()
+        .unwrap()
+        .block_on(web3_accounts())
+        .unwrap();
+}
+
+pub async fn web3_accounts() -> Result<()> {
+    let transport = web3::transports::Http::new(HOST)?;
+    let client = Web3::new(transport);
+    info!("Calling accounts.");
+    let version = client.eth().protocol_version().await?;
+    info!("Version: {:?}", version);
     Ok(())
 }
