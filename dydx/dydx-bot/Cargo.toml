@@ -1,0 +1,105 @@
+bench = []
+example = []
+
+[[bin]]
+path = "src/main.rs"
+name = "dydx-bot"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
+[[test]]
+path = "tests/health_check.rs"
+name = "health_check"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
+[package]
+name = "dydx-bot"
+description = "DYDX Bot"
+readme = "README.md"
+autobins = true
+autoexamples = true
+autotests = true
+autobenches = true
+
+[package.edition]
+workspace = true
+
+[package.version]
+workspace = true
+
+[package.keywords]
+workspace = true
+
+[package.categories]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs"]
+
+[package.metadata.playground]
+all-features = true
+
+[package.rust-version]
+workspace = true
+
+[package.exclude]
+workspace = true
+
+[dependencies.log]
+workspace = true
+
+[dependencies.config]
+workspace = true
+
+[dependencies.serde]
+workspace = true
+
+[dependencies.eyre]
+workspace = true
+
+[dependencies.actix-web]
+workspace = true
+
+[dependencies.env_logger]
+workspace = true
+
+[dependencies.ethers]
+workspace = true
+
+[dependencies.tokio]
+workspace = true
+
+[dev-dependencies.reqwest]
+workspace = true
+
+[dependencies.dydx-v3-rust]
+workspace = true
+
+[lib]
+path = "src/lib.rs"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []

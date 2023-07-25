@@ -1,5 +1,5 @@
 [workspace]
-members = ["web3-trader", "examples/*"]
+members = ["web3-trader", "dydx/*", "examples/*"]
 default-members = ["web3-trader"]
 resolver = "2"
 
