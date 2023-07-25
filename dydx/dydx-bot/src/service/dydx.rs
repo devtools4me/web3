@@ -10,7 +10,7 @@ pub struct DydxService<'a> {
     client: DydxClient<'a>
 }
 
-impl DydxService {
+impl DydxService<'_> {
     pub fn new<'a>(host: &'a str, options: ClientOptions<'a>) -> DydxService<'a> {
         DydxService {
             client: DydxClient::new(host, options)
@@ -18,8 +18,8 @@ impl DydxService {
     }
 }
 
-impl service::TradeBot for DydxService {
-    fn close_all_positions() -> Result<(), String> {
+impl service::TradeBot for DydxService<'_> {
+    fn close_all_positions(&self) -> Result<(), String> {
         todo!()
     }
 }

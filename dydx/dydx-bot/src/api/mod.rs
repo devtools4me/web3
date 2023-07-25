@@ -19,7 +19,7 @@ pub fn run(conf: Settings) -> Result<Server, std::io::Error> {
         App::new()
             .wrap(Logger::default())
             .route("/health_check", web::get().to(health::health_check))
-            .route("/position/close_all", web::get().to(trade::close_all_possitions(service.clone())))
+            .route("/position/all", web::delete().to(trade::close_all_positions(service.clone())))
     })
         .bind("0.0.0.0:8080")?
         .run();
