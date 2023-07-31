@@ -15,6 +15,18 @@ cargo run
 cargo run -r
 ```
 
+* Run with DEBUG
+
+```
+RUST_LOG=debug cargo run
+```
+
+* Run with details
+
+```
+RUST_BACKTRACE=1 cargo run
+```
+
 * Build Docker
 
 ```

@@ -1,4 +1,4 @@
-use env_logger::Env;
+use env_logger;
 use log::*;
 
 mod api;
@@ -7,7 +7,7 @@ mod service;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
-    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
+    env_logger::init();
     let configuration = configuration::get_configuration().expect("Failed to read configuration.");
     info!("configuration={}", configuration);
     api::run(configuration)?.await

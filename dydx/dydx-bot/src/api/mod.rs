@@ -21,7 +21,7 @@ pub fn run(settings: Settings) -> Result<Server, std::io::Error> {
             .app_data(data.clone())
             .wrap(Logger::default())
             .route("/health_check", web::get().to(health::health_check))
-            .route("/account", web::get().to(health::health_check))
+            .route("/account", web::get().to(account::get_account))
             .route("/order", web::post().to(trade::create_order))
             .route("/position/all", web::delete().to(trade::close_all_positions))
             .route("/test", web::get().to(health::health_check))
