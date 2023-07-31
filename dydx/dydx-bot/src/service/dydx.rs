@@ -5,39 +5,39 @@ use dydx_v3_rust::{
     types::*,
     ClientOptions, DydxClient,
 };
+use crate::configuration::Settings;
 
-pub struct DydxService<'a> {
-    pub client: DydxClient<'a>
+pub struct DydxService {
+    pub settings: Settings
 }
 
-impl DydxService<'_> {
-    pub fn new<'a>(host: &'a str, options: ClientOptions<'a>) -> DydxService<'a> {
-        DydxService {
-            client: DydxClient::new(host, options)
-        }
-    }
-
-    pub fn mk_with_settings<'a>(settings: &configuration::Settings) -> DydxService {
-        let api_key = ApiKeyCredentials {
-            key: settings.client_options.api_key_credentials.key.as_str(),
-            secret: settings.client_options.api_key_credentials.secret.as_str(),
-            passphrase: settings.client_options.api_key_credentials.passphrase.as_str(),
-        };
-        let options: ClientOptions = ClientOptions {
-            network_id: Some(settings.client_options.network_id),
-            api_timeout: None,
-            api_key_credentials: Some(api_key),
-            stark_private_key: Some(settings.client_options.stark_private_key.as_str()),
-            eth_private_key: Some(settings.client_options.eth_private_key.as_str()),
-        };
-        DydxService {
-            client: DydxClient::new(settings.host.as_str(), options)
-        }
+impl DydxService {
+    fn dydx_client(&self) -> DydxClient {
+        DydxClient::new(self.settings.host.as_str(), client_options(&self.settings.client_options))
     }
 }
 
-impl TradeBot for DydxService<'_> {
+impl TradeBot for DydxService {
     fn close_all_positions(&self) -> Result<(), String> {
+        let client = self.dydx_client();
         Ok(())
+    }
+}
+
+fn client_options(other: &configuration::ClientOptions) -> ClientOptions {
+    ClientOptions {
+        network_id: Some(other.network_id),
+        api_timeout: None,
+        api_key_credentials: Some(api_key_credentials(&other.api_key_credentials)),
+        stark_private_key: Some(other.stark_private_key.as_str()),
+        eth_private_key: Some(other.eth_private_key.as_str()),
+    }
+}
+
+fn api_key_credentials(other: &configuration::ApiKeyCredentials) -> ApiKeyCredentials {
+    ApiKeyCredentials {
+        key: other.key.as_str(),
+        secret: other.secret.as_str(),
+        passphrase: other.passphrase.as_str(),
     }
 }
