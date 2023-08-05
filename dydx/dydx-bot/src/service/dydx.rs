@@ -1,12 +1,11 @@
 use crate::{configuration, service};
 use dydx_v3_rust::{
-    constants::{MAINNET_API_URL, TESTNET_API_URL},
     types::*,
     ClientOptions, DydxClient,
 };
-use chrono::{DateTime, Duration, Utc};
-use log::debug;
 use crate::configuration::Settings;
+use crate::service::dydx_ops::*;
+use crate::service::utils::*;
 
 pub struct DydxService {
     pub settings: Settings
@@ -19,65 +18,24 @@ impl DydxService {
 
     pub async fn get_account(&self) -> eyre::Result<(), String> {
         let client = self.dydx_client();
-        let private = &client.private.unwrap();
-        let eth_address = self.settings.client_options.eth_address.as_str();
-        let response = private.get_account(eth_address).await.unwrap();
-        debug!("response={:?}", response);
-        Ok(())
+        client.get_account(self.settings.client_options.eth_address.as_str()).await
     }
 
     pub async fn create_order(&self) -> eyre::Result<(), String> {
-        let client = self.dydx_client();
-        let private = &client.private.unwrap();
-        let eth_address = self.settings.client_options.eth_address.as_str();
-        let response = private.get_account(eth_address).await.unwrap();
-        debug!("response={:?}", response);
-
-        let position_id = response.account.position_id.as_str();
-        debug!("position_id={}", position_id);
-
-        let response = client
-            .public
-            .get_time()
+        let client: DydxClient = self.dydx_client();
+        client.place_market_order(
+            self.settings.client_options.eth_address.as_str(),
+            DydxMarket::BTC_USD,
+            OrderSide::BUY,
+            "0.001",
+            "100000")
             .await
-            .unwrap();
-        debug!("response={:?}", response);
-
-        let expiration_unix = expiration_unix(3);
-        let params: ApiOrderParams = ApiOrderParams {
-            position_id: position_id,
-            market: DydxMarket::BTC_USD,
-            side: OrderSide::BUY,
-            type_field: OrderType::MARKET,
-            time_in_force: TimeInForce::FOK,
-            post_only: false,
-            size: "0.001",
-            price: "100000",
-            limit_fee: "0.015",
-            client_id: None,
-            cancel_id: None,
-            trigger_price: None,
-            trailing_percent: None,
-            expiration: expiration_unix,
-        };
-        let order_response = private
-            .create_order(params)
-            .await
-            .unwrap();
-        debug!("order_response={:?}", order_response);
-        Ok(())
     }
 
     pub async fn close_all_positions(&self) -> Result<(), String> {
         let client = self.dydx_client();
-        Ok(())
+        client.close_all_positions(self.settings.client_options.eth_address.as_str()).await
     }
-}
-
-fn expiration_unix(minutes: i64) -> i64 {
-    let datetime_now: DateTime<Utc> = Utc::now();
-    let expiration = datetime_now + Duration::minutes(minutes);
-    expiration.timestamp()
 }
 
 fn client_options(other: &configuration::ClientOptions) -> ClientOptions {
