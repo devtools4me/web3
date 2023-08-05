@@ -89,12 +89,12 @@ impl DydxOps<'_> for DydxClient<'_> {
             debug!("price={}, accept_price={}", price, accept_price);
 
             let ticked_price = markets.markets.get(market)
-                .map(|x| x.tick_size.parse::<f32>().unwrap())
+                .map(|x| x.tick_size.parse::<u32>().unwrap())
                 .and_then(|x| format_price(accept_price, x))
                 .unwrap_or(accept_price)
                 .to_string();
 
-            //let result = private.place_market_order(eth_address, market, side, p.size.as_str(), ticked_price.as_str()).await.unwrap()
+            self.place_market_order(eth_address, market, side, p.size.as_str(), ticked_price.as_str()).await.unwrap();
         }
 
         Ok(())
