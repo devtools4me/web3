@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "4ada9fad-01b8-4423-8fc1-99a5d90a0e4d",
+		"name": "DYDX BOT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "6937771"
+	},
+	"item": [
+		{
+			"name": "health_check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{root}}/health_check"
+			},
+			"response": []
+		},
+		{
+			"name": "account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{root}}/account"
+			},
+			"response": []
+		},
+		{
+			"name": "order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "{{root}}/order"
+			},
+			"response": []
+		},
+		{
+			"name": "position/all",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{root}}/position/all"
+			},
+			"response": []
+		}
+	]
+}
