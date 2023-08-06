@@ -1,3 +1,3 @@
 pub mod dydx;
-mod dydx_ops;
-mod utils;
+pub mod dydx_ops;
+pub mod utils;

@@ -1,4 +1,4 @@
-use web3_trader::api;
+use dydx_bot::api;
 
 #[tokio::test]
 async fn health_check_works() {

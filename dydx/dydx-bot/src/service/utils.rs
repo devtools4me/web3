@@ -7,9 +7,15 @@ pub fn expiration_unix(minutes: i64) -> i64 {
     expiration.timestamp()
 }
 
-pub fn format_price(price: f32, tick_size: u32) -> Option<f32> {
+pub fn format_price(price: f32, tick_size: f32) -> Option<f32> {
     debug!("price={}, tick_size={}", price, tick_size);
-    let result = round(price, tick_size);
+    let mut mul: f32 = 1.0;
+    let mut decimals = 0;
+    while tick_size * mul < 1.0 {
+        mul = mul * 10.0;
+        decimals = decimals + 1;
+    }
+    let result = round(price, decimals);
     debug!("result={}", result);
     Some(result)
 }
