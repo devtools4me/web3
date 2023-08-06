@@ -1,5 +1,7 @@
-use actix_web::HttpResponse;
+use actix_web::Responder;
 
-pub async fn health_check() -> HttpResponse {
-    HttpResponse::Ok().finish()
+use crate::api::http_response;
+
+pub async fn health_check() -> impl Responder {
+    http_response(Ok("OK"))
 }

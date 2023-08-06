@@ -1,25 +1,17 @@
-use std::sync::Arc;
-use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer, Responder};
+use actix_web::{HttpRequest, Responder, web};
 use web::Data;
-use crate::configuration::Settings;
+
+use crate::api::http_response;
 use crate::service::dydx::DydxService;
-use log::*;
 
 pub async fn create_order(req: HttpRequest) -> impl Responder {
     let app_data = req.app_data::<Data<DydxService>>().unwrap();
-    match app_data.create_order().await {
-        Ok(_) => HttpResponse::Ok(),
-        Err(_) => HttpResponse::InternalServerError()
-    }
+    let res = app_data.create_order().await;
+    http_response(res)
 }
 
 pub async fn close_all_positions(req: HttpRequest) -> impl Responder {
     let app_data = req.app_data::<Data<DydxService>>().unwrap();
-    match app_data.close_all_positions().await {
-        Ok(_) => HttpResponse::Ok(),
-        Err(err) => {
-            warn!("err={}", err);
-            HttpResponse::InternalServerError()
-        }
-    }
+    let res = app_data.close_all_positions().await;
+    http_response(res)
 }
