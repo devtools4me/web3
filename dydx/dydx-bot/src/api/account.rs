@@ -7,7 +7,7 @@ use crate::service::dydx::DydxService;
 pub async fn get_account(req: HttpRequest) -> impl Responder {
     let app_data = req.app_data::<Data<DydxService>>().unwrap();
     match app_data.get_account().await {
-        Ok(()) => HttpResponse::Ok(),
+        Ok(_) => HttpResponse::Ok(),
         Err(_) => HttpResponse::InternalServerError()
     }
 }

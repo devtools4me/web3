@@ -1,5 +1,16 @@
 use chrono::{DateTime, Duration, Utc};
-use log::debug;
+use log::{warn, debug};
+
+pub fn eyre<T>(result: Result<T, Box<dyn std::error::Error>>) -> eyre::Result<T, String> {
+    match result {
+        Ok(x) => Ok(x),
+        Err(err) => {
+            let msg = err.to_string();
+            warn!("failed, err={}", msg);
+            Err(msg)
+        }
+    }
+}
 
 pub fn expiration_unix(minutes: i64) -> i64 {
     let datetime_now: DateTime<Utc> = Utc::now();

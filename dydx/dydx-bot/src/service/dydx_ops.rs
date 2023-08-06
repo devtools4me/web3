@@ -11,26 +11,25 @@ use service::utils::*;
 
 #[async_trait]
 pub trait DydxOps<'a> {
-    async fn get_account(&self, eth_address: &str) -> eyre::Result<(), String>;
-    async fn place_market_order(&self, eth_address: &str, market: &str, side: &str, size: &str, price: &str) -> eyre::Result<(), String>;
-    async fn close_all_positions(&self, eth_address: &str) -> eyre::Result<(), String>;
+    async fn get_account(&self, eth_address: &str) -> dydx_v3_rust::Result<AccountObject>;
+    async fn place_market_order(&self, eth_address: &str, market: &str, side: &str, size: &str, price: &str) -> dydx_v3_rust::Result<OrderResponseObject>;
+    async fn close_all_positions(&self, eth_address: &str) -> dydx_v3_rust::Result<()>;
 }
 
 #[async_trait]
 impl DydxOps<'_> for DydxClient<'_> {
-    async fn get_account(&self, eth_address: &str) -> eyre::Result<(), String> {
+    async fn get_account(&self, eth_address: &str) -> dydx_v3_rust::Result<AccountObject> {
         let private = &self.private.as_ref().unwrap();
-        let response = private.get_account(eth_address).await.unwrap();
+        let response = private.get_account(eth_address)
+            .await
+            .map(|x| x.account);
         debug!("response={:?}", response);
-        Ok(())
+        response
     }
 
-    async fn place_market_order(&self, eth_address: &str, market: &str, side: &str, size: &str, price: &str) -> eyre::Result<(), String>{
-        let private = self.private.as_ref().unwrap();
-        let response = private.get_account(eth_address).await.unwrap();
-        debug!("response={:?}", response);
-
-        let position_id = response.account.position_id.as_str();
+    async fn place_market_order(&self, eth_address: &str, market: &str, side: &str, size: &str, price: &str) -> dydx_v3_rust::Result<OrderResponseObject> {
+        let account = self.get_account(eth_address).await.unwrap();
+        let position_id = account.position_id.as_str();
         debug!("position_id={}", position_id);
 
         let expiration_unix = expiration_unix(3);
@@ -50,15 +49,16 @@ impl DydxOps<'_> for DydxClient<'_> {
             trailing_percent: None,
             expiration: expiration_unix,
         };
+        let private = self.private.as_ref().unwrap();
         let order_response = private
             .create_order(params)
             .await
-            .unwrap();
+            .map(|x| x.order);
         debug!("order_response={:?}", order_response);
-        Ok(())
+        order_response
     }
 
-    async fn close_all_positions(&self, eth_address: &str) -> Result<(), String> {
+    async fn close_all_positions(&self, eth_address: &str) -> dydx_v3_rust::Result<()> {
         let markets = self.public.get_markets(None).await.unwrap();
         debug!("markets={:?}", markets);
 
@@ -94,7 +94,8 @@ impl DydxOps<'_> for DydxClient<'_> {
                 .unwrap_or(accept_price)
                 .to_string();
 
-            self.place_market_order(eth_address, market, side, p.size.as_str(), ticked_price.as_str()).await.unwrap();
+            let order_response = self.place_market_order(eth_address, market, side, p.size.as_str(), ticked_price.as_str()).await;
+            debug!("order_response(OK)={}", order_response.is_ok());
         }
 
         Ok(())
