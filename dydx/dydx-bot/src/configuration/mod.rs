@@ -7,6 +7,26 @@ pub struct Settings {
     pub client_options: ClientOptions,
 }
 
+impl Settings {
+    pub fn empty() -> Settings {
+        Settings {
+            application_port: 0,
+            host: "".to_string(),
+            client_options: ClientOptions {
+                network_id: 0,
+                api_key_credentials: ApiKeyCredentials {
+                    key: "".to_string(),
+                    secret: "".to_string(),
+                    passphrase: "".to_string(),
+                },
+                stark_private_key: "".to_string(),
+                eth_address: "".to_string(),
+                eth_private_key: "".to_string(),
+            },
+        }
+    }
+}
+
 impl fmt::Display for Settings {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Settings(application_port: {}, client_options: {})",
