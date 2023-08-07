@@ -78,6 +78,9 @@ workspace = true
 [dependencies.actix-web]
 workspace = true
 
+[dependencies.tera]
+workspace = true
+
 [dependencies.env_logger]
 workspace = true
 

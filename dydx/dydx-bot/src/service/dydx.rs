@@ -43,11 +43,11 @@ impl DydxService {
         eyre(result)
     }
 
-    pub async fn get_candles(&self) -> eyre::Result<Vec<Candle>, String> {
+    pub async fn get_candles(&self, market: &str, resolution: &str) -> eyre::Result<Vec<Candle>, String> {
         let client = self.dydx_client();
         let result = client.get_candles(
-            DydxMarket::BTC_USD,
-            Some(CandleResolution::ONE_MIN),
+            market,
+            Some(resolution),
             None,
             None,
             Some("100"))
