@@ -1,7 +1,8 @@
 use actix_web::{HttpRequest, Responder, web};
 use web::Data;
 
-use crate::api::{AppData, http_response};
+use crate::api::http_response;
+use crate::model::app::AppData;
 
 pub async fn get_candles(req: HttpRequest) -> impl Responder {
     let market = req.match_info().get("market").unwrap();

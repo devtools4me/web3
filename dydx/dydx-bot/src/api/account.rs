@@ -1,7 +1,8 @@
 use actix_web::{HttpRequest, Responder, web};
 use web::Data;
 
-use crate::api::{AppData, http_response};
+use crate::api::http_response;
+use crate::model::app::AppData;
 
 pub async fn get_account(req: HttpRequest) -> impl Responder {
     let app_data = req.app_data::<Data<AppData>>().unwrap();

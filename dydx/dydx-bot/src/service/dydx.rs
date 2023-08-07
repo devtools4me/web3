@@ -3,7 +3,7 @@ use dydx_v3_rust::{
     DydxClient, types::*,
 };
 
-use crate::{configuration, service};
+use crate::configuration;
 use crate::configuration::Settings;
 use crate::service::dydx_ops::*;
 use crate::service::utils::eyre;

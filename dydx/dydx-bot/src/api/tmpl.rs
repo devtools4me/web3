@@ -1,10 +1,10 @@
 use actix_web::{HttpRequest, HttpResponse, Responder, web};
+use tera::Context;
 use web::Data;
-use tera::{Tera, Context};
 
-use crate::api::{AppData, http_response};
+use crate::model::app::AppData;
 
-pub async fn render(req:HttpRequest) -> impl Responder {
+pub async fn render(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap();
     let mut ctx = Context::new();
     ctx.insert("name", name);

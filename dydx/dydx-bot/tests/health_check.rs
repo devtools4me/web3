@@ -15,6 +15,6 @@ async fn health_check_works() {
 }
 
 async fn spawn_app() {
-    let server = api::run(Settings::empty()).expect("Failed to bind address");
+    let server = api::run_with_config(Settings::empty()).expect("Failed to bind address");
     let _ = tokio::spawn(server);
 }
