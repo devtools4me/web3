@@ -16,6 +16,15 @@
 			"response": []
 		},
 		{
+			"name": "health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{root}}/health"
+			},
+			"response": []
+		},
+		{
 			"name": "account",
 			"request": {
 				"method": "GET",
@@ -39,6 +48,24 @@
 				"method": "DELETE",
 				"header": [],
 				"url": "{{root}}/position/all"
+			},
+			"response": []
+		},
+		{
+			"name": "candles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{root}}/candles/BTC-USD/1MIN"
+			},
+			"response": []
+		},
+		{
+			"name": "index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{root}}"
 			},
 			"response": []
 		}
