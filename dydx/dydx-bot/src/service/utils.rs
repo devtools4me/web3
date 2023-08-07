@@ -1,9 +1,14 @@
-use chrono::{DateTime, Duration, Utc};
-use log::{warn, debug};
+use std::fmt::Debug;
 
-pub fn eyre<T>(result: Result<T, Box<dyn std::error::Error>>) -> eyre::Result<T, String> {
+use chrono::{DateTime, Duration, Utc};
+use log::{debug, trace, warn};
+
+pub fn eyre<T: Debug>(result: Result<T, Box<dyn std::error::Error>>) -> eyre::Result<T, String> {
     match result {
-        Ok(x) => Ok(x),
+        Ok(res) => {
+            trace!("res={:?}", res);
+            Ok(res)
+        }
         Err(err) => {
             let msg = err.to_string();
             warn!("failed, err={}", msg);

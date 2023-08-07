@@ -14,17 +14,16 @@ pub trait DydxOps<'a> {
     async fn get_account(&self, eth_address: &str) -> dydx_v3_rust::Result<AccountObject>;
     async fn place_market_order(&self, eth_address: &str, market: &str, side: &str, size: &str, price: &str) -> dydx_v3_rust::Result<OrderResponseObject>;
     async fn close_all_positions(&self, eth_address: &str) -> dydx_v3_rust::Result<()>;
+    async fn get_candles(&self, market: &str, resolution: Option<&str>, from_iso: Option<&str>, to_iso: Option<&str>, limit: Option<&str>) -> dydx_v3_rust::Result<Vec<Candle>>;
 }
 
 #[async_trait]
 impl DydxOps<'_> for DydxClient<'_> {
     async fn get_account(&self, eth_address: &str) -> dydx_v3_rust::Result<AccountObject> {
         let private = &self.private.as_ref().unwrap();
-        let response = private.get_account(eth_address)
+        private.get_account(eth_address)
             .await
-            .map(|x| x.account);
-        debug!("response={:?}", response);
-        response
+            .map(|x| x.account)
     }
 
     async fn place_market_order(&self, eth_address: &str, market: &str, side: &str, size: &str, price: &str) -> dydx_v3_rust::Result<OrderResponseObject> {
@@ -50,12 +49,10 @@ impl DydxOps<'_> for DydxClient<'_> {
             expiration: expiration_unix,
         };
         let private = self.private.as_ref().unwrap();
-        let order_response = private
+        private
             .create_order(params)
             .await
-            .map(|x| x.order);
-        debug!("order_response={:?}", order_response);
-        order_response
+            .map(|x| x.order)
     }
 
     async fn close_all_positions(&self, eth_address: &str) -> dydx_v3_rust::Result<()> {
@@ -99,5 +96,11 @@ impl DydxOps<'_> for DydxClient<'_> {
         }
 
         Ok(())
+    }
+
+    async fn get_candles(&self, market: &str, resolution: Option<&str>, from_iso: Option<&str>, to_iso: Option<&str>, limit: Option<&str>) -> dydx_v3_rust::Result<Vec<Candle>> {
+        self.public.get_candles(market, resolution, from_iso, to_iso, limit)
+            .await
+            .map(|x| x.candles)
     }
 }

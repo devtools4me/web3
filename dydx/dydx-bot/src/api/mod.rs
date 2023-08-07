@@ -12,6 +12,7 @@ use crate::service::dydx::DydxService;
 mod health;
 mod trade;
 mod account;
+mod history;
 
 #[derive(serde::Serialize)]
 pub struct Success<T> {
@@ -50,6 +51,7 @@ pub fn run(settings: Settings) -> Result<Server, std::io::Error> {
             .route("/account", web::get().to(account::get_account))
             .route("/order", web::post().to(trade::create_order))
             .route("/position/all", web::delete().to(trade::close_all_positions))
+            .route("/history/candles", web::get().to(history::get_candles))
             .route("/test", web::get().to(health::health_check))
     })
         .bind("0.0.0.0:8080")?

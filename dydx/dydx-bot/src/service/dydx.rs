@@ -1,14 +1,15 @@
-use crate::{configuration, service};
 use dydx_v3_rust::{
-    types::*,
-    ClientOptions, DydxClient,
+    ClientOptions,
+    DydxClient, types::*,
 };
+
+use crate::{configuration, service};
 use crate::configuration::Settings;
 use crate::service::dydx_ops::*;
 use crate::service::utils::eyre;
 
 pub struct DydxService {
-    pub settings: Settings
+    pub settings: Settings,
 }
 
 impl DydxService {
@@ -38,6 +39,18 @@ impl DydxService {
     pub async fn close_all_positions(&self) -> Result<(), String> {
         let client = self.dydx_client();
         let result = client.close_all_positions(self.settings.client_options.eth_address.as_str())
+            .await;
+        eyre(result)
+    }
+
+    pub async fn get_candles(&self) -> eyre::Result<Vec<Candle>, String> {
+        let client = self.dydx_client();
+        let result = client.get_candles(
+            DydxMarket::BTC_USD,
+            Some(CandleResolution::ONE_MIN),
+            None,
+            None,
+            Some("100"))
             .await;
         eyre(result)
     }
