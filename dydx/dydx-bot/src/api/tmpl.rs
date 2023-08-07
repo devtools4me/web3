@@ -1,7 +1,14 @@
-use actix_web::Responder;
+use actix_web::{HttpRequest, HttpResponse, Responder, web};
+use web::Data;
+use tera::{Tera, Context};
 
-use crate::api::http_response;
+use crate::api::{AppData, http_response};
 
-pub async fn render() -> impl Responder {
-    http_response(Ok("OK"))
+pub async fn render(req:HttpRequest) -> impl Responder {
+    let name = req.match_info().get("name").unwrap();
+    let mut ctx = Context::new();
+    ctx.insert("name", name);
+    let app_data = req.app_data::<Data<AppData>>().unwrap();
+    let rendered = app_data.tmpl.render("index.html", &ctx).unwrap();
+    HttpResponse::Ok().body(rendered)
 }
