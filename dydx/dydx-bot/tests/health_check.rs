@@ -11,10 +11,10 @@ async fn health_check_works() {
         .await
         .expect("Failed to execute request.");
     assert!(response.status().is_success());
-    assert_eq!("\"OK\"", response.text().await.unwrap());
+    assert_eq!("{\"value\":\"OK\"}", response.text().await.unwrap());
 }
 
 async fn spawn_app() {
-    let server = api::run_with_config(Settings::empty()).expect("Failed to bind address");
+    let server = api::routes::run_with_config(Settings::empty()).expect("Failed to bind address");
     let _ = tokio::spawn(server);
 }

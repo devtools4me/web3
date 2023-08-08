@@ -1,7 +1,7 @@
 use actix_web::{HttpRequest, Responder, web};
 use web::Data;
 
-use crate::api::http_response;
+use crate::api::model::http_response;
 use crate::model::app::AppData;
 
 pub async fn get_account(req: HttpRequest) -> impl Responder {
