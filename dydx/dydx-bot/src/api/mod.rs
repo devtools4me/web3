@@ -4,5 +4,4 @@ mod health;
 mod trade;
 mod account;
 mod history;
-mod index;
 mod tmpl;

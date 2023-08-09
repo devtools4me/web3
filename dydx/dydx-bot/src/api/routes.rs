@@ -28,7 +28,6 @@ pub fn run_with_data(data: Data<AppData>) -> Result<Server, std::io::Error> {
         App::new()
             .app_data(data.clone())
             .wrap(Logger::default())
-            .service(Files::new("/", "./dist/").index_file("index.html"))
             .service(
                 web::resource(TMPL_NAME)
                     .route(web::get().to(tmpl::render))
@@ -53,6 +52,7 @@ pub fn run_with_data(data: Data<AppData>) -> Result<Server, std::io::Error> {
                 web::resource(CANDLES_MKT_RESOLUTION)
                     .route(web::get().to(history::get_candles))
             )
+            .service(Files::new("/", "./dist/").index_file("index.html"))
     })
         .bind("0.0.0.0:8080")?
         .run();
