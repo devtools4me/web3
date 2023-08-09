@@ -1,9 +1,10 @@
-use actix_web::{HttpRequest, HttpResponse, Responder, web};
+use actix_web::{get, HttpRequest, HttpResponse, Responder, web};
 use tera::Context;
 use web::Data;
 
 use crate::model::app::AppData;
 
+#[get("/tmpl/{name}")]
 pub async fn render(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap();
     let mut ctx = Context::new();
