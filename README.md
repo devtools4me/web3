@@ -26,7 +26,14 @@ stable-aarch64-apple-darwin (default)
 nightly-aarch64-apple-darwin
 ```
 
-* build faild
+* trunk
+
+```
+brew update
+brew install trunk
+```
+
+* build failed
 
 *building for macOS-arm64 but attempting to link with file built for macOS-x86_64*
 
@@ -34,6 +41,14 @@ nightly-aarch64-apple-darwin
 rustup show
 rustup target add x86_64-apple-darwin
 cargo build --target=x86_64-apple-darwin
+```
+
+*error[E0463]: can't find crate for `core`*
+
+```
+rustup target add wasm32-unknown-unknown
+cargo build --target wasm32-unknown-unknown
+trunk build
 ```
 
 ## Deployment

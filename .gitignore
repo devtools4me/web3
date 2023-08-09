@@ -1,6 +1,7 @@
 **/.idea
 **/build
 **/target
+**/dist
 
 dydx/dydx-bot/conf/configuration.yaml
 examples/dydx/src/constants/mod.rs

@@ -1,11 +1,19 @@
 [workspace]
-members = ["web3-trader", "dydx/*", "examples/*"]
+members = [
+    "web3-trader",
+    "dydx/dydx-bot",
+    "dydx/dydx-frontend",
+    "examples/dydx",
+    "examples/ethers",
+    "examples/polars"
+]
 default-members = ["web3-trader"]
 resolver = "2"
 
 [workspace.dependencies]
 config = "0.11"
 actix-web = "4"
+actix-files = "0.6"
 tera = "1.19.0"
 eyre = "0.6"
 env_logger = "0.9"

@@ -2,6 +2,7 @@ use actix_web::{App, HttpServer, web};
 use actix_web::dev::Server;
 use actix_web::middleware::Logger;
 use actix_web::web::Data;
+use actix_files::Files;
 
 use crate::model::app::AppData;
 use crate::configuration::Settings;
@@ -27,10 +28,7 @@ pub fn run_with_data(data: Data<AppData>) -> Result<Server, std::io::Error> {
         App::new()
             .app_data(data.clone())
             .wrap(Logger::default())
-            .service(
-                web::resource(HOME)
-                    .route(web::get().to(index::index))
-            )
+            .service(Files::new("/", "./dist/").index_file("index.html"))
             .service(
                 web::resource(TMPL_NAME)
                     .route(web::get().to(tmpl::render))

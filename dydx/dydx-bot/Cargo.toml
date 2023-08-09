@@ -78,6 +78,9 @@ workspace = true
 [dependencies.actix-web]
 workspace = true
 
+[dependencies.actix-files]
+workspace = true
+
 [dependencies.tera]
 workspace = true
 
