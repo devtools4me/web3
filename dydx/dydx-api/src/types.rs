@@ -1,16 +1,6 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
-pub struct Success<T> {
-    pub value: T,
-}
-
-#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
-pub struct Failure<T> {
-    pub error: T,
-}
-
-#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct OhlcResponse {
     pub list: Vec<Ohlc>
 }
@@ -22,4 +12,8 @@ pub struct Ohlc {
     pub low: String,
     pub close: String,
     pub timestamp: String
+}
+
+pub trait DydxApi {
+    fn get_ohlc_data(&self) -> Vec<Ohlc>;
 }

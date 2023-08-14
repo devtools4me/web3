@@ -1,6 +1,8 @@
 use yew::prelude::*;
 
 mod data_source;
+pub mod mock;
+mod gloonet;
 
 struct App;
 
@@ -15,17 +17,14 @@ impl Component for App {
     fn view(&self, ctx: &Context<Self>) -> Html {
 
         let data = data_source::get_data().unwrap();
-        let cur_data_html = data.iter().map(|data_point| {
+        let cur_data_html = data.iter().map(|x| {
             html! {
-                <tr class={match data_point.value {
-                    x if x >= 100.0 => "success".to_string(),
-                    x if x == 0.0 => "warning".to_string(),
-                    x if x < 0.0 => "danger".to_string(),
-                    _ => "".to_string()
-                }}>
-                    <td>{data_point.item_name.clone()}</td>
-                    <td>{data_point.quantity}</td>
-                    <td>{data_point.value}</td>
+                <tr>
+                    <td>{x.open.clone()}</td>
+                    <td>{x.high.clone()}</td>
+                    <td>{x.low.clone()}</td>
+                    <td>{x.close.clone()}</td>
+                    <td>{x.timestamp.clone()}</td>
                 </tr>
             }
         });
@@ -38,9 +37,11 @@ impl Component for App {
                         <table class="table is-hoverable is-striped">
                             <thead>
                                 <tr>
-                                    <th>{"Item"}</th>
-                                    <th>{"Quantity"}</th>
-                                    <th>{"Value"}</th>
+                                    <th>{"Open"}</th>
+                                    <th>{"High"}</th>
+                                    <th>{"Low"}</th>
+                                    <th>{"Close"}</th>
+                                    <th>{"Timestamp"}</th>
                                 </tr>
                             </thead>
                             <tbody>
