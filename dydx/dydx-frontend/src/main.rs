@@ -1,26 +1,60 @@
 use yew::prelude::*;
 
-use capped_input_component::CappedInputComponent;
+mod data_source;
 
-mod capped_input_component;
+struct App;
 
-#[function_component(App)]
-fn app() -> Html {
-    html! {
-        <>
-        <div class="container">
-            <h1>{"Basic Yew Web App"}</h1>
-            <div>
-                <CappedInputComponent min_value={0} max_value={20}/>
-                <CappedInputComponent min_value={5} max_value={30}/>
+impl Component for App {
+    type Message = ();
+    type Properties = ();
+
+    fn create(ctx: &Context<Self>) -> Self {
+        Self
+    }
+
+    fn view(&self, ctx: &Context<Self>) -> Html {
+
+        let data = data_source::get_data().unwrap();
+        let cur_data_html = data.iter().map(|data_point| {
+            html! {
+                <tr class={match data_point.value {
+                    x if x >= 100.0 => "success".to_string(),
+                    x if x == 0.0 => "warning".to_string(),
+                    x if x < 0.0 => "danger".to_string(),
+                    _ => "".to_string()
+                }}>
+                    <td>{data_point.item_name.clone()}</td>
+                    <td>{data_point.quantity}</td>
+                    <td>{data_point.value}</td>
+                </tr>
+            }
+        });
+
+        html! {
+            <div class="section">
+                <div class="container">
+                    <h1 class="title">{"Main page"}</h1>
+                    <div>
+                        <table class="table is-hoverable is-striped">
+                            <thead>
+                                <tr>
+                                    <th>{"Item"}</th>
+                                    <th>{"Quantity"}</th>
+                                    <th>{"Value"}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {for cur_data_html}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
-        </>
+        }
     }
 }
 
 fn main() {
     wasm_logger::init(wasm_logger::Config::default());
-    log::debug!("App is starting");
     yew::start_app::<App>();
 }

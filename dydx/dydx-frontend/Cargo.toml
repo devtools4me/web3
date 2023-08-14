@@ -11,8 +11,12 @@ workspace = true
 workspace = true
 
 [dependencies]
+dydx-api = { version = "0.0.1", path = "../dydx-api" }
 yew = "0.19"
 yew-router = "0.16"
+gloo = "0.8"
+gloo-net = "0.2"
 web-sys = "0.3.57"
 log = "0.4.6"
 wasm-logger = "0.2.0"
+wasm-bindgen-futures = "0.4"
