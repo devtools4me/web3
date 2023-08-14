@@ -7,6 +7,7 @@ use crate::configuration;
 use crate::configuration::Settings;
 use crate::service::dydx_ops::*;
 use crate::service::utils::eyre;
+use dydx_api::types::*;
 
 pub struct DydxService {
     pub settings: Settings,
@@ -43,7 +44,7 @@ impl DydxService {
         eyre(result)
     }
 
-    pub async fn get_candles(&self, market: &str, resolution: &str) -> eyre::Result<Vec<Candle>, String> {
+    pub async fn get_candles(&self, market: &str, resolution: &str) -> eyre::Result<Vec<Ohlc>, String> {
         let client = self.dydx_client();
         let result = client.get_candles(
             market,
@@ -51,9 +52,24 @@ impl DydxService {
             None,
             None,
             Some("100"))
-            .await;
+            .await
+            .map(|x| candle_vec_to_owned_ohlc_vec(x));
         eyre(result)
     }
+}
+
+fn convert<A,B> (v: Vec<A>, f: impl Fn(A) -> B) -> Vec<B> {
+    v.into_iter().map(f).collect()
+}
+
+fn candle_vec_to_owned_ohlc_vec(v: Vec<Candle>) -> Vec<Ohlc> {
+    convert(v, |x| Ohlc {
+        open: x.open,
+        high: x.high,
+        low: x.low,
+        close: x.close,
+        timestamp: x.updated_at,
+    })
 }
 
 fn client_options(other: &configuration::ClientOptions) -> ClientOptions {

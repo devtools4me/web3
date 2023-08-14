@@ -1,15 +1,6 @@
 use actix_web::HttpResponse;
 use log::*;
-
-#[derive(serde::Serialize)]
-pub struct Success<T> {
-    pub value: T,
-}
-
-#[derive(serde::Serialize)]
-pub struct Failure<T> {
-    pub error: T,
-}
+use dydx_api::types::{Success, Failure};
 
 pub fn http_response<T: serde::ser::Serialize>(result: eyre::Result<T, String>) -> HttpResponse {
     match result {

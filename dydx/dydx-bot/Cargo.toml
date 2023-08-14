@@ -105,6 +105,9 @@ workspace = true
 [dependencies.async-trait]
 workspace = true
 
+[dependencies]
+dydx-api = { version = "0.0.1", path = "../dydx-api" }
+
 [lib]
 path = "src/lib.rs"
 test = true
