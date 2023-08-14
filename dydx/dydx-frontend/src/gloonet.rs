@@ -2,7 +2,7 @@ use gloo_net::http::Request;
 
 use dydx_api::types::*;
 
-struct GlooNetDydxApi {}
+pub struct GlooNetDydxApi {}
 
 impl DydxApi for GlooNetDydxApi {
     fn get_ohlc_data(&self) -> Vec<Ohlc> {
