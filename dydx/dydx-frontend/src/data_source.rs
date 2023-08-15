@@ -15,7 +15,7 @@ enum Env {
 static ENV: Env = Env::Mock;
 //static ENV: Env = Env::Dev;
 
-pub fn get_data() -> Result<Vec<Ohlc>> {
+pub fn get_ohlc_data() -> Result<Vec<Ohlc>> {
     let response = dydx_api_client(ENV).get_ohlc_data();
     Ok(response)
 }
