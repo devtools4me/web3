@@ -1,8 +1,9 @@
+use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct OhlcResponse {
-    pub list: Vec<Ohlc>
+    pub list: Vec<Ohlc>,
 }
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
@@ -11,9 +12,10 @@ pub struct Ohlc {
     pub high: String,
     pub low: String,
     pub close: String,
-    pub timestamp: String
+    pub timestamp: String,
 }
 
+#[async_trait]
 pub trait DydxApi {
-    fn get_ohlc_data(&self) -> Vec<Ohlc>;
+    async fn get_ohlc_data(&self) -> Vec<Ohlc>;
 }

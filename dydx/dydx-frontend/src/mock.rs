@@ -1,9 +1,12 @@
+use async_trait::async_trait;
+
 use dydx_api::types::*;
 
 pub struct MockDydxApi {}
 
+#[async_trait]
 impl DydxApi for MockDydxApi {
-    fn get_ohlc_data(&self) -> Vec<Ohlc> {
+    async fn get_ohlc_data(&self) -> Vec<Ohlc> {
         vec![
             Ohlc {
                 open: "29450".to_string(),
