@@ -6,7 +6,7 @@ use dydx_api::types::Ohlc;
 
 mod data_source;
 pub mod mock;
-mod gloonet;
+mod client;
 
 #[derive(Properties, PartialEq)]
 struct OhlcListProps {

@@ -5,7 +5,7 @@ use strum::EnumString;
 
 use dydx_api::types::*;
 
-use crate::gloonet::GlooNetDydxApi;
+use crate::client::ReqwestDydxApi;
 use crate::mock::{*, MockDydxApi};
 
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -26,6 +26,6 @@ fn dydx_api_client() -> Box<dyn DydxApi + Sync> {
     let env = Env::from_str(dotenv!("ENV")).unwrap();
     match env {
         Env::Mock => Box::new(MockDydxApi {}),
-        _ => Box::new(GlooNetDydxApi {})
+        _ => Box::new(ReqwestDydxApi {})
     }
 }
