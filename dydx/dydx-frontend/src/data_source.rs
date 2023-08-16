@@ -8,8 +8,6 @@ use dydx_api::types::*;
 use crate::client::ReqwestDydxApi;
 use crate::mock::{*, MockDydxApi};
 
-pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
-
 #[derive(Clone, Copy, EnumString)]
 enum Env {
     Mock,
@@ -18,8 +16,7 @@ enum Env {
 }
 
 pub async fn get_ohlc_data() -> Result<Vec<Ohlc>> {
-    let response = dydx_api_client().get_ohlc_data().await;
-    Ok(response)
+    dydx_api_client().get_ohlc_data().await
 }
 
 fn dydx_api_client() -> Box<dyn DydxApi + Sync> {

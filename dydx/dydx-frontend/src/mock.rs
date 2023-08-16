@@ -6,8 +6,8 @@ pub struct MockDydxApi {}
 
 #[async_trait]
 impl DydxApi for MockDydxApi {
-    async fn get_ohlc_data(&self) -> Vec<Ohlc> {
-        vec![
+    async fn get_ohlc_data(&self) -> Result<Vec<Ohlc>> {
+        let result = vec![
             Ohlc {
                 open: "29450".to_string(),
                 high: "29450".to_string(),
@@ -85,6 +85,7 @@ impl DydxApi for MockDydxApi {
                 close: "29450".to_string(),
                 timestamp: "2023-08-14T08:59:00.000Z".to_string(),
             },
-        ]
+        ];
+        Ok(result)
     }
 }

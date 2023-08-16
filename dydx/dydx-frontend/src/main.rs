@@ -1,4 +1,3 @@
-use gloo_net::http::Request;
 use log::error;
 use yew::prelude::*;
 
