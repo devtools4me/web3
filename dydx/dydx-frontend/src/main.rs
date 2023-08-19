@@ -2,12 +2,12 @@ use log::error;
 use yew::prelude::*;
 
 use dydx_api::types::Ohlc;
+use utils::api_utils::fetch_single_api_response;
 
 mod data_source;
 pub mod mock;
 mod client;
-mod api_utils;
-mod env_utils;
+mod utils;
 
 #[derive(Properties, PartialEq)]
 struct OhlcListProps {
@@ -58,7 +58,7 @@ fn app() -> Html {
             move |_| {
                 let ohlc_data = ohlc_data.clone();
                 wasm_bindgen_futures::spawn_local(async move {
-                    match api_utils::fetch_single_api_response::<Vec<Ohlc>>(
+                    match fetch_single_api_response::<Vec<Ohlc>>(
                         format!("/candles/{}/{}", market, resolution)
                             .as_str(),
                     )
