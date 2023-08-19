@@ -15,9 +15,9 @@ pub struct Ohlc {
     pub timestamp: String,
 }
 
-pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+pub type DydxResult<T> = Result<T, String>;
 
 #[async_trait]
 pub trait DydxApi {
-    async fn get_ohlc_data(&self) -> Result<Vec<Ohlc>>;
+    async fn get_ohlc_data(&self) -> DydxResult<Vec<Ohlc>>;
 }

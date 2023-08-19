@@ -15,7 +15,7 @@ enum Env {
     Prod,
 }
 
-pub async fn get_ohlc_data() -> Result<Vec<Ohlc>> {
+pub async fn get_ohlc_data() -> DydxResult<Vec<Ohlc>> {
     dydx_api_client().get_ohlc_data().await
 }
 

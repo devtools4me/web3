@@ -6,6 +6,8 @@ use dydx_api::types::Ohlc;
 mod data_source;
 pub mod mock;
 mod client;
+mod api_utils;
+mod env_utils;
 
 #[derive(Properties, PartialEq)]
 struct OhlcListProps {
@@ -47,6 +49,8 @@ fn ohlc_list(OhlcListProps { ohlc_data }: &OhlcListProps) -> Html {
 
 #[function_component(App)]
 fn app() -> Html {
+    let market = "BTC-USD";
+    let resolution = "1MIN";
     let ohlc_data = use_state(|| vec![]);
     {
         let ohlc_data = ohlc_data.clone();
@@ -54,13 +58,17 @@ fn app() -> Html {
             move |_| {
                 let ohlc_data = ohlc_data.clone();
                 wasm_bindgen_futures::spawn_local(async move {
-                    let result = data_source::get_ohlc_data().await;
-                    match result {
+                    match api_utils::fetch_single_api_response::<Vec<Ohlc>>(
+                        format!("/candles/{}/{}", market, resolution)
+                            .as_str(),
+                    )
+                        .await
+                    {
                         Ok(fetched_data) => {
                             ohlc_data.set(fetched_data);
                         }
-                        Err(err) => {
-                            error!("{err}")
+                        Err(e) => {
+                            error!("{e}")
                         }
                     }
                 });
