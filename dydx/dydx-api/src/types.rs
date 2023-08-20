@@ -14,10 +14,3 @@ pub struct Ohlc {
     pub close: String,
     pub timestamp: String,
 }
-
-pub type DydxResult<T> = Result<T, String>;
-
-#[async_trait]
-pub trait DydxApi {
-    async fn get_ohlc_data(&self) -> DydxResult<Vec<Ohlc>>;
-}

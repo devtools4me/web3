@@ -5,9 +5,6 @@ use yew_router::prelude::*;
 use route::{Route, switch};
 use view::{header::Header, ohlc::OhlcView};
 
-mod data_source;
-pub mod mock;
-mod client;
 mod utils;
 mod view;
 mod route;
