@@ -26,6 +26,9 @@ pub fn header() -> Html {
                         <Link<Route> to={ Route::Home } classes="navbar-link">
                             { "Home" }
                         </Link<Route>>
+                        <Link<Route> to={ Route::Sma } classes="navbar-link">
+                            { "SMA" }
+                        </Link<Route>>
                         <Link<Route> to={ Route::About } classes="navbar-link">
                             { "About" }
                         </Link<Route>>

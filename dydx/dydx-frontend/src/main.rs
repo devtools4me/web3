@@ -11,6 +11,7 @@ mod client;
 mod utils;
 mod view;
 mod route;
+mod js;
 
 #[function_component(App)]
 fn app() -> Html {
