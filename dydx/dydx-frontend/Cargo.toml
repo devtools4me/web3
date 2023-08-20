@@ -28,3 +28,4 @@ wasm-logger = "0.2.0"
 wasm-bindgen = "0.2.81"
 wasm-bindgen-futures = "0.4.36"
 strum = { version = "0.25", features = ["derive"] }
+yew-plotly = "0.2.0"

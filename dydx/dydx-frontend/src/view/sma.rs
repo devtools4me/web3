@@ -1,16 +1,21 @@
 use log::error;
 use yew::prelude::*;
 
-use crate::js::bindings;
+use yew_plotly::plotly::common::Mode;
+use yew_plotly::plotly::{Plot, Scatter};
+use yew_plotly::Plotly;
 
 #[function_component(SmaChartView)]
-pub fn ohlc_component() -> Html {
-    html! {
-        <div class="section">
-            <div class="container">
-                <h1 class="title">{"SMA Chart"}</h1>
-                <h2 class="subtitle">{bindings::get_now_date()}</h2>
-            </div>
-        </div>
-    }
+pub fn sma_component() -> Html {
+    let mut plot = Plot::new();
+    let x_values = vec![1, 2, 3];
+    let y_values = vec![1, 3, 2];
+
+    let trace = Scatter::new(x_values, y_values)
+        .mode(Mode::LinesMarkersText)
+        .name("Scatter");
+
+    plot.add_trace(trace);
+
+    html! { <Plotly plot={plot}/> }
 }
