@@ -1,5 +1,8 @@
 use log::error;
 use yew::prelude::*;
+use yew_plotly::plotly::{Plot, Scatter};
+use yew_plotly::Plotly;
+use yew_plotly::plotly::common::Mode;
 
 use dydx_api::types::Ohlc;
 
@@ -44,7 +47,7 @@ fn ohlc_list(OhlcListProps { ohlc_data }: &OhlcListProps) -> Html {
 }
 
 #[function_component(OhlcView)]
-pub fn ohlc_component() -> Html {
+pub fn ohlc_data_component() -> Html {
     let market = "BTC-USD";
     let resolution = "1MIN";
     let ohlc_data = use_state(|| vec![]);
@@ -81,4 +84,19 @@ pub fn ohlc_component() -> Html {
             </div>
         </div>
     }
+}
+
+#[function_component(OhlcChartView)]
+pub fn ohlc_chart_component() -> Html {
+    let mut plot = Plot::new();
+    let x_values = vec![1, 2, 3];
+    let y_values = vec![1, 3, 2];
+
+    let trace = Scatter::new(x_values, y_values)
+        .mode(Mode::LinesMarkersText)
+        .name("Scatter");
+
+    plot.add_trace(trace);
+
+    html! { <Plotly plot={plot}/> }
 }

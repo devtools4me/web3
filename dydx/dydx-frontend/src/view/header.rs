@@ -23,8 +23,8 @@ pub fn header() -> Html {
                         { "Home" }
                     </Link<Route>>
                     <div class="navbar-item has-dropdown is-hoverable">
-                        <Link<Route> to={ Route::Home } classes="navbar-link">
-                            { "Home" }
+                        <Link<Route> to={ Route::Ohlc } classes="navbar-link">
+                            { "OHLC" }
                         </Link<Route>>
                         <Link<Route> to={ Route::Sma } classes="navbar-link">
                             { "SMA" }
