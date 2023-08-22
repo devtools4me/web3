@@ -53,6 +53,7 @@ impl DydxService {
             None,
             Some("100"))
             .await
+            .map(|x| reverse(x))
             .map(|x| candle_vec_to_owned_ohlc_vec(x));
         eyre(result)
     }
@@ -66,6 +67,7 @@ impl DydxService {
             None,
             Some("100"))
             .await
+            .map(|x| reverse(x))
             .map(|x| candle_vec_to_owned_ts_vec(x))
             .map(|x| stats::sma(x, 20));
         eyre(result)
@@ -74,6 +76,10 @@ impl DydxService {
 
 fn convert<A,B> (v: Vec<A>, f: impl Fn(A) -> B) -> Vec<B> {
     v.into_iter().map(f).collect()
+}
+
+fn reverse<T>(v: Vec<T>) -> Vec<T> {
+    v.into_iter().rev().collect()
 }
 
 fn candle_vec_to_owned_ohlc_vec(v: Vec<Candle>) -> Vec<Ohlc> {
