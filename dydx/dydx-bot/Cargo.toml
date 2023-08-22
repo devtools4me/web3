@@ -107,6 +107,7 @@ workspace = true
 
 [dependencies]
 dydx-api = { version = "0.0.1", path = "../dydx-api" }
+yata = "0.6.1"
 
 [lib]
 path = "src/lib.rs"

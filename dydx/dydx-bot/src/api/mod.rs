@@ -5,3 +5,4 @@ mod trade;
 mod account;
 mod history;
 mod tmpl;
+mod averages;

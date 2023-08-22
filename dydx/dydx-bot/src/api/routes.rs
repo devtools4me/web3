@@ -24,6 +24,7 @@ pub fn run_with_data(data: Data<AppData>) -> Result<Server, std::io::Error> {
             .service(trade::create_order)
             .service(trade::close_all_positions)
             .service(history::get_candles)
+            .service(averages::get_sma)
             .service(Files::new("/", "./dist/").index_file("index.html"))
     })
         .bind("0.0.0.0:8000")?

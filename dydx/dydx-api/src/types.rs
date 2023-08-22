@@ -1,10 +1,6 @@
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
-pub fn candles_url<'a>(market: &'a str, resolution: &'a str) -> String {
-    format!("/candles/{}/{}", market, resolution)
-}
-
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct OhlcResponse {
     pub list: Vec<Ohlc>,
@@ -16,5 +12,16 @@ pub struct Ohlc {
     pub high: String,
     pub low: String,
     pub close: String,
+    pub timestamp: String,
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct TimeseriesResponse {
+    pub list: Vec<Timeseries>,
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct Timeseries {
+    pub value: String,
     pub timestamp: String,
 }

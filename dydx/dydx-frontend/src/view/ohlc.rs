@@ -4,7 +4,8 @@ use yew_plotly::plotly::{Plot, Scatter};
 use yew_plotly::{Plotly, plotly};
 use yew_plotly::plotly::common::Mode;
 
-use dydx_api::types::{Ohlc, candles_url};
+use dydx_api::types::*;
+use dydx_api::path::*;
 
 use crate::utils::api_utils::fetch_single_api_response;
 
@@ -58,7 +59,7 @@ pub fn ohlc_data_component() -> Html {
                 let ohlc_data = ohlc_data.clone();
                 wasm_bindgen_futures::spawn_local(async move {
                     match fetch_single_api_response::<Vec<Ohlc>>(
-                        candles_url(market, resolution).as_str()
+                        candles(market, resolution).as_str()
                     )
                         .await
                     {
@@ -98,7 +99,7 @@ pub fn ohlc_chart_component() -> Html {
                 let state = state.clone();
                 wasm_bindgen_futures::spawn_local(async move {
                     match fetch_single_api_response::<Vec<Ohlc>>(
-                        candles_url(market, resolution).as_str(),
+                        candles(market, resolution).as_str(),
                     )
                         .await
                     {

@@ -3,7 +3,7 @@ use dydx_v3_rust::{
     DydxClient, types::*,
 };
 
-use crate::configuration;
+use crate::{configuration, stats};
 use crate::configuration::Settings;
 use crate::service::dydx_ops::*;
 use crate::service::utils::eyre;
@@ -56,6 +56,20 @@ impl DydxService {
             .map(|x| candle_vec_to_owned_ohlc_vec(x));
         eyre(result)
     }
+
+    pub async fn get_sma(&self, market: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
+        let client = self.dydx_client();
+        let result = client.get_candles(
+            market,
+            Some(resolution),
+            None,
+            None,
+            Some("100"))
+            .await
+            .map(|x| candle_vec_to_owned_ts_vec(x))
+            .map(|x| stats::sma(x, 20));
+        eyre(result)
+    }
 }
 
 fn convert<A,B> (v: Vec<A>, f: impl Fn(A) -> B) -> Vec<B> {
@@ -68,6 +82,13 @@ fn candle_vec_to_owned_ohlc_vec(v: Vec<Candle>) -> Vec<Ohlc> {
         high: x.high,
         low: x.low,
         close: x.close,
+        timestamp: x.updated_at,
+    })
+}
+
+fn candle_vec_to_owned_ts_vec(v: Vec<Candle>) -> Vec<Timeseries> {
+    convert(v, |x| Timeseries {
+        value: x.close,
         timestamp: x.updated_at,
     })
 }
