@@ -50,7 +50,7 @@ fn ohlc_list(OhlcListProps { ohlc_data }: &OhlcListProps) -> Html {
 #[function_component(OhlcView)]
 pub fn ohlc_data_component() -> Html {
     let market = "BTC-USD";
-    let resolution = "1MIN";
+    let resolution = "1DAY";
     let ohlc_data = use_state(|| vec![]);
     {
         let ohlc_data = ohlc_data.clone();
