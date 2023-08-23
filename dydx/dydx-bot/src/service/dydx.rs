@@ -4,11 +4,13 @@ use dydx_v3_rust::{
     ClientOptions,
     DydxClient, types::*,
 };
+use yata::core::IndicatorResult;
 
 use dydx_api::types::*;
 use dydx_common::utils::env_utils;
-use dydx_common::utils::type_utils::*;
+use dydx_common::utils::vec_utils::*;
 use stats::average;
+use stats::indicator;
 
 use crate::{configuration, stats};
 use crate::configuration::Settings;
@@ -101,8 +103,12 @@ fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
     }
 }
 
-fn reverse<T>(v: Vec<T>) -> Vec<T> {
-    v.into_iter().rev().collect()
+fn indicator(indicator_type: &str, v: Vec<Ohlc>) -> Vec<IndicatorResult> {
+    let t: IndicatorType = IndicatorType::from_str(indicator_type).unwrap();
+    match t {
+        IndicatorType::MACD => indicator::macd(v),
+        IndicatorType::RSI => todo!()
+    }
 }
 
 fn candle_vec_to_owned_ohlc_vec(v: Vec<Candle>) -> Vec<Ohlc> {
@@ -111,6 +117,7 @@ fn candle_vec_to_owned_ohlc_vec(v: Vec<Candle>) -> Vec<Ohlc> {
         high: x.high,
         low: x.low,
         close: x.close,
+        volume: x.base_token_volume,
         timestamp: x.updated_at,
     })
 }

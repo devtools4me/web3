@@ -13,8 +13,9 @@ workspace = true
 [dependencies.async-trait]
 workspace = true
 
-[dependencies.strum]
-workspace = true
+[dependencies]
+strum = "0.25"
+strum_macros = "0.25"
 
 [lib]
 path = "src/lib.rs"

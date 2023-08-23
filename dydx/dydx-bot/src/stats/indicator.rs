@@ -4,7 +4,7 @@ use yata::indicators::*;
 use yata::prelude::*;
 
 use dydx_api::types;
-use dydx_common::utils::type_utils::*;
+use dydx_common::utils::vec_utils::*;
 
 pub fn macd(v: Vec<types::Ohlc>) -> Vec<IndicatorResult> {
     let mut macd = MACD::default();
@@ -26,7 +26,7 @@ impl Convert<Candle> for types::Ohlc {
             high: self.high.parse::<f64>().unwrap(),
             low: self.low.parse::<f64>().unwrap(),
             close: self.close.parse::<f64>().unwrap(),
-            volume: 0.0,
+            volume: self.volume.parse::<f64>().unwrap(),
         }
     }
 }

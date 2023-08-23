@@ -1,8 +1,8 @@
 use std::str::FromStr;
+use strum_macros::EnumString;
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-use strum::EnumString;
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct OhlcResponse {
@@ -15,6 +15,7 @@ pub struct Ohlc {
     pub high: String,
     pub low: String,
     pub close: String,
+    pub volume: String,
     pub timestamp: String,
 }
 
@@ -107,4 +108,12 @@ pub struct TimeseriesResponse {
 pub struct Timeseries {
     pub value: String,
     pub timestamp: String,
+}
+
+#[derive(Debug, PartialEq, EnumString)]
+pub enum IndicatorType {
+    #[strum(serialize = "MACD", serialize = "macd")]
+    MACD,
+    #[strum(serialize = "RSI", serialize = "rsi")]
+    RSI,
 }
