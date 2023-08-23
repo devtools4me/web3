@@ -1,18 +1,32 @@
-use yata::core::PeriodType;
-use yata::methods::*;
+use yata::helpers::{MA, RandomCandles};
+use yata::core::{IndicatorResult, PeriodType};
+use yata::indicators::*;
 use yata::prelude::*;
 
-use dydx_api::types::Timeseries;
-use dydx_common::utils::vec_utils::*;
+use dydx_api::types;
+use dydx_common::utils::type_utils::*;
 
-pub fn rsi(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
-    let v0 = v[0].value.parse::<f64>().unwrap();
-    let mut avg = EMA::new(window_size, &v0).unwrap();
-    convert(v, |x| {
-        let value = avg.next(&x.value.parse::<f64>().unwrap());
-        Timeseries {
-            value: value.to_string(),
-            timestamp: x.timestamp,
+pub fn macd(v: Vec<types::Ohlc>) -> Vec<IndicatorResult> {
+    let mut macd = MACD::default();
+    macd.signal = MA::TEMA(5);
+
+    let candles = convert(v, |x| x.convert());
+    let mut macd = macd.init(candles.first().unwrap()).unwrap();
+    convert(candles, |x| macd.next(&x))
+}
+
+pub trait Convert<T> {
+    fn convert(&self) -> T;
+}
+
+impl Convert<Candle> for types::Ohlc {
+    fn convert(&self) -> Candle {
+        Candle {
+            open: self.open.parse::<f64>().unwrap(),
+            high: self.high.parse::<f64>().unwrap(),
+            low: self.low.parse::<f64>().unwrap(),
+            close: self.close.parse::<f64>().unwrap(),
+            volume: 0.0,
         }
-    })
+    }
 }

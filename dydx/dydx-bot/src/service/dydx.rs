@@ -7,7 +7,7 @@ use dydx_v3_rust::{
 
 use dydx_api::types::*;
 use dydx_common::utils::env_utils;
-use dydx_common::utils::vec_utils::*;
+use dydx_common::utils::type_utils::*;
 use stats::average;
 
 use crate::{configuration, stats};

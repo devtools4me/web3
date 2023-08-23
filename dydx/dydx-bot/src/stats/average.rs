@@ -3,7 +3,7 @@ use yata::methods::*;
 use yata::prelude::*;
 
 use dydx_api::types::Timeseries;
-use dydx_common::utils::vec_utils::*;
+use dydx_common::utils::type_utils::*;
 
 pub fn ema(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
     let v0 = v[0].value.parse::<f64>().unwrap();
