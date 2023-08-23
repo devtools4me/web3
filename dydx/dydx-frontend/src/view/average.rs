@@ -9,8 +9,8 @@ use dydx_api::path::*;
 
 use crate::utils::api_utils::fetch_single_api_response;
 
-#[function_component(SmaChartView)]
-pub fn sma_chart_component() -> Html {
+#[function_component(AverageChartView)]
+pub fn average_chart_component() -> Html {
     let market = "BTC-USD";
     let resolution = "1DAY";
     let title = format!("SMA {} {}", market, resolution);
@@ -22,7 +22,7 @@ pub fn sma_chart_component() -> Html {
                 let state = state.clone();
                 wasm_bindgen_futures::spawn_local(async move {
                     match fetch_single_api_response::<Vec<Timeseries>>(
-                        averages::sma(market, resolution).as_str(),
+                        averages(AverageType::SMA, market, resolution).as_str(),
                     )
                         .await
                     {

@@ -1,13 +1,16 @@
+use std::str::FromStr;
+
 use dydx_v3_rust::{
     ClientOptions,
     DydxClient, types::*,
 };
 
+use dydx_api::types::*;
+
 use crate::{configuration, stats};
 use crate::configuration::Settings;
 use crate::service::dydx_ops::*;
 use crate::service::utils::eyre;
-use dydx_api::types::*;
 
 pub struct DydxService {
     pub settings: Settings,
@@ -58,7 +61,7 @@ impl DydxService {
         eyre(result)
     }
 
-    pub async fn get_sma(&self, market: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
+    pub async fn get_average(&self, average_type: &str, market: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
         let client = self.dydx_client();
         let result = client.get_candles(
             market,
@@ -69,12 +72,20 @@ impl DydxService {
             .await
             .map(|x| reverse(x))
             .map(|x| candle_vec_to_owned_ts_vec(x))
-            .map(|x| stats::sma(x, 20));
+            .map(|x| average(average_type, x));
         eyre(result)
     }
 }
 
-fn convert<A,B> (v: Vec<A>, f: impl Fn(A) -> B) -> Vec<B> {
+fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
+    let t: AverageType = AverageType::from_str(average_type).unwrap();
+    match t {
+        AverageType::SMA => stats::sma(v, 20),
+        _ => vec![]
+    }
+}
+
+fn convert<A, B>(v: Vec<A>, f: impl Fn(A) -> B) -> Vec<B> {
     v.into_iter().map(f).collect()
 }
 

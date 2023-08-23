@@ -16,6 +16,9 @@ workspace = true
 [dependencies.dotenvy_macro]
 workspace = true
 
+[dependencies.strum]
+workspace = true
+
 [dependencies]
 dydx-api = { version = "0.0.1", path = "../dydx-api" }
 yew = { version = "0.20.0", features = ["csr"] }
@@ -27,5 +30,4 @@ log = "0.4.6"
 wasm-logger = "0.2.0"
 wasm-bindgen = "0.2.81"
 wasm-bindgen-futures = "0.4.36"
-strum = { version = "0.25", features = ["derive"] }
 yew-plotly = "0.2.0"
