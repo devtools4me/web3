@@ -7,6 +7,7 @@ use dydx_v3_rust::{
 
 use dydx_api::types::*;
 use dydx_common::utils::env_utils;
+use dydx_common::utils::vec_utils::*;
 use stats::average;
 
 use crate::{configuration, stats};
@@ -98,10 +99,6 @@ fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
         AverageType::WMA => average::wma(v, window_size),
         AverageType::WSMA => average::wsma(v, window_size),
     }
-}
-
-fn convert<A, B>(v: Vec<A>, f: impl Fn(A) -> B) -> Vec<B> {
-    v.into_iter().map(f).collect()
 }
 
 fn reverse<T>(v: Vec<T>) -> Vec<T> {
