@@ -20,9 +20,20 @@ pub struct Ohlc {
 
 #[derive(Debug, Eq, PartialEq, EnumString)]
 pub enum AverageType {
-    Unknown,
-    SMA,
     EMA,
+    HMA,
+    DEMA,
+    DMA,
+    RMA,
+    SMA,
+    SWMA,
+    TEMA,
+    TMA,
+    TRIMA,
+    VWMA,
+    Vidya,
+    WMA,
+    WSMA
 }
 
 impl ToString for AverageType {
@@ -30,7 +41,18 @@ impl ToString for AverageType {
         match self {
             AverageType::SMA => String::from("SMA"),
             AverageType::EMA => String::from("EMA"),
-            _ => String::from("Unknown")
+            AverageType::HMA => String::from("HMA"),
+            AverageType::DEMA => String::from("DEMA"),
+            AverageType::DMA => String::from("DMA"),
+            AverageType::RMA => String::from("RMA"),
+            AverageType::SWMA => String::from("SWMA"),
+            AverageType::TEMA => String::from("TEMA"),
+            AverageType::TMA => String::from("TMA"),
+            AverageType::TRIMA => String::from("TRIMA"),
+            AverageType::VWMA => String::from("VWMA"),
+            AverageType::Vidya => String::from("Vidya"),
+            AverageType::WMA => String::from("WMA"),
+            AverageType::WSMA => String::from("WSMA"),
         }
     }
 }
@@ -40,14 +62,26 @@ impl AverageType {
         match s {
             "SMA" => AverageType::SMA,
             "EMA" => AverageType::EMA,
-            _ => AverageType::Unknown
+            _ => AverageType::SMA
         }
     }
 
     pub fn description(average_type: &AverageType) -> &str {
         match average_type {
             AverageType::SMA => "Simple Moving Average",
-            _ => "NA"
+            AverageType::EMA => "Exponential Moving Average",
+            AverageType::HMA => "Hull Moving Average",
+            AverageType::DEMA => "Hull Moving Average",
+            AverageType::DMA => "EMA over EMA",
+            AverageType::RMA => "Running Moving Average",
+            AverageType::SWMA => "Symmetrically Weighted Moving Average",
+            AverageType::TEMA => "Triple Exponential Moving Average",
+            AverageType::TMA => "DMA over EMA",
+            AverageType::TRIMA => "Triangular Moving Average",
+            AverageType::VWMA => "Volume Weighed Moving Average",
+            AverageType::Vidya => "Variable Index Dynamic Average",
+            AverageType::WMA => "Weighted Moving Average",
+            AverageType::WSMA => "Wilder’s Smoothing Average",
         }
     }
 }

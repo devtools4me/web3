@@ -22,17 +22,61 @@ pub fn header() -> Html {
                     <Link<Route> to={ Route::Home } classes="navbar-link">
                         { "Home" }
                     </Link<Route>>
+                    <Link<Route> to={ Route::Ohlc } classes="navbar-link">
+                        { "OHLC" }
+                    </Link<Route>>
                     <div class="navbar-item has-dropdown is-hoverable">
-                        <Link<Route> to={ Route::Ohlc } classes="navbar-link">
-                            { "OHLC" }
-                        </Link<Route>>
-                        <Link<Route> to={ Route::Sma } classes="navbar-link">
-                            { "SMA" }
-                        </Link<Route>>
-                        <Link<Route> to={ Route::About } classes="navbar-link">
-                            { "About" }
-                        </Link<Route>>
+                        <a class="navbar-link">
+                            { "Averages" }
+                        </a>
+                        <div class="navbar-dropdown">
+                            <Link<Route> to={ Route::EMA } classes="navbar-item">
+                                { "EMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::HMA } classes="navbar-item">
+                                { "HMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::DEMA } classes="navbar-item">
+                                { "DEMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::DMA } classes="navbar-item">
+                                { "DMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::RMA } classes="navbar-item">
+                                { "RMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::SMA } classes="navbar-item">
+                                { "SMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::SWMA } classes="navbar-item">
+                                { "SWMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::TEMA } classes="navbar-item">
+                                { "TEMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::TMA } classes="navbar-item">
+                                { "TMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::TRIMA } classes="navbar-item">
+                                { "TRIMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::VWMA } classes="navbar-item">
+                                { "VWMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::Vidya } classes="navbar-item">
+                                { "Vidya" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::WMA } classes="navbar-item">
+                                { "WMA" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::WSMA } classes="navbar-item">
+                                { "WMA" }
+                            </Link<Route>>
+                        </div>
                     </div>
+                    <Link<Route> to={ Route::About } classes="navbar-link">
+                        { "About" }
+                    </Link<Route>>
                 </div>
             </div>
         </nav>
