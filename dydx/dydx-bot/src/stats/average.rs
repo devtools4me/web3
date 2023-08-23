@@ -6,9 +6,9 @@ use dydx_api::types::Timeseries;
 
 pub fn ema(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
     let v0 = v[0].value.parse::<f64>().unwrap();
-    let mut ema = EMA::new(window_size, &v0).unwrap();
+    let mut avg = EMA::new(window_size, &v0).unwrap();
     convert(v, 1, |x| {
-        let value = ema.next(&x.value.parse::<f64>().unwrap());
+        let value = avg.next(&x.value.parse::<f64>().unwrap());
         Timeseries {
             value: value.to_string(),
             timestamp: x.timestamp,
@@ -18,9 +18,9 @@ pub fn ema(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
 
 pub fn sma(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
     let v0 = v[0].value.parse::<f64>().unwrap();
-    let mut sma = SMA::new(window_size, &v0).unwrap();
+    let mut avg = SMA::new(window_size, &v0).unwrap();
     convert(v, 1, |x| {
-        let value = sma.next(&x.value.parse::<f64>().unwrap());
+        let value = avg.next(&x.value.parse::<f64>().unwrap());
         Timeseries {
             value: value.to_string(),
             timestamp: x.timestamp,
@@ -29,7 +29,15 @@ pub fn sma(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
 }
 
 pub fn hma(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
-    todo!()
+    let v0 = v[0].value.parse::<f64>().unwrap();
+    let mut avg = HMA::new(window_size, &v0).unwrap();
+    convert(v, 1, |x| {
+        let value = avg.next(&x.value.parse::<f64>().unwrap());
+        Timeseries {
+            value: value.to_string(),
+            timestamp: x.timestamp,
+        }
+    })
 }
 
 pub fn dema(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
