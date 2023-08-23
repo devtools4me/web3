@@ -62,6 +62,18 @@ impl AverageType {
         match s {
             "SMA" => AverageType::SMA,
             "EMA" => AverageType::EMA,
+            "HMA" => AverageType::HMA,
+            "DEMA" => AverageType::DEMA,
+            "DMA" => AverageType::DMA,
+            "RMA" => AverageType::RMA,
+            "SWMA" => AverageType::SWMA,
+            "TEMA" => AverageType::TEMA,
+            "TMA" => AverageType::TMA,
+            "TRIMA" => AverageType::TRIMA,
+            "VWMA" => AverageType::VWMA,
+            "Vidya" => AverageType::Vidya,
+            "WMA" => AverageType::WMA,
+            "WSMA" => AverageType::WSMA,
             _ => AverageType::SMA
         }
     }
