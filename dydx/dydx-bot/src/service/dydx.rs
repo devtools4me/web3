@@ -6,6 +6,8 @@ use dydx_v3_rust::{
 };
 
 use dydx_api::types::*;
+use dydx_common::utils::env_utils;
+use stats::average;
 
 use crate::{configuration, stats};
 use crate::configuration::Settings;
@@ -79,9 +81,22 @@ impl DydxService {
 
 fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
     let t: AverageType = AverageType::from_str(average_type).unwrap();
+    let window_size = env_utils::get_window_size();
     match t {
-        AverageType::SMA => stats::sma(v, 20),
-        _ => vec![]
+        AverageType::EMA => average::ema(v, window_size),
+        AverageType::SMA => average::sma(v, window_size),
+        AverageType::HMA => average::hma(v, window_size),
+        AverageType::DEMA => average::dema(v, window_size),
+        AverageType::DMA => average::dma(v, window_size),
+        AverageType::RMA => average::rma(v, window_size),
+        AverageType::SWMA => average::swma(v, window_size),
+        AverageType::TEMA => average::tema(v, window_size),
+        AverageType::TMA => average::tma(v, window_size),
+        AverageType::TRIMA => average::trima(v, window_size),
+        AverageType::VWMA => average::vwma(v, window_size),
+        AverageType::Vidya => average::vidya(v, window_size),
+        AverageType::WMA => average::wma(v, window_size),
+        AverageType::WSMA => average::wsma(v, window_size),
     }
 }
 
