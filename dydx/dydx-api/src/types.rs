@@ -20,6 +20,7 @@ pub struct Ohlc {
 
 #[derive(Debug, Eq, PartialEq, EnumString)]
 pub enum AverageType {
+    Unknown,
     SMA,
     EMA,
 }
@@ -29,13 +30,22 @@ impl ToString for AverageType {
         match self {
             AverageType::SMA => String::from("SMA"),
             AverageType::EMA => String::from("EMA"),
+            _ => String::from("Unknown")
         }
     }
 }
 
 impl AverageType {
-    pub fn description(&self) -> &str {
-        match self {
+    pub fn parse(s: &str) -> AverageType {
+        match s {
+            "SMA" => AverageType::SMA,
+            "EMA" => AverageType::EMA,
+            _ => AverageType::Unknown
+        }
+    }
+
+    pub fn description(average_type: &AverageType) -> &str {
+        match average_type {
             AverageType::SMA => "Simple Moving Average",
             _ => "NA"
         }
