@@ -4,15 +4,23 @@ use yata::indicators::*;
 use yata::prelude::*;
 
 use dydx_api::types;
+use dydx_api::types::Indicator;
 use dydx_common::utils::vec_utils::*;
+use log::*;
 
-pub fn macd(v: Vec<types::Ohlc>) -> Vec<IndicatorResult> {
+pub fn macd(v: Vec<types::Ohlc>) -> Vec<types::Indicator> {
     let mut macd = MACD::default();
     macd.signal = MA::TEMA(5);
 
-    let candles = convert(v, |x| x.convert());
-    let mut macd = macd.init(candles.first().unwrap()).unwrap();
-    convert(candles, |x| macd.next(&x))
+    let mut macd = macd.init(&v.first().unwrap().convert()).unwrap();
+    convert(v, |x| {
+        let value = macd.next(&x.convert());
+        info!("{:?}", value);
+        Indicator {
+            value: "".to_string(),
+            timestamp: x.timestamp,
+        }
+    })
 }
 
 pub trait Convert<T> {

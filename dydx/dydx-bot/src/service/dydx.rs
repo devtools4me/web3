@@ -80,6 +80,21 @@ impl DydxService {
             .map(|x| average(average_type, x));
         eyre(result)
     }
+
+    pub async fn get_indicator(&self, indicator_type: &str, market: &str, resolution: &str) -> eyre::Result<Vec<Indicator>, String> {
+        let client = self.dydx_client();
+        let result = client.get_candles(
+            market,
+            Some(resolution),
+            None,
+            None,
+            Some("100"))
+            .await
+            .map(|x| reverse(x))
+            .map(|x| candle_vec_to_owned_ohlc_vec(x))
+            .map(|x| indicator(indicator_type, x));
+        eyre(result)
+    }
 }
 
 fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
@@ -103,7 +118,7 @@ fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
     }
 }
 
-fn indicator(indicator_type: &str, v: Vec<Ohlc>) -> Vec<IndicatorResult> {
+fn indicator(indicator_type: &str, v: Vec<Ohlc>) -> Vec<Indicator> {
     let t: IndicatorType = IndicatorType::from_str(indicator_type).unwrap();
     match t {
         IndicatorType::MACD => indicator::macd(v),
