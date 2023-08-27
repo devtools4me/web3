@@ -9,10 +9,10 @@ use yata::core::IndicatorResult;
 use dydx_api::types::*;
 use dydx_common::utils::env_utils;
 use dydx_common::utils::vec_utils::*;
-use stats::average;
-use stats::indicator;
+use ta::average;
+use ta::indicator;
 
-use crate::{configuration, stats};
+use crate::{configuration, ta};
 use crate::configuration::Settings;
 use crate::service::dydx_ops::*;
 use crate::service::utils::eyre;

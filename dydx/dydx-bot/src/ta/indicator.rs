@@ -7,7 +7,7 @@ use dydx_api::types;
 use dydx_api::types::{ActionType, Indicator};
 use dydx_common::utils::vec_utils::*;
 use log::*;
-use crate::stats::run_together::RunTogether;
+use crate::ta::run_together::RunTogether;
 
 pub fn macd(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut macd = MACD::default();
