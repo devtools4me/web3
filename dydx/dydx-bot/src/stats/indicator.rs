@@ -7,6 +7,7 @@ use dydx_api::types;
 use dydx_api::types::{ActionType, Indicator};
 use dydx_common::utils::vec_utils::*;
 use log::*;
+use crate::stats::run_together::RunTogether;
 
 pub fn macd(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut macd = MACD::default();
@@ -27,6 +28,17 @@ pub fn rsi(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut rsi = rsi.init(&v.first().unwrap().convert()).unwrap();
     convert(v, |x| {
         let value = rsi.next(&x.convert());
+        info!("{:?}", value);
+        indicator(&value, x.timestamp.as_str())
+    })
+}
+
+pub fn run_together(v: Vec<types::Ohlc>) -> Vec<Indicator> {
+    let mut run_together = RunTogether::default();
+
+    let mut run_together = run_together.init(&v.first().unwrap().convert()).unwrap();
+    convert(v, |x| {
+        let value = run_together.next(&x.convert());
         info!("{:?}", value);
         indicator(&value, x.timestamp.as_str())
     })

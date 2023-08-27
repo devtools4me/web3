@@ -116,6 +116,8 @@ pub enum IndicatorType {
     MACD,
     #[strum(serialize = "RSI", serialize = "rsi")]
     RSI,
+    #[strum(serialize = "RUN_TOGETHER", serialize = "run_together")]
+    RUN_TOGETHER,
 }
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
