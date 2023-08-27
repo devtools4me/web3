@@ -11,7 +11,7 @@ pub enum Route {
     #[at("/ohlc")]
     Ohlc,
 
-    // Averages
+    // Methods
     #[at("/ema")]
     EMA,
     #[at("/hma")]
@@ -41,6 +41,14 @@ pub enum Route {
     #[at("/wsma")]
     WSMA,
 
+    // Indicators
+    #[at("/macd")]
+    MACD,
+    #[at("/rsi")]
+    RSI,
+    #[at("/run_together")]
+    RunTogether,
+
     //
     #[at("/")]
     Home,
@@ -53,6 +61,7 @@ pub fn switch(route: Route) -> Html {
     match route {
         Route::Home => html! { <OhlcView />},
         Route::Ohlc => html! { <OhlcChartView />},
+        //Methods
         Route::EMA => html! { <AverageChartView average_type={AverageType::EMA} />},
         Route::HMA => html! { <AverageChartView average_type={AverageType::HMA} />},
         Route::DEMA => html! { <AverageChartView average_type={AverageType::DEMA} />},
@@ -67,6 +76,11 @@ pub fn switch(route: Route) -> Html {
         Route::Vidya => html! { <AverageChartView average_type={AverageType::Vidya} />},
         Route::WMA => html! { <AverageChartView average_type={AverageType::WMA} />},
         Route::WSMA => html! { <AverageChartView average_type={AverageType::WSMA} />},
+        //Indicators
+        Route::MACD => html! { <p class="text-white">{ "Not found" }</p> },
+        Route::RSI => html! { <p class="text-white">{ "Not found" }</p> },
+        Route::RunTogether => html! { <p class="text-white">{ "Not found" }</p> },
+        // Other
         Route::About => html! { <p class="text-white">{ "Not found" }</p> },
         Route::NotFound => html! { <p class="text-white">{ "Not found" }</p> },
     }

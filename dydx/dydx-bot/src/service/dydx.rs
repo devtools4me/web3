@@ -9,8 +9,8 @@ use yata::core::IndicatorResult;
 use dydx_api::types::*;
 use dydx_common::utils::env_utils;
 use dydx_common::utils::vec_utils::*;
-use ta::average;
-use ta::indicator;
+use ta::methods;
+use ta::indicators;
 
 use crate::{configuration, ta};
 use crate::configuration::Settings;
@@ -101,29 +101,29 @@ fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
     let t: AverageType = AverageType::from_str(average_type).unwrap();
     let window_size = env_utils::get_window_size();
     match t {
-        AverageType::EMA => average::ema(v, window_size),
-        AverageType::SMA => average::sma(v, window_size),
-        AverageType::HMA => average::hma(v, window_size),
-        AverageType::DEMA => average::dema(v, window_size),
-        AverageType::DMA => average::dma(v, window_size),
-        AverageType::RMA => average::rma(v, window_size),
-        AverageType::SWMA => average::swma(v, window_size),
-        AverageType::TEMA => average::tema(v, window_size),
-        AverageType::TMA => average::tma(v, window_size),
-        AverageType::TRIMA => average::trima(v, window_size),
-        AverageType::VWMA => average::vwma(v, window_size),
-        AverageType::Vidya => average::vidya(v, window_size),
-        AverageType::WMA => average::wma(v, window_size),
-        AverageType::WSMA => average::wsma(v, window_size),
+        AverageType::EMA => methods::ema(v, window_size),
+        AverageType::SMA => methods::sma(v, window_size),
+        AverageType::HMA => methods::hma(v, window_size),
+        AverageType::DEMA => methods::dema(v, window_size),
+        AverageType::DMA => methods::dma(v, window_size),
+        AverageType::RMA => methods::rma(v, window_size),
+        AverageType::SWMA => methods::swma(v, window_size),
+        AverageType::TEMA => methods::tema(v, window_size),
+        AverageType::TMA => methods::tma(v, window_size),
+        AverageType::TRIMA => methods::trima(v, window_size),
+        AverageType::VWMA => methods::vwma(v, window_size),
+        AverageType::Vidya => methods::vidya(v, window_size),
+        AverageType::WMA => methods::wma(v, window_size),
+        AverageType::WSMA => methods::wsma(v, window_size),
     }
 }
 
 fn indicator(indicator_type: &str, v: Vec<Ohlc>) -> Vec<Indicator> {
     let t: IndicatorType = IndicatorType::from_str(indicator_type).unwrap();
     match t {
-        IndicatorType::MACD => indicator::macd(v),
-        IndicatorType::RSI => indicator::rsi(v),
-        IndicatorType::RUN_TOGETHER => indicator::run_together(v),
+        IndicatorType::MACD => indicators::macd(v),
+        IndicatorType::RSI => indicators::rsi(v),
+        IndicatorType::RunTogether => indicators::run_together(v),
     }
 }
 

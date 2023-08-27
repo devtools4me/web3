@@ -28,7 +28,7 @@ pub fn average_chart_component(AverageChartProps { average_type }: &AverageChart
                 let state = state.clone();
                 wasm_bindgen_futures::spawn_local(async move {
                     match fetch_single_api_response::<Vec<Timeseries>>(
-                        averages(average_type, market, resolution).as_str(),
+                        methods(average_type, market, resolution).as_str(),
                     )
                         .await
                     {

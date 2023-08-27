@@ -117,7 +117,17 @@ pub enum IndicatorType {
     #[strum(serialize = "RSI", serialize = "rsi")]
     RSI,
     #[strum(serialize = "RUN_TOGETHER", serialize = "run_together")]
-    RUN_TOGETHER,
+    RunTogether,
+}
+
+impl ToString for IndicatorType {
+    fn to_string(&self) -> String {
+        match self {
+            IndicatorType::MACD => String::from("MACD"),
+            IndicatorType::RSI => String::from("RSI"),
+            IndicatorType::RunTogether => String::from("RUN_TOGETHER"),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]

@@ -27,7 +27,7 @@ pub fn header() -> Html {
                     </Link<Route>>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
-                            { "Averages" }
+                            { "Methods" }
                         </a>
                         <div class="navbar-dropdown">
                             <Link<Route> to={ Route::EMA } classes="navbar-item">
@@ -71,6 +71,22 @@ pub fn header() -> Html {
                             </Link<Route>>
                             <Link<Route> to={ Route::WSMA } classes="navbar-item">
                                 { "WMA" }
+                            </Link<Route>>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            { "Indicators" }
+                        </a>
+                        <div class="navbar-dropdown">
+                            <Link<Route> to={ Route::MACD } classes="navbar-item">
+                                { "MACD" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::RSI } classes="navbar-item">
+                                { "RSI" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::RunTogether } classes="navbar-item">
+                                { "Run Together" }
                             </Link<Route>>
                         </div>
                     </div>
