@@ -131,3 +131,22 @@ pub struct Indicator {
     pub values: Vec<String>,
     pub timestamp: String,
 }
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct RsiIndicator {
+    pub enter_over_zone_signal: ActionType,
+    pub leave_over_zone_signal: ActionType,
+    pub value: String,
+    pub timestamp: String,
+}
+
+impl RsiIndicator {
+    pub fn from_i(i: &Indicator) -> RsiIndicator {
+        RsiIndicator {
+            enter_over_zone_signal: i.signals.get(0).unwrap().clone(),
+            leave_over_zone_signal: i.signals.get(1).unwrap().clone(),
+            value: i.values.first().unwrap().clone(),
+            timestamp: i.timestamp.clone(),
+        }
+    }
+}
