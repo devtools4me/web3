@@ -8,7 +8,7 @@ use dydx_api::types::{ActionType, Indicator};
 use dydx_common::utils::vec_utils::*;
 use log::*;
 
-pub fn macd(v: Vec<types::Ohlc>) -> Vec<types::Indicator> {
+pub fn macd(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut macd = MACD::default();
     macd.signal = MA::TEMA(5);
 
@@ -20,7 +20,7 @@ pub fn macd(v: Vec<types::Ohlc>) -> Vec<types::Indicator> {
     })
 }
 
-pub fn rsi(v: Vec<types::Ohlc>) -> Vec<types::Indicator> {
+pub fn rsi(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut rsi = RSI::default();
     rsi.ma = MA::EMA(14);
 
@@ -57,7 +57,7 @@ fn action(a: Action) -> ActionType {
 }
 
 fn indicator(i: &IndicatorResult, timestamp: &str) -> Indicator {
-    let actions = i
+    let signals = i
         .signals()
         .iter()
         .take(i.signals_length() as usize)
@@ -70,8 +70,8 @@ fn indicator(i: &IndicatorResult, timestamp: &str) -> Indicator {
         .map(|&x| format!("{:>7.4}", x))
         .collect();
     Indicator {
-        signals: actions,
-        values: values,
+        signals,
+        values,
         timestamp: String::from(timestamp),
     }
 }
