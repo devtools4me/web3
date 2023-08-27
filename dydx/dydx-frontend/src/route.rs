@@ -20,6 +20,8 @@ pub enum Route {
     DEMA,
     #[at("/dma")]
     DMA,
+    #[at("/momentum")]
+    Momentum,
     #[at("/rma")]
     RMA,
     #[at("/sma")]
@@ -66,6 +68,7 @@ pub fn switch(route: Route) -> Html {
         Route::HMA => html! { <AverageChartView average_type={AverageType::HMA} />},
         Route::DEMA => html! { <AverageChartView average_type={AverageType::DEMA} />},
         Route::DMA => html! { <AverageChartView average_type={AverageType::DMA} />},
+        Route::Momentum => html! { <AverageChartView average_type={AverageType::Momentum} />},
         Route::RMA => html! { <AverageChartView average_type={AverageType::RMA} />},
         Route::SMA => html! { <AverageChartView average_type={AverageType::SMA} />},
         Route::SWMA => html! { <AverageChartView average_type={AverageType::SWMA} />},

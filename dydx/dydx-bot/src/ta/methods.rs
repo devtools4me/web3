@@ -164,3 +164,15 @@ pub fn wsma(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
         }
     })
 }
+
+pub fn momentum(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {
+    let v0 = v[0].value.parse::<f64>().unwrap();
+    let mut method = Momentum::new(window_size, &v0).unwrap();
+    convert(v, |x| {
+        let value = method.next(&x.value.parse::<f64>().unwrap());
+        Timeseries {
+            value: value.to_string(),
+            timestamp: x.timestamp,
+        }
+    })
+}

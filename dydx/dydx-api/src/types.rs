@@ -25,6 +25,8 @@ pub enum AverageType {
     HMA,
     DEMA,
     DMA,
+    #[strum(serialize = "MOMENTUM", serialize = "Momentum", serialize = "momentum")]
+    Momentum,
     RMA,
     SMA,
     SWMA,
@@ -45,6 +47,7 @@ impl ToString for AverageType {
             AverageType::HMA => String::from("HMA"),
             AverageType::DEMA => String::from("DEMA"),
             AverageType::DMA => String::from("DMA"),
+            AverageType::Momentum => String::from("MOMENTUM"),
             AverageType::RMA => String::from("RMA"),
             AverageType::SWMA => String::from("SWMA"),
             AverageType::TEMA => String::from("TEMA"),
@@ -66,6 +69,7 @@ impl AverageType {
             "HMA" => AverageType::HMA,
             "DEMA" => AverageType::DEMA,
             "DMA" => AverageType::DMA,
+            "MOMENTUM" => AverageType::Momentum,
             "RMA" => AverageType::RMA,
             "SWMA" => AverageType::SWMA,
             "TEMA" => AverageType::TEMA,
@@ -86,6 +90,7 @@ impl AverageType {
             AverageType::HMA => "Hull Moving Average",
             AverageType::DEMA => "Hull Moving Average",
             AverageType::DMA => "EMA over EMA",
+            AverageType::Momentum => "Momentum",
             AverageType::RMA => "Running Moving Average",
             AverageType::SWMA => "Symmetrically Weighted Moving Average",
             AverageType::TEMA => "Triple Exponential Moving Average",
@@ -110,7 +115,7 @@ pub struct Timeseries {
     pub timestamp: String,
 }
 
-#[derive(Debug, PartialEq, EnumString)]
+#[derive(Debug, Eq, PartialEq, EnumString)]
 pub enum IndicatorType {
     #[strum(serialize = "MACD", serialize = "macd")]
     MACD,

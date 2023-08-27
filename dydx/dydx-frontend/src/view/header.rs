@@ -42,6 +42,9 @@ pub fn header() -> Html {
                             <Link<Route> to={ Route::DMA } classes="navbar-item">
                                 { "DMA" }
                             </Link<Route>>
+                            <Link<Route> to={ Route::Momentum } classes="navbar-item">
+                                { "Momentum" }
+                            </Link<Route>>
                             <Link<Route> to={ Route::RMA } classes="navbar-item">
                                 { "RMA" }
                             </Link<Route>>

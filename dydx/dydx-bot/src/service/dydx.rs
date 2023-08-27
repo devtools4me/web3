@@ -106,6 +106,7 @@ fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
         AverageType::HMA => methods::hma(v, window_size),
         AverageType::DEMA => methods::dema(v, window_size),
         AverageType::DMA => methods::dma(v, window_size),
+        AverageType::Momentum => methods::momentum(v, window_size),
         AverageType::RMA => methods::rma(v, window_size),
         AverageType::SWMA => methods::swma(v, window_size),
         AverageType::TEMA => methods::tema(v, window_size),
