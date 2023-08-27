@@ -119,7 +119,15 @@ pub enum IndicatorType {
 }
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub enum ActionType {
+    Buy,
+    None,
+    Sell,
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct Indicator {
+    pub action: ActionType,
     pub value: String,
     pub timestamp: String,
 }

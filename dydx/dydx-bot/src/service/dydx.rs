@@ -122,7 +122,7 @@ fn indicator(indicator_type: &str, v: Vec<Ohlc>) -> Vec<Indicator> {
     let t: IndicatorType = IndicatorType::from_str(indicator_type).unwrap();
     match t {
         IndicatorType::MACD => indicator::macd(v),
-        IndicatorType::RSI => todo!()
+        IndicatorType::RSI => indicator::rsi(v)
     }
 }
 
