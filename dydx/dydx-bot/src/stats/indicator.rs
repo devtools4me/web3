@@ -56,10 +56,22 @@ fn action(a: Action) -> ActionType {
     }
 }
 
-fn indicator(value: &IndicatorResult, timestamp: &str) -> Indicator {
+fn indicator(i: &IndicatorResult, timestamp: &str) -> Indicator {
+    let actions = i
+        .signals()
+        .iter()
+        .take(i.signals_length() as usize)
+        .map(|&x| action(x))
+        .collect();
+    let values = i
+        .values()
+        .iter()
+        .take(i.values_length() as usize)
+        .map(|&x| format!("{:>7.4}", x))
+        .collect();
     Indicator {
-        action: action(value.signal(0)),
-        value: value.value(0).to_string(),
+        signals: actions,
+        values: values,
         timestamp: String::from(timestamp),
     }
 }

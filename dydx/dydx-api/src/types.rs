@@ -127,21 +127,7 @@ pub enum ActionType {
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct Indicator {
-    pub action: ActionType,
-    pub value: String,
+    pub signals: Vec<ActionType>,
+    pub values: Vec<String>,
     pub timestamp: String,
-}
-
-impl Indicator {
-    pub fn is_buy(&self) -> bool {
-        self.value.parse::<f64>().unwrap().is_sign_positive()
-    }
-
-    pub fn is_sell(&self) -> bool {
-        self.value.parse::<f64>().unwrap().is_sign_negative()
-    }
-
-    pub fn is_none(&self) -> bool {
-        !self.is_buy() && !self.is_sell()
-    }
 }
