@@ -6,32 +6,22 @@
 //! a.	Enter deal: Use a few indicators which shows unusual market activity:
 // i.	Price makes a new high and volume increases > 2 times more than average.
 //      Confirm price and volumes on 3 timeframes: 1min, 1h, 1d.
-//      Average comparison should be to the same period during last 3 months (i.e. 1 min Fri 9 am should compare with previous Fridays 9am)
+//      Average comparison should be to the same period during last 3 months
+//      (i.e. 1 min Fri 9 am should compare with previous Fridays 9am)
 // ii.	Test and add other filters: Confirm strong RSI > 40 on all these periods, confirm strong momentum etc.
 // iii.	Later we will add more filters with L2 data (i.e. number of buy/sell orders)
 // b.	Take profit: 3 pips exit – open limit order immediately, linked to filled open.
 //      Also test option with 4 pips with trailing stop 1 pip.
 // c.	Stop loss: 2 pips or 1 min exit.
 
-// Some core structures and traits
 use yata::core::{Action, Error, IndicatorResult, PeriodType, Source, ValueType, OHLCV};
 use yata::prelude::*;
 
-// Cross method for searching crossover between price and our value
 use yata::methods::Cross;
 
-// If you are using `serde`, then it might be useful for you
-// If you don't, you can just skip these lines
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-/// # Example config for the indicator **Configuration**
-///
-/// Must implement `Debug`, `Clone`, `Default`, [`IndicatorConfig`](crate::core::IndicatorConfig) trait.
-///
-/// Also it may implements `serde::{Serialize, Deserialize}` - it's up to you.
-///
-/// See source code for the full example
 #[derive(Debug, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct RunTogether {
@@ -40,7 +30,6 @@ pub struct RunTogether {
     source: Source,
 }
 
-/// Implementing [`IndicatorConfig`](crate::core::IndicatorConfig) trait
 impl IndicatorConfig for RunTogether {
     type Instance = RunTogetherInstance;
 
@@ -87,7 +76,6 @@ impl IndicatorConfig for RunTogether {
     }
 }
 
-/// Implementing `Default` trait for default config
 impl Default for RunTogether {
     fn default() -> Self {
         Self {
@@ -98,11 +86,6 @@ impl Default for RunTogether {
     }
 }
 
-/// # Example [`IndicatorInstance`](crate::core::IndicatorInstance) implementation
-///
-/// Must implement `Debug` and [`IndicatorInstance`](crate::core::IndicatorInstance) traits
-///
-/// See source code for the full example
 #[derive(Debug, Clone, Copy)]
 pub struct RunTogetherInstance {
     cfg: RunTogether,
@@ -112,7 +95,6 @@ pub struct RunTogetherInstance {
     last_signal_position: PeriodType,
 }
 
-/// Implementing `IndicatorInstance` trait for Example
 impl IndicatorInstance for RunTogetherInstance {
     type Config = RunTogether;
 

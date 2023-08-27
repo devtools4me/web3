@@ -143,8 +143,8 @@ pub struct RsiIndicator {
 }
 
 impl RsiIndicator {
-    pub fn from_i(i: &Indicator) -> RsiIndicator {
-        RsiIndicator {
+    pub fn from_i(i: &Indicator) -> Self {
+        Self {
             enter_over_zone_signal: i.signals.get(0).unwrap().clone(),
             leave_over_zone_signal: i.signals.get(1).unwrap().clone(),
             value: i.values.first().unwrap().clone(),
