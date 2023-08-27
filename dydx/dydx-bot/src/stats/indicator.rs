@@ -22,7 +22,7 @@ pub fn macd(v: Vec<types::Ohlc>) -> Vec<types::Indicator> {
 
 pub fn rsi(v: Vec<types::Ohlc>) -> Vec<types::Indicator> {
     let mut rsi = RSI::default();
-    //rsi.signal = MA::TEMA(5);
+    rsi.ma = MA::EMA(14);
 
     let mut rsi = rsi.init(&v.first().unwrap().convert()).unwrap();
     convert(v, |x| {
