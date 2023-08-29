@@ -1,8 +1,9 @@
 use log::error;
+use plotly::{Plot, Scatter};
+use plotly::common::Mode;
 use yew::prelude::*;
 use yew_plotly::{Plotly, plotly};
-use yew_plotly::plotly::{Plot, Scatter};
-use yew_plotly::plotly::common::Mode;
+use yew_plotly::plotly::color::NamedColor;
 
 use dydx_api::path::*;
 use dydx_api::types::*;
@@ -35,9 +36,11 @@ pub fn indicator_chart_component(IndicatorChartProps { indicator_type }: &Indica
                         .await
                     {
                         Ok(fetched_data) => {
-                            let trace = trace(&indicator_type, fetched_data);
+                            let traces = scatter(&indicator_type, fetched_data);
                             let mut plot = Plot::new();
-                            plot.add_trace(trace);
+                            for t in traces.iter() {
+                                plot.add_trace(t.clone());
+                            }
                             state.set(plot);
                         }
                         Err(e) => {
@@ -60,30 +63,51 @@ pub fn indicator_chart_component(IndicatorChartProps { indicator_type }: &Indica
     }
 }
 
-fn trace(indicator_type: &IndicatorType, fetched_data: Vec<Indicator>) -> Box<Scatter<String, f64>> {
+fn scatter(indicator_type: &IndicatorType, fetched_data: Vec<Indicator>) -> Vec<Box<Scatter<String, f64>>> {
     match indicator_type {
-        IndicatorType::MACD => trace_na(fetched_data),
-        IndicatorType::RSI => trace_rsi(fetched_data),
+        IndicatorType::MACD => scatter_macd(fetched_data),
+        IndicatorType::RSI => scatter_rsi(fetched_data),
         IndicatorType::RunTogether => trace_na(fetched_data),
     }
 }
 
-fn trace_rsi(fetched_data: Vec<Indicator>) -> Box<Scatter<String, f64>> {
+fn scatter_macd(fetched_data: Vec<Indicator>) -> Vec<Box<Scatter<String, f64>>> {
+    let date: Vec<String> = fetched_data.iter()
+        .map(|x| x.timestamp.clone())
+        .collect();
+    let macd_value = fetched_data.iter()
+        .map(|x| macd_indicator(x))
+        .map(|x| x.macd_value.parse::<f64>().unwrap())
+        .collect();
+    let sigline_value = fetched_data.iter()
+        .map(|x| macd_indicator(x))
+        .map(|x| x.sigline_value.parse::<f64>().unwrap())
+        .collect();
+    vec![
+        Scatter::new(date.clone(), sigline_value).name("Signal Line")
+            .line(plotly::common::Line::new().color(NamedColor::LightGreen)),
+        Scatter::new(date.clone(), macd_value).name("MACD Line")
+            .line(plotly::common::Line::new().color(NamedColor::Orange))
+    ]
+}
+
+fn scatter_rsi(fetched_data: Vec<Indicator>) -> Vec<Box<Scatter<String, f64>>> {
     let date = fetched_data.iter()
         .map(|x| x.timestamp.clone())
         .collect();
     let value = fetched_data.iter()
-        .map(|x| x.values.first().unwrap().parse::<f64>().unwrap() * 100.0)
+        .map(|x| rsi_indicator(x))
+        .map(|x| x.value.parse::<f64>().unwrap() * 100.0)
         .collect();
-    Scatter::new(date, value)
+    vec![Scatter::new(date, value)]
 }
 
-fn trace_na(fetched_data: Vec<Indicator>) -> Box<Scatter<String, f64>> {
+fn trace_na(fetched_data: Vec<Indicator>) -> Vec<Box<Scatter<String, f64>>> {
     let date = fetched_data.iter()
         .map(|x| x.timestamp.clone())
         .collect();
     let value = fetched_data.iter()
         .map(|x| 0.0)
         .collect();
-    Scatter::new(date, value)
+    vec![Scatter::new(date, value)]
 }

@@ -85,7 +85,12 @@ pub fn switch(route: Route) -> Html {
         Route::WMA => html! { <AverageChartView average_type={AverageType::WMA} /> },
         Route::WSMA => html! { <AverageChartView average_type={AverageType::WSMA} /> },
         //Indicators
-        Route::MACD => html! { <IndicatorChartView indicator_type={IndicatorType::MACD} /> },
+        Route::MACD => html! {
+            <div>
+                <OhlcChartView />
+                <IndicatorChartView indicator_type={IndicatorType::MACD} />
+            </div>
+        },
         Route::RSI => html! {
             <div>
                 <OhlcChartView />

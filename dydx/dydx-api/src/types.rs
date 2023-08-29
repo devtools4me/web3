@@ -4,6 +4,10 @@ use strum_macros::EnumString;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
+pub trait New<T> {
+    fn new(value: &T) -> Self;
+}
+
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct OhlcResponse {
     pub list: Vec<Ohlc>,
@@ -182,6 +186,27 @@ pub struct Indicator {
 }
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct MacdIndicator {
+    pub macd_value: String,
+    pub sigline_value: String,
+    pub timestamp: String,
+}
+
+impl New<Indicator> for MacdIndicator {
+    fn new(i: &Indicator) -> Self {
+        Self {
+            macd_value: i.values.get(0).unwrap().clone(),
+            sigline_value: i.values.get(1).unwrap().clone(),
+            timestamp: i.timestamp.clone(),
+        }
+    }
+}
+
+pub fn macd_indicator(i: &Indicator) -> MacdIndicator {
+    MacdIndicator::new(i)
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct RsiIndicator {
     pub enter_over_zone_signal: ActionType,
     pub leave_over_zone_signal: ActionType,
@@ -189,8 +214,8 @@ pub struct RsiIndicator {
     pub timestamp: String,
 }
 
-impl RsiIndicator {
-    pub fn from_i(i: &Indicator) -> Self {
+impl New<Indicator> for RsiIndicator {
+    fn new(i: &Indicator) -> Self {
         Self {
             enter_over_zone_signal: i.signals.get(0).unwrap().clone(),
             leave_over_zone_signal: i.signals.get(1).unwrap().clone(),
@@ -198,4 +223,8 @@ impl RsiIndicator {
             timestamp: i.timestamp.clone(),
         }
     }
+}
+
+pub fn rsi_indicator(i: &Indicator) -> RsiIndicator {
+    RsiIndicator::new(i)
 }

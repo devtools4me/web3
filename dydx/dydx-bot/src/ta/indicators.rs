@@ -16,8 +16,9 @@ pub fn macd(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut macd = macd.init(&v.first().unwrap().convert()).unwrap();
     convert(v, |x| {
         let value = macd.next(&x.convert());
-        info!("{:?}", value);
-        indicator(&value, x.timestamp.as_str())
+        let res = indicator(&value, x.timestamp.as_str());
+        debug!("value={:?}, res={:?}", value, res);
+        res
     })
 }
 
@@ -29,19 +30,19 @@ pub fn rsi(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     convert(v, |x| {
         let value = rsi.next(&x.convert());
         let res = indicator(&value, x.timestamp.as_str());
-        info!("value={:?}, res={:?}", value, res);
+        debug!("value={:?}, res={:?}", value, res);
         res
     })
 }
 
 pub fn run_together(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut run_together = RunTogether::default();
-
     let mut run_together = run_together.init(&v.first().unwrap().convert()).unwrap();
     convert(v, |x| {
         let value = run_together.next(&x.convert());
-        info!("{:?}", value);
-        indicator(&value, x.timestamp.as_str())
+        let res = indicator(&value, x.timestamp.as_str());
+        debug!("value={:?}, res={:?}", value, res);
+        res
     })
 }
 
