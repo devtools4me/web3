@@ -1,40 +1,42 @@
 use log::error;
 use yew::prelude::*;
-use yew_plotly::plotly::{Plot, Scatter};
 use yew_plotly::{Plotly, plotly};
+use yew_plotly::plotly::{Plot, Scatter};
 use yew_plotly::plotly::common::Mode;
 
-use dydx_api::types::*;
 use dydx_api::path::*;
+use dydx_api::types::*;
+use dydx_common::utils::env_utils;
 
 use crate::utils::api_utils::fetch_single_api_response;
 
 #[derive(Properties, PartialEq)]
-pub struct AverageChartProps {
-    pub average_type: AverageType,
+pub struct IndicatorChartProps {
+    pub indicator_type: IndicatorType,
 }
 
-#[function_component(AverageChartView)]
-pub fn average_chart_component(AverageChartProps { average_type }: &AverageChartProps) -> Html {
-    let average_type = AverageType::parse(average_type.to_string().as_str());
-    let market = "BTC-USD";
-    let resolution = "1DAY";
-    let title = format!("{} {} {}", AverageType::description(&average_type), market, resolution);
+#[function_component(IndicatorChartView)]
+pub fn indicator_chart_component(IndicatorChartProps { indicator_type }: &IndicatorChartProps) -> Html {
+    let indicator_type = IndicatorType::new(indicator_type);
+    let market = env_utils::get_market();
+    let resolution = env_utils::get_resolution();
+    let title = format!("{} {} {}", IndicatorType::description(&indicator_type), market, resolution);
     let state = use_state(|| Plot::new());
     {
         let state = state.clone();
         use_effect_with_deps(
             move |_| {
                 let state = state.clone();
+                let indicator_type = IndicatorType::new(&indicator_type);
                 wasm_bindgen_futures::spawn_local(async move {
-                    match fetch_single_api_response::<Vec<Timeseries>>(
-                        methods(&average_type, market, resolution).as_str(),
+                    match fetch_single_api_response::<Vec<Indicator>>(
+                        indicators(&indicator_type, market.as_str(), resolution.as_str()).as_str(),
                     )
                         .await
                     {
                         Ok(fetched_data) => {
+                            let trace = trace(&indicator_type, fetched_data);
                             let mut plot = Plot::new();
-                            let trace = scatter(fetched_data);
                             plot.add_trace(trace);
                             state.set(plot);
                         }
@@ -58,12 +60,13 @@ pub fn average_chart_component(AverageChartProps { average_type }: &AverageChart
     }
 }
 
-fn scatter(v: Vec<Timeseries>) -> Box<Scatter<String, f64>> {
-    let date = v.iter()
+fn trace(indicator_type: &IndicatorType, fetched_data: Vec<Indicator>) -> Box<Scatter<String, f64>> {
+    let date = fetched_data.iter()
         .map(|x| x.timestamp.clone())
         .collect::<Vec<_>>();
-    let value = v.iter()
-        .map(|x| x.value.parse::<f64>().unwrap())
+    let value = fetched_data.iter()
+        .map(|x| x.values.first().unwrap().parse::<f64>().unwrap())
         .collect::<Vec<_>>();
-    Scatter::new(date, value)
+    let trace = Scatter::new(date, value);
+    trace
 }

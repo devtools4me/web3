@@ -1,7 +1,7 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::view::{ohlc::OhlcView, ohlc::OhlcChartView, average::AverageChartView};
+use crate::view::{ohlc::OhlcView, ohlc::OhlcChartView, average::AverageChartView, indicator::IndicatorChartView};
 use dydx_api::types::*;
 
 #[derive(Clone, Routable, PartialEq)]
@@ -61,28 +61,28 @@ pub enum Route {
 
 pub fn switch(route: Route) -> Html {
     match route {
-        Route::Home => html! { <OhlcView />},
-        Route::Ohlc => html! { <OhlcChartView />},
+        Route::Home => html! { <OhlcView /> },
+        Route::Ohlc => html! { <OhlcChartView /> },
         //Methods
-        Route::EMA => html! { <AverageChartView average_type={AverageType::EMA} />},
-        Route::HMA => html! { <AverageChartView average_type={AverageType::HMA} />},
-        Route::DEMA => html! { <AverageChartView average_type={AverageType::DEMA} />},
-        Route::DMA => html! { <AverageChartView average_type={AverageType::DMA} />},
-        Route::Momentum => html! { <AverageChartView average_type={AverageType::Momentum} />},
-        Route::RMA => html! { <AverageChartView average_type={AverageType::RMA} />},
-        Route::SMA => html! { <AverageChartView average_type={AverageType::SMA} />},
-        Route::SWMA => html! { <AverageChartView average_type={AverageType::SWMA} />},
-        Route::TEMA => html! { <AverageChartView average_type={AverageType::TEMA} />},
-        Route::TMA => html! { <AverageChartView average_type={AverageType::TMA} />},
-        Route::TRIMA => html! { <AverageChartView average_type={AverageType::TRIMA} />},
-        Route::VWMA => html! { <AverageChartView average_type={AverageType::VWMA} />},
-        Route::Vidya => html! { <AverageChartView average_type={AverageType::Vidya} />},
-        Route::WMA => html! { <AverageChartView average_type={AverageType::WMA} />},
-        Route::WSMA => html! { <AverageChartView average_type={AverageType::WSMA} />},
+        Route::EMA => html! { <AverageChartView average_type={AverageType::EMA} /> },
+        Route::HMA => html! { <AverageChartView average_type={AverageType::HMA} /> },
+        Route::DEMA => html! { <AverageChartView average_type={AverageType::DEMA} /> },
+        Route::DMA => html! { <AverageChartView average_type={AverageType::DMA} /> },
+        Route::Momentum => html! { <AverageChartView average_type={AverageType::Momentum} /> },
+        Route::RMA => html! { <AverageChartView average_type={AverageType::RMA} /> },
+        Route::SMA => html! { <AverageChartView average_type={AverageType::SMA} /> },
+        Route::SWMA => html! { <AverageChartView average_type={AverageType::SWMA} /> },
+        Route::TEMA => html! { <AverageChartView average_type={AverageType::TEMA} /> },
+        Route::TMA => html! { <AverageChartView average_type={AverageType::TMA} /> },
+        Route::TRIMA => html! { <AverageChartView average_type={AverageType::TRIMA} /> },
+        Route::VWMA => html! { <AverageChartView average_type={AverageType::VWMA} /> },
+        Route::Vidya => html! { <AverageChartView average_type={AverageType::Vidya} /> },
+        Route::WMA => html! { <AverageChartView average_type={AverageType::WMA} /> },
+        Route::WSMA => html! { <AverageChartView average_type={AverageType::WSMA} /> },
         //Indicators
-        Route::MACD => html! { <p class="text-white">{ "Not found" }</p> },
-        Route::RSI => html! { <p class="text-white">{ "Not found" }</p> },
-        Route::RunTogether => html! { <p class="text-white">{ "Not found" }</p> },
+        Route::MACD => html! { <IndicatorChartView indicator_type={IndicatorType::MACD} /> },
+        Route::RSI => html! { <IndicatorChartView indicator_type={IndicatorType::RSI} /> },
+        Route::RunTogether => html! { <IndicatorChartView indicator_type={IndicatorType::RunTogether} /> },
         // Other
         Route::About => html! { <p class="text-white">{ "Not found" }</p> },
         Route::NotFound => html! { <p class="text-white">{ "Not found" }</p> },

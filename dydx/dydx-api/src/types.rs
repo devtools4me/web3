@@ -149,6 +149,24 @@ impl ToString for IndicatorType {
     }
 }
 
+impl IndicatorType {
+    pub fn new(other: &IndicatorType) -> Self {
+        match other {
+            IndicatorType::MACD => IndicatorType::MACD,
+            IndicatorType::RSI => IndicatorType::RSI,
+            IndicatorType::RunTogether => IndicatorType::RunTogether
+        }
+    }
+
+    pub fn description(indicator_type: &IndicatorType) -> &str {
+        match indicator_type {
+            IndicatorType::MACD => "Moving Average Convergence Divergence",
+            IndicatorType::RSI => "Relative Strength Index",
+            IndicatorType::RunTogether => "Run Together"
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub enum ActionType {
     Buy,
