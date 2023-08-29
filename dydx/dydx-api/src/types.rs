@@ -21,21 +21,35 @@ pub struct Ohlc {
 
 #[derive(Debug, Eq, PartialEq, EnumString)]
 pub enum AverageType {
+    #[strum(serialize = "EMA", serialize = "ema")]
     EMA,
+    #[strum(serialize = "HMA", serialize = "hma")]
     HMA,
+    #[strum(serialize = "DEMA", serialize = "dema")]
     DEMA,
+    #[strum(serialize = "DMA", serialize = "dma")]
     DMA,
     #[strum(serialize = "MOMENTUM", serialize = "Momentum", serialize = "momentum")]
     Momentum,
+    #[strum(serialize = "RMA", serialize = "rma")]
     RMA,
+    #[strum(serialize = "SMA", serialize = "sma")]
     SMA,
+    #[strum(serialize = "SWMA", serialize = "swma")]
     SWMA,
+    #[strum(serialize = "TEMA", serialize = "tema")]
     TEMA,
+    #[strum(serialize = "TMA", serialize = "tma")]
     TMA,
+    #[strum(serialize = "TRIMA", serialize = "trima")]
     TRIMA,
+    #[strum(serialize = "VWMA", serialize = "vwma")]
     VWMA,
+    #[strum(serialize = "Vidya", serialize = "vidya")]
     Vidya,
+    #[strum(serialize = "WMA", serialize = "wma")]
     WMA,
+    #[strum(serialize = "WSMA", serialize = "wsma")]
     WSMA
 }
 
