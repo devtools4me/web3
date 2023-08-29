@@ -61,12 +61,29 @@ pub fn indicator_chart_component(IndicatorChartProps { indicator_type }: &Indica
 }
 
 fn trace(indicator_type: &IndicatorType, fetched_data: Vec<Indicator>) -> Box<Scatter<String, f64>> {
+    match indicator_type {
+        IndicatorType::MACD => trace_na(fetched_data),
+        IndicatorType::RSI => trace_rsi(fetched_data),
+        IndicatorType::RunTogether => trace_na(fetched_data),
+    }
+}
+
+fn trace_rsi(fetched_data: Vec<Indicator>) -> Box<Scatter<String, f64>> {
     let date = fetched_data.iter()
         .map(|x| x.timestamp.clone())
-        .collect::<Vec<_>>();
+        .collect();
     let value = fetched_data.iter()
-        .map(|x| x.values.first().unwrap().parse::<f64>().unwrap())
-        .collect::<Vec<_>>();
-    let trace = Scatter::new(date, value);
-    trace
+        .map(|x| x.values.first().unwrap().parse::<f64>().unwrap() * 100.0)
+        .collect();
+    Scatter::new(date, value)
+}
+
+fn trace_na(fetched_data: Vec<Indicator>) -> Box<Scatter<String, f64>> {
+    let date = fetched_data.iter()
+        .map(|x| x.timestamp.clone())
+        .collect();
+    let value = fetched_data.iter()
+        .map(|x| 0.0)
+        .collect();
+    Scatter::new(date, value)
 }

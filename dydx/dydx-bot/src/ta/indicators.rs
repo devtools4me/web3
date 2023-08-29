@@ -28,8 +28,9 @@ pub fn rsi(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut rsi = rsi.init(&v.first().unwrap().convert()).unwrap();
     convert(v, |x| {
         let value = rsi.next(&x.convert());
-        info!("{:?}", value);
-        indicator(&value, x.timestamp.as_str())
+        let res = indicator(&value, x.timestamp.as_str());
+        info!("value={:?}, res={:?}", value, res);
+        res
     })
 }
 
@@ -79,7 +80,7 @@ fn indicator(i: &IndicatorResult, timestamp: &str) -> Indicator {
         .values()
         .iter()
         .take(i.values_length() as usize)
-        .map(|&x| format!("{:>7.4}", x))
+        .map(|&x| x.to_string())
         .collect();
     Indicator {
         signals,

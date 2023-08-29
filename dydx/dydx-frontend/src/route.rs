@@ -70,7 +70,12 @@ pub fn switch(route: Route) -> Html {
         Route::DMA => html! { <AverageChartView average_type={AverageType::DMA} /> },
         Route::Momentum => html! { <AverageChartView average_type={AverageType::Momentum} /> },
         Route::RMA => html! { <AverageChartView average_type={AverageType::RMA} /> },
-        Route::SMA => html! { <AverageChartView average_type={AverageType::SMA} /> },
+        Route::SMA => html! {
+            <div>
+                <OhlcChartView />
+                <AverageChartView average_type={AverageType::SMA} />
+            </div>
+        },
         Route::SWMA => html! { <AverageChartView average_type={AverageType::SWMA} /> },
         Route::TEMA => html! { <AverageChartView average_type={AverageType::TEMA} /> },
         Route::TMA => html! { <AverageChartView average_type={AverageType::TMA} /> },
@@ -81,7 +86,12 @@ pub fn switch(route: Route) -> Html {
         Route::WSMA => html! { <AverageChartView average_type={AverageType::WSMA} /> },
         //Indicators
         Route::MACD => html! { <IndicatorChartView indicator_type={IndicatorType::MACD} /> },
-        Route::RSI => html! { <IndicatorChartView indicator_type={IndicatorType::RSI} /> },
+        Route::RSI => html! {
+            <div>
+                <OhlcChartView />
+                <IndicatorChartView indicator_type={IndicatorType::RSI} />
+            </div>
+        },
         Route::RunTogether => html! { <IndicatorChartView indicator_type={IndicatorType::RunTogether} /> },
         // Other
         Route::About => html! { <p class="text-white">{ "Not found" }</p> },
