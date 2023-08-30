@@ -1,9 +1,9 @@
-//! This is an "Run Together" indicator
-//!
-//! It has a **Configuration** with parameters `price`, `period` and `source`.
-//!
-//! Algorithm:
-//! a.	Enter deal: Use a few indicators which shows unusual market activity:
+// This is an "Run Together" indicator
+//
+// It has a **Configuration** with parameters `price`, `period` and `source`.
+//
+// Algorithm:
+// a.	Enter deal: Use a few indicators which shows unusual market activity:
 // i.	Price makes a new high and volume increases > 2 times more than average.
 //      Confirm price and volumes on 3 timeframes: 1min, 1h, 1d.
 //      Average comparison should be to the same period during last 3 months
