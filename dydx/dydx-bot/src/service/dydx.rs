@@ -4,15 +4,14 @@ use dydx_v3_rust::{
     ClientOptions,
     DydxClient, types::*,
 };
-use yata::core::IndicatorResult;
 
 use dydx_api::types::*;
 use dydx_common::utils::env_utils;
 use dydx_common::utils::vec_utils::*;
-use ta::methods;
-use ta::indicators;
+use dydx_ta::methods;
+use dydx_ta::indicators;
 
-use crate::{configuration, ta};
+use crate::configuration;
 use crate::configuration::Settings;
 use crate::service::dydx_ops::*;
 use crate::service::utils::eyre;

@@ -5,7 +5,6 @@ mod api;
 mod configuration;
 mod service;
 mod model;
-mod ta;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {

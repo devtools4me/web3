@@ -1,0 +1,27 @@
+[package]
+name = "dydx-ta"
+
+[package.edition]
+workspace = true
+
+[package.version]
+workspace = true
+
+[dependencies.log]
+workspace = true
+
+[dependencies]
+dydx-api = { version = "0.0.1", path = "../dydx-api" }
+dydx-common = { version = "0.0.1", path = "../dydx-common" }
+yata = "0.6.1"
+
+[lib]
+path = "src/lib.rs"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
