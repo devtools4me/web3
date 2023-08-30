@@ -8,6 +8,12 @@ cargo build
 cargo build -r
 ```
 
+* Test
+
+```
+cargo test -- --nocapture
+```
+
 * Run
 
 ```

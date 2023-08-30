@@ -13,6 +13,7 @@ mod test {
             .expect("Should have been able to read the file");
 
         let result = run_together(v);
+        println!("{:?}", result);
 
         assert_eq!(result.len(), 100);
     }
