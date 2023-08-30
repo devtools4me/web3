@@ -1,18 +1,19 @@
-use dydx_ta::indicators::run_together;
+pub mod test_utils;
 
 #[cfg(test)]
 mod test {
-    use std::path::PathBuf;
-    use std::fs;
+    use dydx_api::types::*;
+    use dydx_ta::indicators::run_together;
+    use crate::test_utils;
 
     #[test]
     fn test_run_together() {
-        let mut file_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        file_path.push("resources/test/BTC-USD-1DAY.json");
-
-        let contents = fs::read_to_string(file_path.as_path())
+        let json = test_utils::read_str("resources/test/BTC-USD-1DAY.json");
+        let v: Vec<Ohlc> = serde_json::from_str(json.as_str())
             .expect("Should have been able to read the file");
 
-        assert!(true);
+        let result = run_together(v);
+
+        assert_eq!(result.len(), 100);
     }
 }
