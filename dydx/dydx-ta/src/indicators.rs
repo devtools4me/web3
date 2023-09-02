@@ -8,6 +8,7 @@ use dydx_api::types::{ActionType, Indicator};
 use dydx_common::utils::vec_utils::*;
 use log::*;
 use crate::run_together::RunTogether;
+use crate::sell_volatility::SellVolatility;
 
 pub fn macd(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut macd = MACD::default();
@@ -40,6 +41,17 @@ pub fn run_together(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut run_together = run_together.init(&v.first().unwrap().convert()).unwrap();
     convert(v, |x| {
         let value = run_together.next(&x.convert());
+        let res = indicator(&value, x.timestamp.as_str());
+        debug!("value={:?}, res={:?}", value, res);
+        res
+    })
+}
+
+pub fn sell_volatility(v: Vec<types::Ohlc>) -> Vec<Indicator> {
+    let mut sell_volatility = SellVolatility::default();
+    let mut sell_volatility = sell_volatility.init(&v.first().unwrap().convert()).unwrap();
+    convert(v, |x| {
+        let value = sell_volatility.next(&x.convert());
         let res = indicator(&value, x.timestamp.as_str());
         debug!("value={:?}, res={:?}", value, res);
         res

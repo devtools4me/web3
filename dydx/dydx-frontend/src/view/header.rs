@@ -91,6 +91,9 @@ pub fn header() -> Html {
                             <Link<Route> to={ Route::RunTogether } classes="navbar-item">
                                 { "Run Together" }
                             </Link<Route>>
+                            <Link<Route> to={ Route::SellVolatility } classes="navbar-item">
+                                { "Sell Volatility" }
+                            </Link<Route>>
                         </div>
                     </div>
                     <Link<Route> to={ Route::About } classes="navbar-link">

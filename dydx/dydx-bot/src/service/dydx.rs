@@ -124,6 +124,7 @@ fn indicator(indicator_type: &str, v: Vec<Ohlc>) -> Vec<Indicator> {
         IndicatorType::MACD => indicators::macd(v),
         IndicatorType::RSI => indicators::rsi(v),
         IndicatorType::RunTogether => indicators::run_together(v),
+        IndicatorType::SellVolatility => indicators::sell_volatility(v),
     }
 }
 

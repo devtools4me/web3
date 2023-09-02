@@ -141,6 +141,8 @@ pub enum IndicatorType {
     RSI,
     #[strum(serialize = "RUN_TOGETHER", serialize = "run_together")]
     RunTogether,
+    #[strum(serialize = "SELL_VOLATILITY", serialize = "sell_volatility")]
+    SellVolatility,
 }
 
 impl ToString for IndicatorType {
@@ -149,6 +151,7 @@ impl ToString for IndicatorType {
             IndicatorType::MACD => String::from("MACD"),
             IndicatorType::RSI => String::from("RSI"),
             IndicatorType::RunTogether => String::from("RUN_TOGETHER"),
+            IndicatorType::SellVolatility => String::from("SELL_VOLATILITY"),
         }
     }
 }
@@ -158,7 +161,8 @@ impl IndicatorType {
         match other {
             IndicatorType::MACD => IndicatorType::MACD,
             IndicatorType::RSI => IndicatorType::RSI,
-            IndicatorType::RunTogether => IndicatorType::RunTogether
+            IndicatorType::RunTogether => IndicatorType::RunTogether,
+            IndicatorType::SellVolatility => IndicatorType::SellVolatility,
         }
     }
 
@@ -166,7 +170,8 @@ impl IndicatorType {
         match indicator_type {
             IndicatorType::MACD => "Moving Average Convergence Divergence",
             IndicatorType::RSI => "Relative Strength Index",
-            IndicatorType::RunTogether => "Run Together"
+            IndicatorType::RunTogether => "Run Together",
+            IndicatorType::SellVolatility => "Sell Volatility",
         }
     }
 }

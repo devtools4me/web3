@@ -50,6 +50,8 @@ pub enum Route {
     RSI,
     #[at("/run_together")]
     RunTogether,
+    #[at("/sell_volatility")]
+    SellVolatility,
 
     //
     #[at("/")]
@@ -98,6 +100,7 @@ pub fn switch(route: Route) -> Html {
             </div>
         },
         Route::RunTogether => html! { <IndicatorChartView indicator_type={IndicatorType::RunTogether} /> },
+        Route::SellVolatility => html! { <p class="text-white">{ "Not found" }</p> },
         // Other
         Route::About => html! { <p class="text-white">{ "Not found" }</p> },
         Route::NotFound => html! { <p class="text-white">{ "Not found" }</p> },

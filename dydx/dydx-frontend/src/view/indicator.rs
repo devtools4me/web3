@@ -68,6 +68,7 @@ fn scatter(indicator_type: &IndicatorType, fetched_data: Vec<Indicator>) -> Vec<
         IndicatorType::MACD => scatter_macd(fetched_data),
         IndicatorType::RSI => scatter_rsi(fetched_data),
         IndicatorType::RunTogether => trace_na(fetched_data),
+        IndicatorType::SellVolatility => trace_na(fetched_data),
     }
 }
 
