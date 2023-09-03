@@ -8,10 +8,7 @@ mod test {
 
     #[test]
     fn test_run_together() {
-        let json = test_utils::read_str("resources/test/BTC-USD-1DAY.json");
-        let v: Vec<Ohlc> = serde_json::from_str(json.as_str())
-            .expect("Should have been able to read the file");
-
+        let v: Vec<Ohlc> = test_utils::read_ohlc("resources/test/BTC-USD-1DAY.json");
         let result = run_together(v);
         println!("{:?}", result);
 

@@ -9,6 +9,7 @@ use dydx_common::utils::vec_utils::*;
 use log::*;
 use crate::run_together::RunTogether;
 use crate::sell_volatility::SellVolatility;
+use crate::source_change::SourceChange;
 
 pub fn macd(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut macd = MACD::default();
@@ -30,6 +31,17 @@ pub fn rsi(v: Vec<types::Ohlc>) -> Vec<Indicator> {
     let mut rsi = rsi.init(&v.first().unwrap().convert()).unwrap();
     convert(v, |x| {
         let value = rsi.next(&x.convert());
+        let res = indicator(&value, x.timestamp.as_str());
+        debug!("value={:?}, res={:?}", value, res);
+        res
+    })
+}
+
+pub fn source_change(v: Vec<types::Ohlc>) -> Vec<Indicator> {
+    let mut source_change = SourceChange::default();
+    let mut source_change = source_change.init(&v.first().unwrap().convert()).unwrap();
+    convert(v, |x| {
+        let value = source_change.next(&x.convert());
         let res = indicator(&value, x.timestamp.as_str());
         debug!("value={:?}, res={:?}", value, res);
         res

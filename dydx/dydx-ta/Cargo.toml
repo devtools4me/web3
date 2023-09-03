@@ -13,6 +13,9 @@ workspace = true
 [dependencies.yata]
 workspace = true
 
+[dependencies.serde]
+workspace = true
+
 [dependencies.serde_json]
 workspace = true
 
