@@ -1,7 +1,10 @@
 use log::debug;
 use yata::core::{Action, Candle, IndicatorConfigDyn, IndicatorResult};
+use yata::indicators::{MACD, RSI};
 use dydx_api::types::{ActionType, Indicator, Ohlc};
 use dydx_common::utils::vec_utils::convert;
+use crate::run_together::RunTogether;
+use crate::sell_volatility::SellVolatility;
 use crate::source_change::SourceChange;
 
 pub trait Convert<T> {
@@ -26,9 +29,57 @@ pub trait ToIndicator {
 
 impl ToIndicator for SourceChange {
     fn to_indicator(&self, v: Vec<Ohlc>) -> Vec<Indicator> {
-        let mut source_change = self.init(&v.first().unwrap().convert()).unwrap();
+        let mut instance = self.init(&v.first().unwrap().convert()).unwrap();
         convert(v, |x| {
-            let value = source_change.next(&x.convert());
+            let value = instance.next(&x.convert());
+            let res = indicator(&value, x.timestamp.as_str());
+            debug!("value={:?}, res={:?}", value, res);
+            res
+        })
+    }
+}
+
+impl ToIndicator for RunTogether {
+    fn to_indicator(&self, v: Vec<Ohlc>) -> Vec<Indicator> {
+        let mut instance = self.init(&v.first().unwrap().convert()).unwrap();
+        convert(v, |x| {
+            let value = instance.next(&x.convert());
+            let res = indicator(&value, x.timestamp.as_str());
+            debug!("value={:?}, res={:?}", value, res);
+            res
+        })
+    }
+}
+
+impl ToIndicator for SellVolatility {
+    fn to_indicator(&self, v: Vec<Ohlc>) -> Vec<Indicator> {
+        let mut instance = self.init(&v.first().unwrap().convert()).unwrap();
+        convert(v, |x| {
+            let value = instance.next(&x.convert());
+            let res = indicator(&value, x.timestamp.as_str());
+            debug!("value={:?}, res={:?}", value, res);
+            res
+        })
+    }
+}
+
+impl ToIndicator for RSI {
+    fn to_indicator(&self, v: Vec<Ohlc>) -> Vec<Indicator> {
+        let mut instance = self.init(&v.first().unwrap().convert()).unwrap();
+        convert(v, |x| {
+            let value = instance.next(&x.convert());
+            let res = indicator(&value, x.timestamp.as_str());
+            debug!("value={:?}, res={:?}", value, res);
+            res
+        })
+    }
+}
+
+impl ToIndicator for MACD {
+    fn to_indicator(&self, v: Vec<Ohlc>) -> Vec<Indicator> {
+        let mut instance = self.init(&v.first().unwrap().convert()).unwrap();
+        convert(v, |x| {
+            let value = instance.next(&x.convert());
             let res = indicator(&value, x.timestamp.as_str());
             debug!("value={:?}, res={:?}", value, res);
             res
