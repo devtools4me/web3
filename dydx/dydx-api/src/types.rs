@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
 pub trait New<T> {
-    fn new(value: &T) -> Self;
+    fn new(value: T) -> Self;
 }
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
@@ -21,6 +21,21 @@ pub struct Ohlc {
     pub close: String,
     pub volume: String,
     pub timestamp: String,
+}
+
+type OhlcTuple<'a> = (&'a str, &'a str, &'a str, &'a str, &'a str, &'a str);
+
+impl New<OhlcTuple<'_>> for Ohlc {
+    fn new(t: OhlcTuple) -> Self {
+        Ohlc {
+            open: String::from(t.0),
+            high: String::from(t.1),
+            low: String::from(t.2),
+            close: String::from(t.3),
+            volume: String::from(t.4),
+            timestamp: String::from(t.5)
+        }
+    }
 }
 
 #[derive(Debug, Eq, PartialEq, EnumString)]
@@ -197,7 +212,7 @@ pub struct MacdIndicator {
     pub timestamp: String,
 }
 
-impl New<Indicator> for MacdIndicator {
+impl New<&Indicator> for MacdIndicator {
     fn new(i: &Indicator) -> Self {
         Self {
             macd_value: i.values.get(0).unwrap().clone(),
@@ -219,7 +234,7 @@ pub struct RsiIndicator {
     pub timestamp: String,
 }
 
-impl New<Indicator> for RsiIndicator {
+impl New<&Indicator> for RsiIndicator {
     fn new(i: &Indicator) -> Self {
         Self {
             enter_over_zone_signal: i.signals.get(0).unwrap().clone(),

@@ -19,9 +19,8 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct SourceChange<M: MovingAverageConstructor = MA> {
     pub ma: M,
-
-    source: Source,
-    k: ValueType,
+    pub source: Source,
+    pub k: ValueType,
 }
 
 impl<M: MovingAverageConstructor> IndicatorConfig for SourceChange<M> {
