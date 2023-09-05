@@ -60,7 +60,7 @@ impl<M: MovingAverageConstructor> IndicatorConfig for SourceChange<M> {
             let src = candle.source(cfg.source);
             Ok(Self::Instance {
                 ma: cfg.ma.init(src)?,
-                previous_value: src,
+                previous_avg_value: src,
                 previous_signal: Action::None,
                 cfg,
             })
@@ -83,7 +83,7 @@ impl Default for SourceChange {
 #[derive(Debug, Clone, Copy)]
 pub struct SourceChangeInstance<M: MovingAverageConstructor> {
     cfg: SourceChange<M>,
-    previous_value: ValueType,
+    previous_avg_value: ValueType,
     previous_signal: Action,
     ma: M::Instance,
 }
@@ -97,9 +97,9 @@ impl<M: MovingAverageConstructor> IndicatorInstance for SourceChangeInstance<M> 
 
     fn next<T: OHLCV>(&mut self, candle: &T) -> IndicatorResult {
         let src = candle.source(self.cfg.source);
-        let previous_value = replace(&mut self.previous_value, src);
         let average_value: ValueType = self.ma.next(&src);
-        let signal = if src / previous_value >= self.cfg.k {
+        let previous_avg_value = replace(&mut self.previous_avg_value, average_value);
+        let signal = if src / previous_avg_value >= self.cfg.k {
             Action::Buy(1)
         } else {
             Action::None
