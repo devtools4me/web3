@@ -8,9 +8,9 @@
 
 use yata::core::{Action, Error, IndicatorResult, MovingAverageConstructor, OHLCV, PeriodType, Source, ValueType};
 use yata::helpers::MA;
-use yata::indicators::RSI;
-use yata::methods::Cross;
 use yata::prelude::*;
+
+use std::mem::replace;
 
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
@@ -60,6 +60,8 @@ impl<M: MovingAverageConstructor> IndicatorConfig for SourceChange<M> {
             let src = candle.source(cfg.source);
             Ok(Self::Instance {
                 ma: cfg.ma.init(src)?,
+                previous_value: src,
+                previous_signal: Action::None,
                 cfg,
             })
         } else {
@@ -73,7 +75,7 @@ impl Default for SourceChange {
         Self {
             ma: MA::EMA(20),
             source: Source::Close,
-            k: 2.0
+            k: 2.0,
         }
     }
 }
@@ -81,7 +83,9 @@ impl Default for SourceChange {
 #[derive(Debug, Clone, Copy)]
 pub struct SourceChangeInstance<M: MovingAverageConstructor> {
     cfg: SourceChange<M>,
-    ma: M::Instance
+    previous_value: ValueType,
+    previous_signal: Action,
+    ma: M::Instance,
 }
 
 impl<M: MovingAverageConstructor> IndicatorInstance for SourceChangeInstance<M> {
@@ -92,13 +96,15 @@ impl<M: MovingAverageConstructor> IndicatorInstance for SourceChangeInstance<M> 
     }
 
     fn next<T: OHLCV>(&mut self, candle: &T) -> IndicatorResult {
-        let src = &candle.source(self.cfg.source);
-        let average_value: ValueType = self.ma.next(src);
-        let signal = if src / average_value > self.cfg.k {
-            Action::Buy(10)
+        let src = candle.source(self.cfg.source);
+        let previous_value = replace(&mut self.previous_value, src);
+        let average_value: ValueType = self.ma.next(&src);
+        let signal = if src / previous_value >= self.cfg.k {
+            Action::Buy(1)
         } else {
             Action::None
         };
+        let previous_signal = replace(&mut self.previous_signal, signal);
 
         IndicatorResult::new(&[src.clone()], &[signal])
     }

@@ -248,3 +248,20 @@ impl New<&Indicator> for RsiIndicator {
 pub fn rsi_indicator(i: &Indicator) -> RsiIndicator {
     RsiIndicator::new(i)
 }
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct SourceChangeIndicator {
+    pub signal: ActionType,
+    pub value: String,
+    pub timestamp: String,
+}
+
+impl New<&Indicator> for SourceChangeIndicator {
+    fn new(i: &Indicator) -> Self {
+        Self {
+            signal: i.signals.get(0).unwrap().clone(),
+            value: i.values.get(0).unwrap().clone(),
+            timestamp: i.timestamp.clone(),
+        }
+    }
+}
