@@ -2,15 +2,29 @@ pub mod test_utils;
 
 #[cfg(test)]
 mod test {
+    use yata::prelude::*;
     use yata::core::Source;
     use yata::helpers::MA;
     use dydx_api::types::{*, SourceChangeIndicator};
     use dydx_api::types::New;
     use dydx_common::utils::vec_utils::*;
     use dydx_ta::ops::ToIndicator;
-    use dydx_ta::source_change::SourceChange;
+    use dydx_ta::source_change::*;
 
     use crate::test_utils;
+
+    #[test]
+    fn test_source_change_set() {
+        let mut sut = SourceChange::default();
+        sut.set("ma", String::from("ema-10")).unwrap();
+        sut.set("source", String::from("Volume")).unwrap();
+        sut.set("k", String::from("1.5")).unwrap();
+        println!("{:?}", sut);
+
+        assert_eq!(sut.ma, MA::EMA(10));
+        assert_eq!(sut.source, Source::Volume);
+        assert_eq!(sut.k, 1.5);
+    }
 
     #[test]
     fn test_source_change() {

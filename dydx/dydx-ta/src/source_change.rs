@@ -42,6 +42,10 @@ impl<M: MovingAverageConstructor> IndicatorConfig for SourceChange<M> {
                 Err(_) => return Err(Error::ParameterParse(name.to_string(), value.to_string())),
                 Ok(value) => self.k = value,
             },
+            "source" => match value.parse() {
+                Err(_) => return Err(Error::ParameterParse(name.to_string(), value.to_string())),
+                Ok(value) => self.source = value,
+            },
             _ => {
                 return Err(Error::ParameterParse(name.to_string(), value));
             }
