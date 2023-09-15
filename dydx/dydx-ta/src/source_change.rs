@@ -6,7 +6,7 @@
 //   Enter deal: Use a few indicators which shows unusual market activity:
 // 	 Source value makes increases > k times more than average.
 
-use yata::core::{Action, Error, IndicatorResult, MovingAverageConstructor, OHLCV, PeriodType, Source, ValueType};
+use yata::core::{Action, Error, IndicatorResult, MovingAverageConstructor, OHLCV, Source, ValueType};
 use yata::helpers::MA;
 use yata::prelude::*;
 

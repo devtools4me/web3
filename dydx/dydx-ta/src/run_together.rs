@@ -14,50 +14,42 @@
 //      Also test option with 4 pips with trailing stop 1 pip.
 // c.	Stop loss: 2 pips or 1 min exit.
 
-use yata::core::{Action, Error, IndicatorResult, MovingAverageConstructor, OHLCV, PeriodType, Source, ValueType};
+use yata::core::{Action, Error, IndicatorResult, OHLCV};
 use yata::helpers::MA;
-use yata::methods::Cross;
 use yata::prelude::*;
 
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
+use crate::source_change::SourceChange;
 
 #[derive(Debug, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-pub struct RunTogether<M: MovingAverageConstructor = MA> {
-    pub ma1: M,
-    pub ma2: M,
-
-    price: ValueType,
-    period: PeriodType,
-    source: Source,
+pub struct RunTogether {
+    pub i1: SourceChange,
+    pub i2: SourceChange,
 }
 
-impl<M: MovingAverageConstructor> IndicatorConfig for RunTogether<M> {
-    type Instance = RunTogetherInstance<M>;
+impl IndicatorConfig for RunTogether {
+    type Instance = RunTogetherInstance;
 
     const NAME: &'static str = "RunTogether";
 
     fn validate(&self) -> bool {
-        self.ma1.ma_period() < self.ma2.ma_period()
-            && self.ma1.ma_period() > 1
-            && self.price > 0.0
+        self.i1.validate() && self.i2.validate()
     }
 
     fn set(&mut self, name: &str, value: String) -> Result<(), Error> {
         match name {
-            "ma1" => match value.parse() {
-                Err(_) => return Err(Error::ParameterParse(name.to_string(), value.to_string())),
-                Ok(value) => self.ma1 = value,
-            },
-            "ma2" => match value.parse() {
-                Err(_) => return Err(Error::ParameterParse(name.to_string(), value.to_string())),
-                Ok(value) => self.ma2 = value,
-            },
-            "price" => match value.parse() {
-                Err(_) => return Err(Error::ParameterParse(name.to_string(), value.to_string())),
-                Ok(value) => self.price = value,
-            },
+            "i1" => SourceChange::default(),
+                // match value.parse() {
+                //     Err(_) => return Err(Error::ParameterParse(name.to_string(), value.to_string())),
+                //     Ok(value) => self.i1 = value,
+                // },
+            "i2" => SourceChange::default(),
+                // match value.parse() {
+                //     Err(_) => return Err(Error::ParameterParse(name.to_string(), value.to_string())),
+                //     Ok(value) => self.i2 = value,
+                // },
             _ => {
                 return Err(Error::ParameterParse(name.to_string(), value));
             }
@@ -67,19 +59,15 @@ impl<M: MovingAverageConstructor> IndicatorConfig for RunTogether<M> {
     }
 
     fn size(&self) -> (u8, u8) {
-        (1, 2)
+        (2, 1)
     }
 
     fn init<T: OHLCV>(self, candle: &T) -> Result<Self::Instance, Error> {
         if self.validate() {
             let cfg = self;
-            let src = candle.source(cfg.source);
             Ok(Self::Instance {
-                ma1: cfg.ma1.init(src)?,
-                ma2: cfg.ma2.init(src)?,
-                cross: Cross::default(),
-                last_signal: Action::None,
-                last_signal_position: 0,
+                i1: cfg.i1.init(candle)?,
+                i2: cfg.i2.init(candle)?,
                 cfg,
             })
         } else {
@@ -91,56 +79,39 @@ impl<M: MovingAverageConstructor> IndicatorConfig for RunTogether<M> {
 impl Default for RunTogether {
     fn default() -> Self {
         Self {
-            ma1: MA::EMA(12),
-            ma2: MA::EMA(26),
-            price: 2.0,
-            period: 3,
-            source: Source::Close,
+            i1: SourceChange::default(),
+            i2: SourceChange::default(),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
-pub struct RunTogetherInstance<M: MovingAverageConstructor> {
-    cfg: RunTogether<M>,
-    ma1: M::Instance,
-    ma2: M::Instance,
-    cross: Cross,
-    last_signal: Action,
-    last_signal_position: PeriodType,
+#[derive(Debug, Clone)]
+pub struct RunTogetherInstance {
+    pub cfg: RunTogether,
+    pub i1: <SourceChange as IndicatorConfig>::Instance,
+    pub i2: <SourceChange as IndicatorConfig>::Instance,
 }
 
-impl<M: MovingAverageConstructor> IndicatorInstance for RunTogetherInstance<M> {
-    type Config = RunTogether<M>;
+impl IndicatorInstance for RunTogetherInstance {
+    type Config = RunTogether;
 
     fn config(&self) -> &Self::Config {
         &self.cfg
     }
 
     fn next<T: OHLCV>(&mut self, candle: &T) -> IndicatorResult {
-        let src = &candle.source(self.cfg.source);
-        let ema1 = self.ma1.next(src);
-        let ema2 = self.ma2.next(src);
+        let res1 = self.i1.next(candle);
+        let res2 = self.i2.next(candle);
+        let v1 = res1.values().get(0).unwrap();
+        let sig1 = res1.signals().get(0).unwrap();
+        let v2 = res2.values().get(0).unwrap();
+        let sig2 = res2.signals().get(0).unwrap();
 
-        let new_signal = self.cross.next(&(candle.close(), self.cfg.price));
-
-        let signal = if new_signal == Action::None {
-            self.last_signal = new_signal;
-            self.last_signal_position = 0;
-            new_signal
-        } else {
-            if Action::None != self.last_signal {
-                self.last_signal_position += 1;
-                if self.last_signal_position > self.cfg.period {
-                    self.last_signal = Action::None;
-                }
-            }
-
-            self.last_signal
+        let signal = match (sig1, sig2) {
+            (Action::Buy(_), Action::Buy(_)) => Action::Buy(1),
+            (_, _) => Action::None
         };
 
-        let some_other_signal = Action::from(0.5);
-
-        IndicatorResult::new(&[candle.close()], &[signal, some_other_signal])
+        IndicatorResult::new(&[v1.clone(), v2.clone()], &[signal])
     }
 }
