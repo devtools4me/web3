@@ -20,3 +20,13 @@ pub fn get_resolution() -> String {
     let resolution = dotenv!("RESOLUTION");
     String::from(resolution)
 }
+
+pub fn get_telegram_api_token() -> String {
+    let token = dotenv!("TELEGRAM_API_TOKEN");
+    String::from(token)
+}
+
+pub fn get_telegram_chat_id() -> String {
+    let chat_id = dotenv!("TELEGRAM_CHAT_ID");
+    String::from(chat_id)
+}

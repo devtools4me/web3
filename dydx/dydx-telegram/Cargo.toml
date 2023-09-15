@@ -1,0 +1,52 @@
+[package]
+name = "dydx-telegram"
+
+[package.edition]
+workspace = true
+
+[package.version]
+workspace = true
+
+[dependencies.log]
+workspace = true
+
+[dependencies.tokio]
+workspace = true
+
+[dependencies.reqwest]
+workspace = true
+
+[dependencies.serde]
+workspace = true
+
+[dependencies.serde_json]
+workspace = true
+
+[dependencies.async-trait]
+workspace = true
+
+[dependencies]
+dydx-common = { version = "0.0.1", path = "../dydx-common" }
+
+[lib]
+path = "src/lib.rs"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
+[[test]]
+path = "tests/client_check.rs"
+name = "run_client_check"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
