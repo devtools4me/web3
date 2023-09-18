@@ -38,7 +38,7 @@ impl New<OhlcTuple<'_>> for Ohlc {
     }
 }
 
-#[derive(Debug, Eq, PartialEq, EnumString)]
+#[derive(Debug, Eq, PartialEq, Clone, EnumString)]
 pub enum AverageType {
     #[strum(serialize = "EMA", serialize = "ema")]
     EMA,
@@ -148,7 +148,7 @@ pub struct Timeseries {
     pub timestamp: String,
 }
 
-#[derive(Debug, Eq, PartialEq, EnumString)]
+#[derive(Debug, Eq, PartialEq, Clone, EnumString)]
 pub enum IndicatorType {
     #[strum(serialize = "MACD", serialize = "macd")]
     MACD,

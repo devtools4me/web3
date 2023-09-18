@@ -3,6 +3,7 @@ use yew_router::prelude::*;
 
 use crate::view::{ohlc::OhlcView, ohlc::OhlcChartView, average::AverageChartView, indicator::IndicatorChartView};
 use dydx_api::types::*;
+use crate::view::composite::{OhlcWithAverageChartView, OhlcWithIndicatorChartView};
 
 #[derive(Clone, Routable, PartialEq)]
 pub enum Route {
@@ -66,41 +67,26 @@ pub fn switch(route: Route) -> Html {
         Route::Home => html! { <OhlcView /> },
         Route::Ohlc => html! { <OhlcChartView /> },
         //Methods
-        Route::EMA => html! { <AverageChartView average_type={AverageType::EMA} /> },
-        Route::HMA => html! { <AverageChartView average_type={AverageType::HMA} /> },
-        Route::DEMA => html! { <AverageChartView average_type={AverageType::DEMA} /> },
-        Route::DMA => html! { <AverageChartView average_type={AverageType::DMA} /> },
-        Route::Momentum => html! { <AverageChartView average_type={AverageType::Momentum} /> },
-        Route::RMA => html! { <AverageChartView average_type={AverageType::RMA} /> },
-        Route::SMA => html! {
-            <div>
-                <OhlcChartView />
-                <AverageChartView average_type={AverageType::SMA} />
-            </div>
-        },
-        Route::SWMA => html! { <AverageChartView average_type={AverageType::SWMA} /> },
-        Route::TEMA => html! { <AverageChartView average_type={AverageType::TEMA} /> },
-        Route::TMA => html! { <AverageChartView average_type={AverageType::TMA} /> },
-        Route::TRIMA => html! { <AverageChartView average_type={AverageType::TRIMA} /> },
-        Route::VWMA => html! { <AverageChartView average_type={AverageType::VWMA} /> },
-        Route::Vidya => html! { <AverageChartView average_type={AverageType::Vidya} /> },
-        Route::WMA => html! { <AverageChartView average_type={AverageType::WMA} /> },
-        Route::WSMA => html! { <AverageChartView average_type={AverageType::WSMA} /> },
+        Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} /> },
+        Route::HMA => html! { <OhlcWithAverageChartView average_type={AverageType::HMA} /> },
+        Route::DEMA => html! { <OhlcWithAverageChartView average_type={AverageType::DEMA} /> },
+        Route::DMA => html! { <OhlcWithAverageChartView average_type={AverageType::DMA} /> },
+        Route::Momentum => html! { <OhlcWithAverageChartView average_type={AverageType::Momentum} /> },
+        Route::RMA => html! { <OhlcWithAverageChartView average_type={AverageType::RMA} /> },
+        Route::SMA => html! { <OhlcWithAverageChartView average_type={AverageType::SMA} /> },
+        Route::SWMA => html! { <OhlcWithAverageChartView average_type={AverageType::SWMA} /> },
+        Route::TEMA => html! { <OhlcWithAverageChartView average_type={AverageType::TEMA} /> },
+        Route::TMA => html! { <OhlcWithAverageChartView average_type={AverageType::TMA} /> },
+        Route::TRIMA => html! { <OhlcWithAverageChartView average_type={AverageType::TRIMA} /> },
+        Route::VWMA => html! { <OhlcWithAverageChartView average_type={AverageType::VWMA} /> },
+        Route::Vidya => html! { <OhlcWithAverageChartView average_type={AverageType::Vidya} /> },
+        Route::WMA => html! { <OhlcWithAverageChartView average_type={AverageType::WMA} /> },
+        Route::WSMA => html! { <OhlcWithAverageChartView average_type={AverageType::WSMA} /> },
         //Indicators
-        Route::MACD => html! {
-            <div>
-                <OhlcChartView />
-                <IndicatorChartView indicator_type={IndicatorType::MACD} />
-            </div>
-        },
-        Route::RSI => html! {
-            <div>
-                <OhlcChartView />
-                <IndicatorChartView indicator_type={IndicatorType::RSI} />
-            </div>
-        },
-        Route::RunTogether => html! { <IndicatorChartView indicator_type={IndicatorType::RunTogether} /> },
-        Route::SellVolatility => html! { <p class="text-white">{ "Not found" }</p> },
+        Route::MACD => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::MACD} /> },
+        Route::RSI => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::RSI} /> },
+        Route::RunTogether => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::RunTogether} /> },
+        Route::SellVolatility => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::SellVolatility} /> },
         // Other
         Route::About => html! { <p class="text-white">{ "Not found" }</p> },
         Route::NotFound => html! { <p class="text-white">{ "Not found" }</p> },
