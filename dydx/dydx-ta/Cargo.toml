@@ -21,7 +21,7 @@ workspace = true
 
 [dependencies]
 dydx-api = { version = "0.0.1", path = "../dydx-api" }
-dydx-common = { version = "0.0.1", path = "../dydx-common" }
+web3-common = { version = "0.0.1", path = "../../web3-common" }
 
 [lib]
 path = "src/lib.rs"

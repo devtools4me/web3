@@ -2,7 +2,7 @@ use log::debug;
 use yata::core::{Action, Candle, IndicatorConfigDyn, IndicatorResult};
 use yata::indicators::{MACD, RSI};
 use dydx_api::types::{ActionType, Indicator, Ohlc};
-use dydx_common::utils::vec_utils::convert;
+use web3_common::utils::vec_utils::convert;
 use crate::run_together::RunTogether;
 use crate::sell_volatility::SellVolatility;
 use crate::source_change::SourceChange;
