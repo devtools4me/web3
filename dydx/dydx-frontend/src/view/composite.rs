@@ -14,11 +14,11 @@ pub fn ohlc_with_average_chart_component(AverageChartProps { average_type, marke
 }
 
 #[function_component(OhlcWithIndicatorChartView)]
-pub fn ohlc_with_indicator_chart_component(IndicatorChartProps { indicator_type }: &IndicatorChartProps) -> Html {
+pub fn ohlc_with_indicator_chart_component(IndicatorChartProps { indicator_type, market, resolution }: &IndicatorChartProps) -> Html {
     html! {
         <div>
             <OhlcChartView />
-            <IndicatorChartView indicator_type={indicator_type.clone()} />
+            <IndicatorChartView indicator_type={indicator_type.clone()} market={market.clone()} resolution={resolution.clone()} />
         </div>
     }
 }

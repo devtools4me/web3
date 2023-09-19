@@ -14,13 +14,14 @@ use crate::utils::api_utils::fetch_single_api_response;
 #[derive(Properties, PartialEq)]
 pub struct IndicatorChartProps {
     pub indicator_type: IndicatorType,
+    pub market: String,
+    pub resolution: String
 }
 
 #[function_component(IndicatorChartView)]
-pub fn indicator_chart_component(IndicatorChartProps { indicator_type }: &IndicatorChartProps) -> Html {
+pub fn indicator_chart_component(IndicatorChartProps { indicator_type, market, resolution }: &IndicatorChartProps) -> Html {
     let indicator_type = IndicatorType::new(indicator_type);
-    let market = env_utils::get_market();
-    let resolution = env_utils::get_resolution();
+    let endpoint = indicators(&indicator_type, market, resolution);
     let title = format!("{} {} {}", IndicatorType::description(&indicator_type), market, resolution);
     let state = use_state(|| Plot::new());
     {
@@ -30,9 +31,7 @@ pub fn indicator_chart_component(IndicatorChartProps { indicator_type }: &Indica
                 let state = state.clone();
                 let indicator_type = IndicatorType::new(&indicator_type);
                 wasm_bindgen_futures::spawn_local(async move {
-                    match fetch_single_api_response::<Vec<Indicator>>(
-                        indicators(&indicator_type, market.as_str(), resolution.as_str()).as_str(),
-                    )
+                    match fetch_single_api_response::<Vec<Indicator>>(endpoint.as_str())
                         .await
                     {
                         Ok(fetched_data) => {

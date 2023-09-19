@@ -1,7 +1,7 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::view::{ohlc::OhlcView, ohlc::OhlcChartView, average::AverageChartView, indicator::IndicatorChartView};
+use crate::view::{ohlc::OhlcView, ohlc::OhlcChartView};
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
 use crate::view::composite::{OhlcWithAverageChartView, OhlcWithIndicatorChartView};
@@ -86,10 +86,10 @@ pub fn switch(route: Route) -> Html {
         Route::WMA => html! { <OhlcWithAverageChartView average_type={AverageType::WMA} market={market} resolution={resolution} /> },
         Route::WSMA => html! { <OhlcWithAverageChartView average_type={AverageType::WSMA} market={market} resolution={resolution} /> },
         //Indicators
-        Route::MACD => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::MACD} /> },
-        Route::RSI => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::RSI} /> },
-        Route::RunTogether => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::RunTogether} /> },
-        Route::SellVolatility => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::SellVolatility} /> },
+        Route::MACD => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::MACD} market={market} resolution={resolution} /> },
+        Route::RSI => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::RSI} market={market} resolution={resolution} /> },
+        Route::RunTogether => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::RunTogether} market={market} resolution={resolution} /> },
+        Route::SellVolatility => html! { <OhlcWithIndicatorChartView indicator_type={IndicatorType::SellVolatility} market={market} resolution={resolution} /> },
         // Other
         Route::About => html! { <p class="text-white">{ "Not found" }</p> },
         Route::NotFound => html! { <p class="text-white">{ "Not found" }</p> },
