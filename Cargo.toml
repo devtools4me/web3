@@ -2,7 +2,7 @@
 members = [
     "web3-trader",
     "algotrader-common",
-    "dydx/dydx-api",
+    "algotrader-api",
     "dydx/dydx-ta",
     "dydx/dydx-bot",
     "dydx/dydx-frontend",

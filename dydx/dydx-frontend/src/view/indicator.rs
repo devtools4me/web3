@@ -5,8 +5,8 @@ use yew::prelude::*;
 use yew_plotly::{Plotly, plotly};
 use yew_plotly::plotly::color::NamedColor;
 
-use dydx_api::path::*;
-use dydx_api::types::*;
+use algotrader_api::path::*;
+use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
 
 use crate::utils::api_utils::fetch_single_api_response;

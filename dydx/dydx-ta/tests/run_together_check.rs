@@ -2,7 +2,7 @@ pub mod test_utils;
 
 #[cfg(test)]
 mod test {
-    use dydx_api::types::*;
+    use algotrader_api::types::*;
     use dydx_ta::ops::ToIndicator;
     use dydx_ta::run_together::RunTogether;
 

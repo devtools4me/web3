@@ -1,6 +1,6 @@
 use yata::helpers::MA;
 use yata::indicators::{MACD, RSI};
-use dydx_api::types::{Indicator, Ohlc};
+use algotrader_api::types::{Indicator, Ohlc};
 
 use crate::ops::ToIndicator;
 use crate::run_together::RunTogether;

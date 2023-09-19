@@ -5,9 +5,9 @@ mod test {
     use yata::prelude::*;
     use yata::core::Source;
     use yata::helpers::MA;
-    use dydx_api::types::{*, SourceChangeIndicator};
-    use dydx_api::types::New;
-    use dydx_common::utils::vec_utils::*;
+    use algotrader_api::types::{*, SourceChangeIndicator};
+    use algotrader_api::types::New;
+    use algotrader_common::utils::vec_utils::*;
     use dydx_ta::ops::ToIndicator;
     use dydx_ta::source_change::*;
 

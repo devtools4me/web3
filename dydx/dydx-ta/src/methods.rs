@@ -2,7 +2,7 @@ use yata::core::PeriodType;
 use yata::methods::*;
 use yata::prelude::*;
 
-use dydx_api::types::Timeseries;
+use algotrader_api::types::Timeseries;
 use algotrader_common::utils::vec_utils::*;
 
 pub fn ema(v: Vec<Timeseries>, window_size: PeriodType) -> Vec<Timeseries> {

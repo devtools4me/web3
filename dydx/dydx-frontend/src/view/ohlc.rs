@@ -4,8 +4,8 @@ use yew_plotly::plotly::{Plot, Scatter};
 use yew_plotly::{Plotly, plotly};
 use yew_plotly::plotly::common::Mode;
 
-use dydx_api::types::*;
-use dydx_api::path::*;
+use algotrader_api::types::*;
+use algotrader_api::path::*;
 
 use crate::utils::api_utils::fetch_single_api_response;
 

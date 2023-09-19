@@ -2,7 +2,7 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::view::{ohlc::OhlcView, ohlc::OhlcChartView, average::AverageChartView, indicator::IndicatorChartView};
-use dydx_api::types::*;
+use algotrader_api::types::*;
 use crate::view::composite::{OhlcWithAverageChartView, OhlcWithIndicatorChartView};
 
 #[derive(Clone, Routable, PartialEq)]

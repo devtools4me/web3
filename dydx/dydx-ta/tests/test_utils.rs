@@ -1,6 +1,6 @@
 use std::{fs, io};
 use std::path::PathBuf;
-use dydx_api::types::Ohlc;
+use algotrader_api::types::Ohlc;
 
 pub fn read_str(path: &str) -> io::Result<String> {
     let mut file_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));

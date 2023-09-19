@@ -1,5 +1,5 @@
 [package]
-name = "dydx-api"
+name = "algotrader-api"
 
 [package.edition]
 workspace = true
