@@ -26,7 +26,7 @@ workspace = true
 workspace = true
 
 [dependencies]
-web3-common = { version = "0.0.1", path = "../../web3-common" }
+algotrader-common = { version = "0.0.1", path = "../../algotrader-common" }
 
 [lib]
 path = "src/lib.rs"

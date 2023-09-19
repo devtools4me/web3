@@ -1,5 +1,5 @@
 [package]
-name = "web3-common"
+name = "algotrader-common"
 
 [package.edition]
 workspace = true

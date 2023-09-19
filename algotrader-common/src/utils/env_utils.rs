@@ -1,4 +1,3 @@
-use std::usize;
 use dotenvy_macro::dotenv;
 
 pub fn get_api_endpoint() -> String {

@@ -7,7 +7,7 @@ use yew_plotly::plotly::color::NamedColor;
 
 use dydx_api::path::*;
 use dydx_api::types::*;
-use web3_common::utils::env_utils;
+use algotrader_common::utils::env_utils;
 
 use crate::utils::api_utils::fetch_single_api_response;
 

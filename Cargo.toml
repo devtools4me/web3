@@ -1,7 +1,7 @@
 [workspace]
 members = [
     "web3-trader",
-    "web3-common",
+    "algotrader-common",
     "dydx/dydx-api",
     "dydx/dydx-ta",
     "dydx/dydx-bot",

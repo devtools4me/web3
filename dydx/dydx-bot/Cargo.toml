@@ -107,7 +107,7 @@ workspace = true
 
 [dependencies]
 dydx-api = { version = "0.0.1", path = "../dydx-api" }
-web3-common = { version = "0.0.1", path = "../../web3-common" }
+algotrader-common = { version = "0.0.1", path = "../../algotrader-common" }
 dydx-ta = { version = "0.0.1", path = "../dydx-ta" }
 
 [lib]
