@@ -1,9 +1,8 @@
-use log::error;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
 use route::{Route, switch};
-use view::{header::Header, ohlc::OhlcView};
+use view::header::Header;
 
 mod utils;
 mod view;

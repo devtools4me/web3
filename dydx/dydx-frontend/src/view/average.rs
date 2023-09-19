@@ -1,11 +1,10 @@
 use log::error;
 use yew::prelude::*;
+use yew_plotly::Plotly;
 use yew_plotly::plotly::{Plot, Scatter};
-use yew_plotly::{Plotly, plotly};
-use yew_plotly::plotly::common::Mode;
 
-use algotrader_api::types::*;
 use algotrader_api::path::*;
+use algotrader_api::types::*;
 
 use crate::utils::api_utils::fetch_single_api_response;
 

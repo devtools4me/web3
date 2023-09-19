@@ -1,9 +1,7 @@
-use log::error;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::route::Route;
-use crate::utils::api_utils;
 
 #[function_component(Header)]
 pub fn header() -> Html {

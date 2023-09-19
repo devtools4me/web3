@@ -1,13 +1,11 @@
 use log::error;
 use plotly::{Plot, Scatter};
-use plotly::common::Mode;
 use yew::prelude::*;
 use yew_plotly::{Plotly, plotly};
 use yew_plotly::plotly::color::NamedColor;
 
 use algotrader_api::path::*;
 use algotrader_api::types::*;
-use algotrader_common::utils::env_utils;
 
 use crate::utils::api_utils::fetch_single_api_response;
 
