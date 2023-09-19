@@ -4,11 +4,11 @@ use crate::view::average::*;
 use crate::view::indicator::*;
 
 #[function_component(OhlcWithAverageChartView)]
-pub fn ohlc_with_average_chart_component(AverageChartProps { average_type }: &AverageChartProps) -> Html {
+pub fn ohlc_with_average_chart_component(AverageChartProps { average_type, market, resolution }: &AverageChartProps) -> Html {
     html! {
         <div>
             <OhlcChartView />
-            <AverageChartView average_type={average_type.clone()} />
+            <AverageChartView average_type={average_type.clone()} market = {market.clone()} resolution = {resolution.clone()} />
         </div>
     }
 }

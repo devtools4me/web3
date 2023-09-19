@@ -12,13 +12,14 @@ use crate::utils::api_utils::fetch_single_api_response;
 #[derive(Properties, PartialEq)]
 pub struct AverageChartProps {
     pub average_type: AverageType,
+    pub market: String,
+    pub resolution: String
 }
 
 #[function_component(AverageChartView)]
-pub fn average_chart_component(AverageChartProps { average_type }: &AverageChartProps) -> Html {
+pub fn average_chart_component(AverageChartProps { average_type, market, resolution }: &AverageChartProps) -> Html {
     let average_type = AverageType::parse(average_type.to_string().as_str());
-    let market = "BTC-USD";
-    let resolution = "1DAY";
+    let endpoint = methods(&average_type, market, resolution);
     let title = format!("{} {} {}", AverageType::description(&average_type), market, resolution);
     let state = use_state(|| Plot::new());
     {
@@ -27,9 +28,7 @@ pub fn average_chart_component(AverageChartProps { average_type }: &AverageChart
             move |_| {
                 let state = state.clone();
                 wasm_bindgen_futures::spawn_local(async move {
-                    match fetch_single_api_response::<Vec<Timeseries>>(
-                        methods(&average_type, market, resolution).as_str(),
-                    )
+                    match fetch_single_api_response::<Vec<Timeseries>>(endpoint.as_str())
                         .await
                     {
                         Ok(fetched_data) => {
