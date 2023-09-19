@@ -108,7 +108,7 @@ workspace = true
 [dependencies]
 algotrader-api = { version = "0.0.1", path = "../../algotrader-api" }
 algotrader-common = { version = "0.0.1", path = "../../algotrader-common" }
-dydx-ta = { version = "0.0.1", path = "../dydx-ta" }
+algotrader-ta = { version = "0.0.1", path = "../../algotrader-ta" }
 
 [lib]
 path = "src/lib.rs"

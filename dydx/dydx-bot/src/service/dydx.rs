@@ -8,8 +8,8 @@ use dydx_v3_rust::{
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
 use algotrader_common::utils::vec_utils::*;
-use dydx_ta::methods;
-use dydx_ta::indicators;
+use algotrader_ta::methods;
+use algotrader_ta::indicators;
 
 use crate::configuration;
 use crate::configuration::Settings;

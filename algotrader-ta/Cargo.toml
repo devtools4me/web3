@@ -1,5 +1,5 @@
 [package]
-name = "dydx-ta"
+name = "algotrader-ta"
 
 [package.edition]
 workspace = true
@@ -20,8 +20,8 @@ workspace = true
 workspace = true
 
 [dependencies]
-algotrader-api = { version = "0.0.1", path = "../../algotrader-api" }
-algotrader-common = { version = "0.0.1", path = "../../algotrader-common" }
+algotrader-api = { version = "0.0.1", path = "../algotrader-api" }
+algotrader-common = { version = "0.0.1", path = "../algotrader-common" }
 
 [lib]
 path = "src/lib.rs"

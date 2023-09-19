@@ -3,8 +3,8 @@ pub mod test_utils;
 #[cfg(test)]
 mod test {
     use algotrader_api::types::*;
-    use dydx_ta::ops::ToIndicator;
-    use dydx_ta::run_together::RunTogether;
+    use algotrader_ta::ops::ToIndicator;
+    use algotrader_ta::run_together::RunTogether;
 
     use crate::test_utils;
 

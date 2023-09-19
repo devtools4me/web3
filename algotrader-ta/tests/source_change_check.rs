@@ -8,8 +8,8 @@ mod test {
     use algotrader_api::types::{*, SourceChangeIndicator};
     use algotrader_api::types::New;
     use algotrader_common::utils::vec_utils::*;
-    use dydx_ta::ops::ToIndicator;
-    use dydx_ta::source_change::*;
+    use algotrader_ta::ops::ToIndicator;
+    use algotrader_ta::source_change::*;
 
     use crate::test_utils;
 
