@@ -15,7 +15,6 @@
 // c.	Stop loss: 2 pips or 1 min exit.
 
 use yata::core::{Action, Error, IndicatorResult, OHLCV};
-use yata::helpers::MA;
 use yata::prelude::*;
 
 #[cfg(feature = "serde")]
