@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod test {
-    use dydx_telegram::client::{TelegramApi, TelegramClient};
-    use dydx_common::utils::env_utils;
+    use algotrader_telegram::client::{TelegramApi, TelegramClient};
+    use algotrader_common::utils::env_utils;
 
     #[tokio::test]
     async fn test_client_send_message() {

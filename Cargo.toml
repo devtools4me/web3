@@ -6,7 +6,7 @@ members = [
     "dydx/dydx-ta",
     "dydx/dydx-bot",
     "dydx/dydx-frontend",
-    "dydx/dydx-telegram",
+    "algotrader-telegram",
     "examples/dydx",
     "examples/ethers",
     "examples/polars"
