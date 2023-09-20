@@ -1,4 +1,4 @@
-# DYDX Frontend
+# Algo Trader Frontend
 
 * Install Trunk
 
@@ -25,7 +25,7 @@ trunk build
 * Build Output
 
 ```
-../dydx-bot/dist
+../dydx/dydx-bot/dist
 ```
 
 * Run
