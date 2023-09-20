@@ -4,9 +4,9 @@ members = [
     "algotrader-common",
     "algotrader-api",
     "algotrader-ta",
-    "dydx/dydx-bot",
-    "dydx/dydx-frontend",
+    "algotrader-frontend",
     "algotrader-telegram",
+    "dydx/dydx-bot",
     "examples/dydx",
     "examples/ethers",
     "examples/polars"

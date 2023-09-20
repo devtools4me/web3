@@ -1,5 +1,5 @@
 [package]
-name = "dydx-frontend"
+name = "algotrader-frontend"
 
 [package.edition]
 workspace = true
@@ -20,8 +20,8 @@ workspace = true
 workspace = true
 
 [dependencies]
-algotrader-api = { version = "0.0.1", path = "../../algotrader-api" }
-algotrader-common = { version = "0.0.1", path = "../../algotrader-common" }
+algotrader-api = { version = "0.0.1", path = "../algotrader-api" }
+algotrader-common = { version = "0.0.1", path = "../algotrader-common" }
 yew = { version = "0.20.0", features = ["csr"] }
 yew-router = "0.17"
 reqwest = { version = "0.11.18", features = ["json"] }
