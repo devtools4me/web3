@@ -1,8 +1,8 @@
 use log::error;
-use plotly::{Plot, Scatter};
+use log::info;
+use wasm_bindgen::JsCast;
+use web_sys::HtmlSelectElement;
 use yew::prelude::*;
-use yew_plotly::{Plotly, plotly};
-use yew_plotly::plotly::color::NamedColor;
 
 use algotrader_api::path::*;
 use algotrader_api::types::*;
@@ -16,6 +16,19 @@ struct MarketsProps {
 
 #[function_component(MarletsDatalist)]
 fn markets_datalist(MarketsProps { markets }: &MarketsProps) -> Html {
+    let input_value_handle = use_state(String::default);
+    let on_cautious_change = {
+        let input_value_handle = input_value_handle.clone();
+
+        Callback::from(move |e: Event| {
+            let input = e.target()
+                .and_then(|t| t.dyn_into::<HtmlSelectElement>().ok());
+            if let Some(input) = input {
+                info!("index={}, value={}", input.selected_index(), input.value());
+                input_value_handle.set(input.value());
+            }
+        })
+    };
     let market_data_html = markets.iter().map(|x| {
         let selected = x.starts_with("BTC");
         html! {
@@ -24,7 +37,7 @@ fn markets_datalist(MarketsProps { markets }: &MarketsProps) -> Html {
     });
     html! {
         <div class="select">
-            <select class="is-focused">
+            <select class="is-focused" onchange={on_cautious_change}>
                 {for market_data_html}
             </select>
         </div>
