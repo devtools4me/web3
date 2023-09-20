@@ -20,6 +20,7 @@ pub fn run_with_data(data: Data<AppData>) -> Result<Server, std::io::Error> {
             .wrap(Logger::default())
             .service(tmpl::render)
             .service(health::health_check)
+            .service(public::get_markets)
             .service(account::get_account)
             .service(trade::create_order)
             .service(trade::close_all_positions)

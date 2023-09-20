@@ -1,16 +1,19 @@
-use crate::{configuration, service};
-use dydx_v3_rust::{
-    types::*,
-    ClientOptions, DydxClient,
-};
-use dydx_v3_rust::modules::private::Private;
-use log::debug;
+use std::collections::HashMap;
+
 use async_trait::async_trait;
-use configuration::Settings;
+use dydx_v3_rust::{
+    DydxClient,
+    types::*,
+};
+use log::debug;
+
 use service::utils::*;
+
+use crate::service;
 
 #[async_trait]
 pub trait DydxOps<'a> {
+    async fn get_markets(&self) -> dydx_v3_rust::Result<HashMap<String, MarketData>>;
     async fn get_account(&self, eth_address: &str) -> dydx_v3_rust::Result<AccountObject>;
     async fn place_market_order(&self, eth_address: &str, market: &str, side: &str, size: &str, price: &str) -> dydx_v3_rust::Result<OrderResponseObject>;
     async fn close_all_positions(&self, eth_address: &str) -> dydx_v3_rust::Result<()>;
@@ -19,6 +22,12 @@ pub trait DydxOps<'a> {
 
 #[async_trait]
 impl DydxOps<'_> for DydxClient<'_> {
+    async fn get_markets(&self) -> dydx_v3_rust::Result<HashMap<String, MarketData>> {
+        self.public.get_markets(None)
+            .await
+            .map(|x| x.markets)
+    }
+
     async fn get_account(&self, eth_address: &str) -> dydx_v3_rust::Result<AccountObject> {
         let private = &self.private.as_ref().unwrap();
         private.get_account(eth_address)

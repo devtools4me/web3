@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::str::FromStr;
 
 use dydx_v3_rust::{
@@ -23,6 +24,13 @@ pub struct DydxService {
 impl DydxService {
     fn dydx_client(&self) -> DydxClient {
         DydxClient::new(self.settings.host.as_str(), client_options(&self.settings.client_options))
+    }
+
+    pub async fn get_markets(&self) -> eyre::Result<HashMap<String, MarketData>, String> {
+        let client = self.dydx_client();
+        let result = client.get_markets()
+            .await;
+        eyre(result)
     }
 
     pub async fn get_account(&self) -> eyre::Result<AccountObject, String> {
