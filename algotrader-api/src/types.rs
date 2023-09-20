@@ -1,8 +1,7 @@
 use std::str::FromStr;
-use strum_macros::EnumString;
 
-use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
+use strum_macros::EnumString;
 
 pub trait New<T> {
     fn new(value: T) -> Self;

@@ -8,6 +8,7 @@ mod utils;
 mod view;
 mod route;
 mod js;
+mod types;
 
 #[function_component(App)]
 fn app() -> Html {
