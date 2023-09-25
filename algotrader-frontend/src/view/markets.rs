@@ -6,13 +6,9 @@ use yew::prelude::*;
 
 use algotrader_api::path::*;
 use algotrader_api::types::*;
+use crate::types::props::MarketsProps;
 
 use crate::utils::api_utils::fetch_single_api_response;
-
-#[derive(Properties, PartialEq)]
-struct MarketsProps {
-    markets: Vec<String>,
-}
 
 #[function_component(MarletsDatalist)]
 fn markets_datalist(MarketsProps { markets }: &MarketsProps) -> Html {

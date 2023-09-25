@@ -7,3 +7,8 @@ use algotrader_api::types::*;
 pub struct Props {
     pub on_name_entry: Callback<String>,
 }
+
+#[derive(Properties, PartialEq)]
+pub struct MarketsProps {
+    pub markets: Vec<String>,
+}
