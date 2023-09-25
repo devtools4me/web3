@@ -17,7 +17,7 @@ struct MarketsProps {
 #[function_component(MarletsDatalist)]
 fn markets_datalist(MarketsProps { markets }: &MarketsProps) -> Html {
     let input_value_handle = use_state(String::default);
-    let on_cautious_change = {
+    let on_market_change = {
         let input_value_handle = input_value_handle.clone();
 
         Callback::from(move |e: Event| {
@@ -37,7 +37,7 @@ fn markets_datalist(MarketsProps { markets }: &MarketsProps) -> Html {
     });
     html! {
         <div class="select">
-            <select class="is-focused" onchange={on_cautious_change}>
+            <select class="is-focused" onchange={on_market_change}>
                 {for market_data_html}
             </select>
         </div>
