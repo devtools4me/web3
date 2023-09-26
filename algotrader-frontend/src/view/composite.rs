@@ -20,8 +20,8 @@ pub fn ohlc_with_average_chart_component(props: &AverageChartProps) -> Html {
     };
     html! {
         <div>
-            <MarketsSelect callback={callback}/>
-            <OhlcChartView />
+            <MarketsSelect callback={callback} />
+            <OhlcChartView market={(*current_market).clone()} resolution={"1DAY"} />
             <AverageChartView average_type={props.average_type.clone()} market = {(*current_market).clone()} resolution = {props.resolution.clone()} />
         </div>
     }
@@ -43,7 +43,7 @@ pub fn ohlc_with_indicator_chart_component(props: &IndicatorChartProps) -> Html 
     html! {
         <div>
             <MarketsSelect callback={callback}/>
-            <OhlcChartView />
+            <OhlcChartView market={(*current_market).clone()} resolution={"1DAY"} />
             <IndicatorChartView indicator_type={props.indicator_type.clone()} market={(*current_market).clone()} resolution={props.resolution.clone()} />
         </div>
     }

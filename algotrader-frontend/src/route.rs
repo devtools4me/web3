@@ -67,8 +67,8 @@ pub fn switch(route: Route) -> Html {
     let market = env_utils::get_market();
     let resolution = env_utils::get_resolution();
     match route {
-        Route::Home => html! { <OhlcView /> },
-        Route::Ohlc => html! { <OhlcChartView /> },
+        Route::Home => html! { <OhlcView market={"BTC-USD"} resolution={"1DAY"} /> },
+        Route::Ohlc => html! { <OhlcChartView market={"BTC-USD"} resolution={"1DAY"}  /> },
         //Methods
         Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} market={market} resolution={resolution} /> },
         Route::HMA => html! { <OhlcWithAverageChartView average_type={AverageType::HMA} market={market} resolution={resolution} /> },

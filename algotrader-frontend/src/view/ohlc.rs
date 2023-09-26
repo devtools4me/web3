@@ -1,9 +1,11 @@
 use log::error;
 use yew::prelude::*;
+use yew::prelude::*;
 use yew_plotly::{Plotly, plotly};
 use yew_plotly::plotly::Plot;
 
 use algotrader_api::endpoints;
+use algotrader_api::types::*;
 use algotrader_api::types::*;
 
 use crate::utils::api_utils::fetch_single_api_response;
@@ -46,10 +48,15 @@ fn ohlc_list(OhlcListProps { ohlc_data }: &OhlcListProps) -> Html {
     }
 }
 
+#[derive(Properties, PartialEq)]
+pub struct OhlcProps {
+    pub market: String,
+    pub resolution: String
+}
+
 #[function_component(OhlcView)]
-pub fn ohlc_data_component() -> Html {
-    let market = "BTC-USD";
-    let resolution = "1DAY";
+pub fn ohlc_data_component(props: &OhlcProps) -> Html {
+    let endpoint = endpoints::candles(props.market.as_str(), props.resolution.as_str());
     let ohlc_data = use_state(|| vec![]);
     {
         let ohlc_data = ohlc_data.clone();
@@ -57,9 +64,7 @@ pub fn ohlc_data_component() -> Html {
             move |_| {
                 let ohlc_data = ohlc_data.clone();
                 wasm_bindgen_futures::spawn_local(async move {
-                    match fetch_single_api_response::<Vec<Ohlc>>(
-                        endpoints::candles(market, resolution).as_str()
-                    )
+                    match fetch_single_api_response::<Vec<Ohlc>>(endpoint.as_str())
                         .await
                     {
                         Ok(fetched_data) => {
@@ -86,10 +91,9 @@ pub fn ohlc_data_component() -> Html {
 }
 
 #[function_component(OhlcChartView)]
-pub fn ohlc_chart_component() -> Html {
-    let market = "BTC-USD";
-    let resolution = "1DAY";
-    let title = format!("OHLC {} {}", market, resolution);
+pub fn ohlc_chart_component(props: &OhlcProps) -> Html {
+    let endpoint = endpoints::candles(props.market.as_str(), props.resolution.as_str());
+    let title = format!("OHLC {} {}", props.market, props.resolution);
     let state = use_state(|| Plot::new());
     {
         let state = state.clone();
@@ -97,9 +101,7 @@ pub fn ohlc_chart_component() -> Html {
             move |_| {
                 let state = state.clone();
                 wasm_bindgen_futures::spawn_local(async move {
-                    match fetch_single_api_response::<Vec<Ohlc>>(
-                        endpoints::candles(market, resolution).as_str(),
-                    )
+                    match fetch_single_api_response::<Vec<Ohlc>>(endpoint.as_str())
                         .await
                     {
                         Ok(fetched_data) => {
