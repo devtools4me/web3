@@ -3,7 +3,7 @@ use yew::prelude::*;
 use yew_plotly::Plotly;
 use yew_plotly::plotly::{Plot, Scatter};
 
-use algotrader_api::path::*;
+use algotrader_api::endpoints;
 use algotrader_api::types::*;
 
 use crate::utils::api_utils::fetch_single_api_response;
@@ -18,7 +18,7 @@ pub struct AverageChartProps {
 #[function_component(AverageChartView)]
 pub fn average_chart_component(AverageChartProps { average_type, market, resolution }: &AverageChartProps) -> Html {
     let average_type = AverageType::parse(average_type.to_string().as_str());
-    let endpoint = methods(&average_type, market, resolution);
+    let endpoint = endpoints::methods(&average_type, market, resolution);
     let title = format!("{} {} {}", AverageType::description(&average_type), market, resolution);
     let state = use_state(|| Plot::new());
     {

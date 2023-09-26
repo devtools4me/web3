@@ -3,7 +3,7 @@ use wasm_bindgen::JsCast;
 use web_sys::HtmlSelectElement;
 use yew::prelude::*;
 
-use algotrader_api::path;
+use algotrader_api::endpoints;
 use algotrader_api::types::*;
 use crate::types::props::{StrCbProps, MarketsProps};
 
@@ -39,7 +39,7 @@ fn markets_datalist(props: &MarketsProps) -> Html {
 
 #[function_component(MarketsSelect)]
 pub fn markets_select_component(props: &StrCbProps) -> Html {
-    let endpoint = path::markets();
+    let endpoint = endpoints::markets();
     let state = use_state(|| vec![]);
     {
         let state = state.clone();

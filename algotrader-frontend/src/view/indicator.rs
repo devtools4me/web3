@@ -4,7 +4,7 @@ use yew::prelude::*;
 use yew_plotly::{Plotly, plotly};
 use yew_plotly::plotly::color::NamedColor;
 
-use algotrader_api::path::*;
+use algotrader_api::endpoints;
 use algotrader_api::types::*;
 
 use crate::utils::api_utils::fetch_single_api_response;
@@ -19,7 +19,7 @@ pub struct IndicatorChartProps {
 #[function_component(IndicatorChartView)]
 pub fn indicator_chart_component(IndicatorChartProps { indicator_type, market, resolution }: &IndicatorChartProps) -> Html {
     let indicator_type = IndicatorType::new(indicator_type);
-    let endpoint = indicators(&indicator_type, market, resolution);
+    let endpoint = endpoints::indicators(&indicator_type, market, resolution);
     let title = format!("{} {} {}", IndicatorType::description(&indicator_type), market, resolution);
     let state = use_state(|| Plot::new());
     {

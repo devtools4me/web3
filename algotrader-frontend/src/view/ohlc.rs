@@ -3,7 +3,7 @@ use yew::prelude::*;
 use yew_plotly::{Plotly, plotly};
 use yew_plotly::plotly::Plot;
 
-use algotrader_api::path::*;
+use algotrader_api::endpoints;
 use algotrader_api::types::*;
 
 use crate::utils::api_utils::fetch_single_api_response;
@@ -58,7 +58,7 @@ pub fn ohlc_data_component() -> Html {
                 let ohlc_data = ohlc_data.clone();
                 wasm_bindgen_futures::spawn_local(async move {
                     match fetch_single_api_response::<Vec<Ohlc>>(
-                        candles(market, resolution).as_str()
+                        endpoints::candles(market, resolution).as_str()
                     )
                         .await
                     {
@@ -98,7 +98,7 @@ pub fn ohlc_chart_component() -> Html {
                 let state = state.clone();
                 wasm_bindgen_futures::spawn_local(async move {
                     match fetch_single_api_response::<Vec<Ohlc>>(
-                        candles(market, resolution).as_str(),
+                        endpoints::candles(market, resolution).as_str(),
                     )
                         .await
                     {
