@@ -10,6 +10,7 @@ use crate::types::AppState;
 #[function_component(MarketsDatalist)]
 fn markets_datalist(props: &MarketsProps) -> Html {
     let callback = props.callback.clone();
+    let app_context = use_context::<AppState>();
     let on_market_change = {
         Callback::from(move |e: Event| {
             let input = e.target()

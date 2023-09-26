@@ -35,7 +35,8 @@ fn app() -> Html {
                     {
                         Ok(markets) => {
                             state.set(AppState {
-                                markets
+                                markets,
+                                ..state.deref().clone()
                             });
                         }
                         Err(e) => {

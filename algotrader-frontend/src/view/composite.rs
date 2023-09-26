@@ -6,11 +6,14 @@ use crate::view::average::*;
 use crate::view::indicator::*;
 
 #[function_component(OhlcWithAverageChartView)]
-pub fn ohlc_with_average_chart_component(AverageChartProps { average_type, market, resolution }: &AverageChartProps) -> Html {
+pub fn ohlc_with_average_chart_component(props: &AverageChartProps) -> Html {
+    let current_market = use_state(|| props.market.clone());
     let callback: Callback<String> = {
+        let current_market = current_market.clone();
         use_callback(
-            move |market_value, _| {
+            move |market_value: String, _| {
                 info!("market_value={}", market_value);
+                current_market.set(market_value.clone());
             },
             (),
         )
@@ -19,7 +22,7 @@ pub fn ohlc_with_average_chart_component(AverageChartProps { average_type, marke
         <div>
             <MarketsSelect callback={callback}/>
             <OhlcChartView />
-            <AverageChartView average_type={average_type.clone()} market = {market.clone()} resolution = {resolution.clone()} />
+            <AverageChartView average_type={props.average_type.clone()} market = {(*current_market).clone()} resolution = {props.resolution.clone()} />
         </div>
     }
 }
