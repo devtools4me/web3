@@ -5,7 +5,7 @@ use yew::prelude::*;
 use algotrader_api::types::*;
 
 use crate::types::props::{MarketsProps, StrCbProps};
-use crate::types::AppData;
+use crate::types::AppState;
 
 #[function_component(MarketsDatalist)]
 fn markets_datalist(props: &MarketsProps) -> Html {
@@ -38,7 +38,7 @@ fn markets_datalist(props: &MarketsProps) -> Html {
 #[function_component(MarketsSelect)]
 pub fn markets_select_component(props: &StrCbProps) -> Html {
     let callback = props.callback.clone();
-    let app_context = use_context::<AppData>();
+    let app_context = use_context::<AppState>();
     html! {
         <div class="section">
             <div class="container">

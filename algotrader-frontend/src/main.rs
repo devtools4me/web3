@@ -11,7 +11,7 @@ use algotrader_api::types::*;
 use route::{Route, switch};
 use view::header::Header;
 
-use crate::types::AppData;
+use crate::types::AppState;
 use crate::utils::api_utils::fetch_single_api_response;
 
 mod utils;
@@ -23,7 +23,7 @@ mod types;
 #[function_component(App)]
 fn app() -> Html {
     let endpoint = endpoints::markets();
-    let state = use_state(|| AppData::default());
+    let state = use_state(|| AppState::default());
     {
         let state = state.clone();
         use_effect_with_deps(
@@ -34,7 +34,7 @@ fn app() -> Html {
                         .await
                     {
                         Ok(markets) => {
-                            state.set(AppData {
+                            state.set(AppState {
                                 markets
                             });
                         }
@@ -50,10 +50,10 @@ fn app() -> Html {
 
     html! {
          <BrowserRouter>
-            <ContextProvider<AppData> context={state.deref().clone()}>
+            <ContextProvider<AppState> context={state.deref().clone()}>
                 <Header />
                 <Switch<Route> render={switch} />
-            </ContextProvider<AppData>>
+            </ContextProvider<AppState >>
          </BrowserRouter>
     }
 }
