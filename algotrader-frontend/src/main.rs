@@ -54,7 +54,7 @@ fn app() -> Html {
             <ContextProvider<AppState> context={state.deref().clone()}>
                 <Header />
                 <Switch<Route> render={switch} />
-            </ContextProvider<AppState >>
+            </ContextProvider<AppState>>
          </BrowserRouter>
     }
 }
