@@ -33,11 +33,7 @@ pub fn indicator_chart_component(IndicatorChartProps { indicator_type, market, r
                         .await
                     {
                         Ok(fetched_data) => {
-                            let traces = scatter(&indicator_type, fetched_data);
-                            let mut plot = Plot::new();
-                            for t in traces.iter() {
-                                plot.add_trace(t.clone());
-                            }
+                            let plot = indicator_plot(indicator_type, fetched_data);
                             state.set(plot);
                         }
                         Err(e) => {
@@ -58,6 +54,15 @@ pub fn indicator_chart_component(IndicatorChartProps { indicator_type, market, r
             </div>
         </div>
     }
+}
+
+fn indicator_plot(indicator_type: IndicatorType, v: Vec<Indicator>) -> Plot {
+    let traces = scatter(&indicator_type, v);
+    let mut plot = Plot::new();
+    for t in traces.iter() {
+        plot.add_trace(t.clone());
+    }
+    plot
 }
 
 fn scatter(indicator_type: &IndicatorType, fetched_data: Vec<Indicator>) -> Vec<Box<Scatter<String, f64>>> {

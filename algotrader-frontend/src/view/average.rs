@@ -33,9 +33,7 @@ pub fn average_chart_component(AverageChartProps { average_type, market, resolut
                         .await
                     {
                         Ok(fetched_data) => {
-                            let mut plot = Plot::new();
-                            let trace = scatter(fetched_data);
-                            plot.add_trace(trace);
+                            let plot = average_plot(fetched_data);
                             state.set(plot);
                         }
                         Err(e) => {
@@ -56,6 +54,13 @@ pub fn average_chart_component(AverageChartProps { average_type, market, resolut
             </div>
         </div>
     }
+}
+
+fn average_plot(v: Vec<Timeseries>) -> Plot {
+    let mut plot = Plot::new();
+    let trace = scatter(v);
+    plot.add_trace(trace);
+    plot
 }
 
 fn scatter(v: Vec<Timeseries>) -> Box<Scatter<String, f64>> {
