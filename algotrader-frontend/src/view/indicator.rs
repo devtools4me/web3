@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use log::error;
 use plotly::{Plot, Scatter};
 use yew::prelude::*;
@@ -18,7 +19,7 @@ pub struct IndicatorChartProps {
 
 #[function_component(IndicatorChartView)]
 pub fn indicator_chart_component(IndicatorChartProps { indicator_type, market, resolution }: &IndicatorChartProps) -> Html {
-    let indicator_type = IndicatorType::new(indicator_type);
+    let indicator_type = IndicatorType::from_str(indicator_type.to_string().as_str()).unwrap();
     let endpoint = endpoints::indicators(&indicator_type, market, resolution);
     let title = format!("{} {} {}", IndicatorType::description(&indicator_type), market, resolution);
     let state = use_state(|| Plot::new());
@@ -27,7 +28,6 @@ pub fn indicator_chart_component(IndicatorChartProps { indicator_type, market, r
         use_effect_with_deps(
             move |_| {
                 let state = state.clone();
-                let indicator_type = IndicatorType::new(&indicator_type);
                 wasm_bindgen_futures::spawn_local(async move {
                     match fetch_single_api_response::<Vec<Indicator>>(endpoint.as_str())
                         .await

@@ -72,26 +72,6 @@ pub enum AverageType {
 }
 
 impl AverageType {
-    pub fn parse(s: &str) -> AverageType {
-        match s {
-            "SMA" => AverageType::SMA,
-            "EMA" => AverageType::EMA,
-            "HMA" => AverageType::HMA,
-            "DEMA" => AverageType::DEMA,
-            "DMA" => AverageType::DMA,
-            "MOMENTUM" => AverageType::Momentum,
-            "RMA" => AverageType::RMA,
-            "SWMA" => AverageType::SWMA,
-            "TEMA" => AverageType::TEMA,
-            "TMA" => AverageType::TMA,
-            "TRIMA" => AverageType::TRIMA,
-            "VWMA" => AverageType::VWMA,
-            "Vidya" => AverageType::Vidya,
-            "WMA" => AverageType::WMA,
-            "WSMA" => AverageType::WSMA,
-            _ => AverageType::SMA
-        }
-    }
 
     pub fn description(average_type: &AverageType) -> &str {
         match average_type {
@@ -125,39 +105,19 @@ pub struct Timeseries {
     pub timestamp: String,
 }
 
-#[derive(Debug, Eq, PartialEq, Clone, EnumString)]
+#[derive(Debug, Eq, PartialEq, Clone, Display, EnumString, EnumIter)]
 pub enum IndicatorType {
-    #[strum(serialize = "MACD", serialize = "macd")]
+    #[strum(serialize = "MACD")]
     MACD,
-    #[strum(serialize = "RSI", serialize = "rsi")]
+    #[strum(serialize = "RSI")]
     RSI,
-    #[strum(serialize = "RUN_TOGETHER", serialize = "run_together")]
+    #[strum(serialize = "RunTogether")]
     RunTogether,
-    #[strum(serialize = "SELL_VOLATILITY", serialize = "sell_volatility")]
+    #[strum(serialize = "SellVolatility")]
     SellVolatility,
 }
 
-impl ToString for IndicatorType {
-    fn to_string(&self) -> String {
-        match self {
-            IndicatorType::MACD => String::from("MACD"),
-            IndicatorType::RSI => String::from("RSI"),
-            IndicatorType::RunTogether => String::from("RUN_TOGETHER"),
-            IndicatorType::SellVolatility => String::from("SELL_VOLATILITY"),
-        }
-    }
-}
-
 impl IndicatorType {
-    pub fn new(other: &IndicatorType) -> Self {
-        match other {
-            IndicatorType::MACD => IndicatorType::MACD,
-            IndicatorType::RSI => IndicatorType::RSI,
-            IndicatorType::RunTogether => IndicatorType::RunTogether,
-            IndicatorType::SellVolatility => IndicatorType::SellVolatility,
-        }
-    }
-
     pub fn description(indicator_type: &IndicatorType) -> &str {
         match indicator_type {
             IndicatorType::MACD => "Moving Average Convergence Divergence",

@@ -69,6 +69,10 @@ impl Route {
     pub fn from_average_type(t: &AverageType) -> Route {
         Route::from_str(t.to_string().as_str()).unwrap()
     }
+
+    pub fn from_indicator_type(t: &IndicatorType) -> Route {
+        Route::from_str(t.to_string().as_str()).unwrap()
+    }
 }
 
 pub fn switch(route: Route) -> Html {

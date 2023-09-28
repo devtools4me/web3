@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use log::error;
 use yew::prelude::*;
 use yew_plotly::Plotly;
@@ -17,7 +19,7 @@ pub struct AverageChartProps {
 
 #[function_component(AverageChartView)]
 pub fn average_chart_component(AverageChartProps { average_type, market, resolution }: &AverageChartProps) -> Html {
-    let average_type = AverageType::parse(average_type.to_string().as_str());
+    let average_type = AverageType::from_str(average_type.to_string().as_str()).unwrap();
     let endpoint = endpoints::methods(&average_type, market, resolution);
     let title = format!("{} {} {}", AverageType::description(&average_type), market, resolution);
     let state = use_state(|| Plot::new());
