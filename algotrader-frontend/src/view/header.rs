@@ -2,9 +2,23 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::route::Route;
+use algotrader_api::types::AverageType;
+use strum::IntoEnumIterator;
 
 #[function_component(Header)]
 pub fn header() -> Html {
+    let methods_html = AverageType::iter()
+        .map(|x| Route::from_average_type(&x))
+        .map(|x| {
+            let route = x.clone();
+            let s = route.to_string();
+            html! {
+                <Link<Route> to={ route } classes="navbar-item">
+                    { s }
+                </Link<Route>>
+            }
+        });
+
     html! {
         <nav class="navbar is-transparent">
             <div class="navbar-brand">
@@ -28,51 +42,7 @@ pub fn header() -> Html {
                             { "Methods" }
                         </a>
                         <div class="navbar-dropdown">
-                            <Link<Route> to={ Route::EMA } classes="navbar-item">
-                                { "EMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::HMA } classes="navbar-item">
-                                { "HMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::DEMA } classes="navbar-item">
-                                { "DEMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::DMA } classes="navbar-item">
-                                { "DMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::Momentum } classes="navbar-item">
-                                { "Momentum" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::RMA } classes="navbar-item">
-                                { "RMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::SMA } classes="navbar-item">
-                                { "SMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::SWMA } classes="navbar-item">
-                                { "SWMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::TEMA } classes="navbar-item">
-                                { "TEMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::TMA } classes="navbar-item">
-                                { "TMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::TRIMA } classes="navbar-item">
-                                { "TRIMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::VWMA } classes="navbar-item">
-                                { "VWMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::Vidya } classes="navbar-item">
-                                { "Vidya" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::WMA } classes="navbar-item">
-                                { "WMA" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::WSMA } classes="navbar-item">
-                                { "WMA" }
-                            </Link<Route>>
+                            {for methods_html}
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable">

@@ -14,11 +14,23 @@ workspace = true
 workspace = true
 
 [dependencies]
-strum = "0.25"
+strum = { version = "0.25", features = ["derive"] }
 strum_macros = "0.25"
 
 [lib]
 path = "src/lib.rs"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
+[[test]]
+path = "tests/average_type_check.rs"
+name = "average_type_check"
 test = true
 doctest = true
 bench = true

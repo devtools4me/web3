@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use serde::{Deserialize, Serialize};
-use strum_macros::EnumString;
+use strum_macros::{Display, EnumIter, EnumString};
 
 pub trait New<T> {
     fn new(value: T) -> Self;
@@ -37,60 +37,38 @@ impl New<OhlcTuple<'_>> for Ohlc {
     }
 }
 
-#[derive(Debug, Eq, PartialEq, Clone, EnumString)]
+#[derive(Debug, Eq, PartialEq, Clone, Display, EnumString, EnumIter)]
 pub enum AverageType {
-    #[strum(serialize = "EMA", serialize = "ema")]
+    #[strum(serialize = "EMA")]
     EMA,
-    #[strum(serialize = "HMA", serialize = "hma")]
+    #[strum(serialize = "HMA")]
     HMA,
-    #[strum(serialize = "DEMA", serialize = "dema")]
+    #[strum(serialize = "DEMA")]
     DEMA,
-    #[strum(serialize = "DMA", serialize = "dma")]
+    #[strum(serialize = "DMA")]
     DMA,
-    #[strum(serialize = "MOMENTUM", serialize = "Momentum", serialize = "momentum")]
+    #[strum(serialize = "Momentum")]
     Momentum,
-    #[strum(serialize = "RMA", serialize = "rma")]
+    #[strum(serialize = "RMA")]
     RMA,
-    #[strum(serialize = "SMA", serialize = "sma")]
+    #[strum(serialize = "SMA")]
     SMA,
-    #[strum(serialize = "SWMA", serialize = "swma")]
+    #[strum(serialize = "SWMA")]
     SWMA,
-    #[strum(serialize = "TEMA", serialize = "tema")]
+    #[strum(serialize = "TEMA")]
     TEMA,
-    #[strum(serialize = "TMA", serialize = "tma")]
+    #[strum(serialize = "TMA")]
     TMA,
-    #[strum(serialize = "TRIMA", serialize = "trima")]
+    #[strum(serialize = "TRIMA")]
     TRIMA,
-    #[strum(serialize = "VWMA", serialize = "vwma")]
+    #[strum(serialize = "VWMA")]
     VWMA,
-    #[strum(serialize = "Vidya", serialize = "vidya")]
+    #[strum(serialize = "Vidya")]
     Vidya,
-    #[strum(serialize = "WMA", serialize = "wma")]
+    #[strum(serialize = "WMA")]
     WMA,
-    #[strum(serialize = "WSMA", serialize = "wsma")]
+    #[strum(serialize = "WSMA")]
     WSMA
-}
-
-impl ToString for AverageType {
-    fn to_string(&self) -> String {
-        match self {
-            AverageType::SMA => String::from("SMA"),
-            AverageType::EMA => String::from("EMA"),
-            AverageType::HMA => String::from("HMA"),
-            AverageType::DEMA => String::from("DEMA"),
-            AverageType::DMA => String::from("DMA"),
-            AverageType::Momentum => String::from("MOMENTUM"),
-            AverageType::RMA => String::from("RMA"),
-            AverageType::SWMA => String::from("SWMA"),
-            AverageType::TEMA => String::from("TEMA"),
-            AverageType::TMA => String::from("TMA"),
-            AverageType::TRIMA => String::from("TRIMA"),
-            AverageType::VWMA => String::from("VWMA"),
-            AverageType::Vidya => String::from("Vidya"),
-            AverageType::WMA => String::from("WMA"),
-            AverageType::WSMA => String::from("WSMA"),
-        }
-    }
 }
 
 impl AverageType {

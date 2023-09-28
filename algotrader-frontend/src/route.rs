@@ -1,12 +1,14 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
+use strum_macros::{Display, EnumIter, EnumString};
+use std::str::FromStr;
 
 use crate::view::{ohlc::OhlcView, ohlc::OhlcChartView};
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
 use crate::view::composite::{OhlcWithAverageChartView, OhlcWithIndicatorChartView};
 
-#[derive(Clone, Routable, PartialEq)]
+#[derive(Clone, Routable, PartialEq, Display, EnumString, EnumIter)]
 pub enum Route {
     #[at("/about")]
     About,
@@ -61,6 +63,12 @@ pub enum Route {
     #[not_found]
     #[at("/404")]
     NotFound,
+}
+
+impl Route {
+    pub fn from_average_type(t: &AverageType) -> Route {
+        Route::from_str(t.to_string().as_str()).unwrap()
+    }
 }
 
 pub fn switch(route: Route) -> Html {
