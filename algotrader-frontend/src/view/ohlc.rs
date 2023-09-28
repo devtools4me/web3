@@ -1,3 +1,4 @@
+use std::ops::Deref;
 use log::error;
 use yew::prelude::*;
 use yew::prelude::*;
@@ -105,24 +106,7 @@ pub fn ohlc_chart_component(props: &OhlcProps) -> Html {
                         .await
                     {
                         Ok(fetched_data) => {
-                            let x = fetched_data.iter()
-                                .map(|x| x.timestamp.clone())
-                                .collect::<Vec<_>>();
-                            let open = fetched_data.iter()
-                                .map(|x| x.open.parse::<f64>().unwrap())
-                                .collect::<Vec<_>>();
-                            let high = fetched_data.iter()
-                                .map(|x| x.high.parse::<f64>().unwrap())
-                                .collect::<Vec<_>>();
-                            let low = fetched_data.iter()
-                                .map(|x| x.low.parse::<f64>().unwrap())
-                                .collect::<Vec<_>>();
-                            let close = fetched_data.iter()
-                                .map(|x| x.close.parse::<f64>().unwrap())
-                                .collect::<Vec<_>>();
-                            let trace = plotly::Ohlc::new(x, open, high, low, close);
-                            let mut plot = Plot::new();
-                            plot.add_trace(trace);
+                            let plot = ohlc_plot(fetched_data);
                             state.set(plot);
                         }
                         Err(e) => {
@@ -139,8 +123,30 @@ pub fn ohlc_chart_component(props: &OhlcProps) -> Html {
         <div class="section">
             <div class="container">
                 <h1 class="title">{title.as_str()}</h1>
-                <Plotly plot={(*state).clone()}/>
+                <Plotly plot={state.deref().clone()}/>
             </div>
         </div>
     }
+}
+
+fn ohlc_plot(fetched_data: Vec<Ohlc>) -> Plot {
+    let x = fetched_data.iter()
+        .map(|x| x.timestamp.clone())
+        .collect::<Vec<_>>();
+    let open = fetched_data.iter()
+        .map(|x| x.open.parse::<f64>().unwrap())
+        .collect::<Vec<_>>();
+    let high = fetched_data.iter()
+        .map(|x| x.high.parse::<f64>().unwrap())
+        .collect::<Vec<_>>();
+    let low = fetched_data.iter()
+        .map(|x| x.low.parse::<f64>().unwrap())
+        .collect::<Vec<_>>();
+    let close = fetched_data.iter()
+        .map(|x| x.close.parse::<f64>().unwrap())
+        .collect::<Vec<_>>();
+    let trace = plotly::Ohlc::new(x, open, high, low, close);
+    let mut plot = Plot::new();
+    plot.add_trace(trace);
+    plot
 }
