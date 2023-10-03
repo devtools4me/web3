@@ -1,0 +1,48 @@
+[package]
+name = "algotrader-num"
+
+[package.edition]
+workspace = true
+
+[package.version]
+workspace = true
+
+[dependencies.log]
+workspace = true
+
+[dependencies.yata]
+workspace = true
+
+[dependencies.serde]
+workspace = true
+
+[dependencies.serde_json]
+workspace = true
+
+[dependencies]
+algotrader-api = { version = "0.0.1", path = "../algotrader-api" }
+algotrader-common = { version = "0.0.1", path = "../algotrader-common" }
+pyo3 = {version = "0.16.4", features = ["auto-initialize"]}
+
+[lib]
+path = "src/lib.rs"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
+[[test]]
+path = "tests/num_check.rs"
+name = "run_num_check"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
