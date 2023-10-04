@@ -6,9 +6,10 @@ use pyo3::types::PyList;
 
 use crate::types::*;
 
-pub fn get_cointegration(req: CointRequest) -> PyResult<String> {
+pub fn get_cointegration(req: CointRequest) -> PyResult<CointResponse> {
     let json = serde_json::to_string(&req).unwrap();
     get_cointegration_json(json.as_str())
+        .map(|x| serde_json::from_str::<CointResponse>(x.as_str()).unwrap())
 }
 
 pub fn get_cointegration_json(req: &str) -> PyResult<String> {

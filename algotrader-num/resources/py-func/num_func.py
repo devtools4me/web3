@@ -32,7 +32,7 @@ def get_cointegration(obj):
   return _cointegration(obj["series_1"], obj["series_2"])
 
 def get_cointegration_json(s):
-  args = json.load(s)
+  args = json.loads(s)
   res = get_cointegration(args)
   return json.dumps(res)
 
