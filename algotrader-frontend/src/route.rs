@@ -1,12 +1,14 @@
-use yew::prelude::*;
-use yew_router::prelude::*;
-use strum_macros::{Display, EnumIter, EnumString};
 use std::str::FromStr;
 
-use crate::view::{ohlc::OhlcView, ohlc::OhlcChartView};
+use strum_macros::{Display, EnumIter, EnumString};
+use yew::prelude::*;
+use yew_router::prelude::*;
+
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
-use crate::view::composite::{OhlcWithAverageChartView, OhlcWithIndicatorChartView};
+
+use crate::view::ohlc::OhlcChartView;
+use crate::view::composite::{OhlcWithAverageChartView, OhlcWithIndicatorChartView, OhlcWithMarketView};
 
 #[derive(Clone, Routable, PartialEq, Display, EnumString, EnumIter)]
 pub enum Route {
@@ -79,8 +81,8 @@ pub fn switch(route: Route) -> Html {
     let market = env_utils::get_market();
     let resolution = env_utils::get_resolution();
     match route {
-        Route::Home => html! { <OhlcView market={"BTC-USD"} resolution={"1DAY"} /> },
-        Route::Ohlc => html! { <OhlcChartView market={"BTC-USD"} resolution={"1DAY"}  /> },
+        Route::Home => html! { <OhlcWithMarketView market={market} resolution={resolution} /> },
+        Route::Ohlc => html! { <OhlcChartView market={market} resolution={resolution}  /> },
         //Methods
         Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} market={market} resolution={resolution} /> },
         Route::HMA => html! { <OhlcWithAverageChartView average_type={AverageType::HMA} market={market} resolution={resolution} /> },

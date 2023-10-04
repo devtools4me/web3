@@ -8,13 +8,9 @@ use yew_plotly::plotly::Plot;
 use algotrader_api::endpoints;
 use algotrader_api::types::*;
 use algotrader_api::types::*;
+use crate::types::props::{OhlcListProps, OhlcProps};
 
 use crate::utils::api_utils::fetch_single_api_response;
-
-#[derive(Properties, PartialEq)]
-struct OhlcListProps {
-    ohlc_data: Vec<Ohlc>,
-}
 
 #[function_component(OhlcList)]
 fn ohlc_list(OhlcListProps { ohlc_data }: &OhlcListProps) -> Html {
@@ -49,15 +45,10 @@ fn ohlc_list(OhlcListProps { ohlc_data }: &OhlcListProps) -> Html {
     }
 }
 
-#[derive(Properties, PartialEq)]
-pub struct OhlcProps {
-    pub market: String,
-    pub resolution: String
-}
-
 #[function_component(OhlcView)]
 pub fn ohlc_data_component(props: &OhlcProps) -> Html {
     let endpoint = endpoints::candles(props.market.as_str(), props.resolution.as_str());
+    let title = format!("OHLC {} {}", props.market, props.resolution);
     let ohlc_data = use_state(|| vec![]);
     {
         let ohlc_data = ohlc_data.clone();
@@ -84,7 +75,7 @@ pub fn ohlc_data_component(props: &OhlcProps) -> Html {
     html! {
         <div class="section">
             <div class="container">
-                <h1 class="title">{"Main page"}</h1>
+                <h1 class="title">{title.as_str()}</h1>
                 <OhlcList ohlc_data={(*ohlc_data).clone()} />
             </div>
         </div>
