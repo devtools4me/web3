@@ -28,6 +28,11 @@ def _spread_z_score(series_1, series_2, hedge_ratio, z_score_window):
 def get_spread_z_score(obj):
   return _spread_z_score(obj["series_1"], obj["series_2"], obj["hedge_ratio"], obj["z_score_window"])
 
+def get_spread_z_score_json(s):
+  args = json.loads(s)
+  res = get_spread_z_score(args)
+  return json.dumps(res)
+
 def get_cointegration(obj):
   return _cointegration(obj["series_1"], obj["series_2"])
 
