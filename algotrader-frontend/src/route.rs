@@ -19,7 +19,10 @@ pub enum Route {
     Ohlc,
     #[at("/cointegration")]
     Cointegration,
-
+    #[at("/spread")]
+    Spread,
+    #[at("/trends")]
+    Trends,
     // Methods
     #[at("/ema")]
     EMA,
@@ -87,6 +90,8 @@ pub fn switch(route: Route) -> Html {
         Route::Home => html! { <OhlcWithMarketView market={market} resolution={resolution} /> },
         Route::Ohlc => html! { <OhlcChartView market={market} resolution={resolution}  /> },
         Route::Cointegration => html! { <CointegrationView market1={"BTC-USD"} market2={"ETH-USD"} resolution={resolution}  /> },
+        Route::Spread => html! { <CointegrationView market1={"BTC-USD"} market2={"ETH-USD"} resolution={resolution}  /> },
+        Route::Trends => html! { <CointegrationView market1={"BTC-USD"} market2={"ETH-USD"} resolution={resolution}  /> },
         //Methods
         Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} market={market} resolution={resolution} /> },
         Route::HMA => html! { <OhlcWithAverageChartView average_type={AverageType::HMA} market={market} resolution={resolution} /> },

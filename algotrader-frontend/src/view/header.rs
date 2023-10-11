@@ -56,6 +56,12 @@ pub fn header() -> Html {
                             <Link<Route> to={ Route::Cointegration } classes="navbar-link">
                                 { "Cointegration" }
                             </Link<Route>>
+                            <Link<Route> to={ Route::Spread } classes="navbar-link">
+                                { "Spread & Z-Score" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::Trends } classes="navbar-link">
+                                { "Trends" }
+                            </Link<Route>>
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable">
