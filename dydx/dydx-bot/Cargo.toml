@@ -109,6 +109,7 @@ workspace = true
 algotrader-api = { version = "0.0.1", path = "../../algotrader-api" }
 algotrader-common = { version = "0.0.1", path = "../../algotrader-common" }
 algotrader-ta = { version = "0.0.1", path = "../../algotrader-ta" }
+algotrader-num = { version = "0.0.1", path = "../../algotrader-num" }
 
 [lib]
 path = "src/lib.rs"

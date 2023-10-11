@@ -9,12 +9,15 @@ use dydx_v3_rust::{
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
 use algotrader_common::utils::vec_utils::*;
-use algotrader_ta::methods;
+use algotrader_num::types::CointResponse;
 use algotrader_ta::indicators;
+use algotrader_ta::methods;
 
 use crate::configuration;
 use crate::configuration::Settings;
+use crate::service::cointegration_ops::*;
 use crate::service::dydx_ops::*;
+use crate::service::dydx_types::*;
 use crate::service::utils::eyre;
 
 pub struct DydxService {
@@ -102,6 +105,37 @@ impl DydxService {
             .map(|x| indicator(indicator_type, x));
         eyre(result)
     }
+
+    pub async fn get_cointegration(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<CointResponse, String> {
+        let client = self.dydx_client();
+        let result = client.get_cointegration(market1, market2, resolution, None, None, None)
+            .await;
+        eyre(result)
+    }
+
+    pub async fn get_zscore(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
+        let client = self.dydx_client();
+        let result = client.get_spread(market1, market2, resolution)
+            .await
+            .map(|x| sread_vec_to_zscore_ts_vec(x));
+        eyre(result)
+    }
+
+    pub async fn get_spread(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
+        let client = self.dydx_client();
+        let result = client.get_spread(market1, market2, resolution)
+            .await
+            .map(|x| sread_vec_to_spread_ts_vec(x));
+        eyre(result)
+    }
+
+    pub async fn get_trends(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
+        let client = self.dydx_client();
+        let result = client.get_spread(market1, market2, resolution)
+            .await
+            .map(|x| sread_vec_to_spread_ts_vec(x));
+        eyre(result)
+    }
 }
 
 fn average(average_type: &str, v: Vec<Timeseries>) -> Vec<Timeseries> {
@@ -134,24 +168,6 @@ fn indicator(indicator_type: &str, v: Vec<Ohlc>) -> Vec<Indicator> {
         IndicatorType::RunTogether => indicators::run_together(v),
         IndicatorType::SellVolatility => indicators::sell_volatility(v),
     }
-}
-
-fn candle_vec_to_owned_ohlc_vec(v: Vec<Candle>) -> Vec<Ohlc> {
-    convert(v, |x| Ohlc {
-        open: x.open,
-        high: x.high,
-        low: x.low,
-        close: x.close,
-        volume: x.base_token_volume,
-        timestamp: x.updated_at,
-    })
-}
-
-fn candle_vec_to_owned_ts_vec(v: Vec<Candle>) -> Vec<Timeseries> {
-    convert(v, |x| Timeseries {
-        value: x.close,
-        timestamp: x.updated_at,
-    })
 }
 
 fn client_options(other: &configuration::ClientOptions) -> ClientOptions {

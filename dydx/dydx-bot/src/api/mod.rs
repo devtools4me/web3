@@ -7,3 +7,4 @@ mod history;
 mod tmpl;
 mod ta;
 mod public;
+mod cointegration;
