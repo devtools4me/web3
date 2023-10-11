@@ -16,10 +16,6 @@ pub fn cointegration<'a>(market1: &'a str, market2: &'a str, resolution: &'a str
     format!("/cointegration/{}/{}/{}", market1, market2, resolution)
 }
 
-pub fn cointegration_zscore<'a>(market1: &'a str, market2: &'a str, resolution: &'a str) -> String {
-    format!("/cointegration/zscore/{}/{}/{}", market1, market2, resolution)
-}
-
 pub fn cointegration_spread<'a>(market1: &'a str, market2: &'a str, resolution: &'a str) -> String {
     format!("/cointegration/spread/{}/{}/{}", market1, market2, resolution)
 }

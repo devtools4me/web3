@@ -4,3 +4,4 @@ pub mod average;
 pub mod indicator;
 pub mod composite;
 pub mod markets;
+pub mod cointegration;

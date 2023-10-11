@@ -200,3 +200,31 @@ impl New<&Indicator> for SourceChangeIndicator {
         }
     }
 }
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct CointegrationData {
+    pub p_value: f32,
+    pub coint_t: f32,
+    pub c_value: f32,
+    pub hedge_ratio: f32,
+    pub zero_crossings: i64,
+}
+
+impl Default for CointegrationData {
+    fn default() -> Self {
+        Self {
+            p_value: 0.0,
+            coint_t: 0.0,
+            c_value: 0.0,
+            hedge_ratio: 0.0,
+            zero_crossings: 0,
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct SpreadZScoreData {
+    pub spread: Vec<String>,
+    pub z_score: Vec<String>,
+    pub timestamp: Vec<String>,
+}
