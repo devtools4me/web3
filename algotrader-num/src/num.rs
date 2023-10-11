@@ -24,3 +24,10 @@ pub fn get_spread_z_score(req: SpreadRequest) -> PyResult<SpreadResponse> {
     }, json.as_str())
         .map(|x| serde_json::from_str::<SpreadResponse>(x.as_str()).unwrap())
 }
+
+pub fn with_std_err<T>(result: PyResult<T>) -> Result<T, Box<dyn std::error::Error>> {
+    match result {
+        Ok(v) => Ok(v),
+        Err(e) => Err(e.to_string().as_str().into())
+    }
+}

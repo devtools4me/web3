@@ -27,6 +27,9 @@ pub fn run_with_data(data: Data<AppData>) -> Result<Server, std::io::Error> {
             .service(history::get_candles)
             .service(ta::get_method)
             .service(ta::get_indicator)
+            .service(cointegration::get_cointegration)
+            .service(cointegration::get_cointegration_spread)
+            .service(cointegration::get_cointegration_trends)
             .service(Files::new("/", "./dist/").index_file("index.html"))
     })
         .bind("0.0.0.0:8000")?

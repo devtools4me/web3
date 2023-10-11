@@ -9,7 +9,7 @@ use dydx_v3_rust::{
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
 use algotrader_common::utils::vec_utils::*;
-use algotrader_num::types::CointResponse;
+use algotrader_num::types::{CointResponse, SpreadResponse};
 use algotrader_ta::indicators;
 use algotrader_ta::methods;
 
@@ -113,25 +113,16 @@ impl DydxService {
         eyre(result)
     }
 
-    pub async fn get_zscore(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
+    pub async fn get_spread_zscore(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<SpreadResponse, String> {
         let client = self.dydx_client();
-        let result = client.get_spread(market1, market2, resolution)
-            .await
-            .map(|x| sread_vec_to_zscore_ts_vec(x));
-        eyre(result)
-    }
-
-    pub async fn get_spread(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
-        let client = self.dydx_client();
-        let result = client.get_spread(market1, market2, resolution)
-            .await
-            .map(|x| sread_vec_to_spread_ts_vec(x));
+        let result = client.get_spread_zscore(market1, market2, resolution, None, None, None)
+            .await;
         eyre(result)
     }
 
     pub async fn get_trends(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
         let client = self.dydx_client();
-        let result = client.get_spread(market1, market2, resolution)
+        let result = client.get_spread_zscore(market1, market2, resolution, None, None, None)
             .await
             .map(|x| sread_vec_to_spread_ts_vec(x));
         eyre(result)
