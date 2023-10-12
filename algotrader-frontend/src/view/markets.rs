@@ -4,23 +4,14 @@ use yew::prelude::*;
 
 use algotrader_api::types::*;
 
-use crate::types::props::{MarketsProps, StrCbProps};
+use crate::types::props::{MarketsProps, StrCbPairProps, StrCbProps};
 use crate::types::AppState;
 
 #[function_component(MarketsDatalist)]
 fn markets_datalist(props: &MarketsProps) -> Html {
     let callback = props.callback.clone();
     let app_context = use_context::<AppState>();
-    let on_market_change = {
-        Callback::from(move |e: Event| {
-            let input = e.target()
-                .and_then(|t| t.dyn_into::<HtmlSelectElement>().ok());
-            if let Some(input) = input {
-                //info!("index={}, value={}", input.selected_index(), input.value());
-                callback.emit(input.value());
-            }
-        })
-    };
+    let on_market_change = on_select_element(callback);
     let market_data_html = props.markets.iter().map(|x| {
         let selected = x.starts_with("BTC");
         html! {
@@ -36,6 +27,17 @@ fn markets_datalist(props: &MarketsProps) -> Html {
     }
 }
 
+pub fn on_select_element(callback: Callback<String>) -> Callback<Event> {
+    Callback::from(move |e: Event| {
+        let input = e.target()
+            .and_then(|t| t.dyn_into::<HtmlSelectElement>().ok());
+        if let Some(input) = input {
+            //info!("index={}, value={}", input.selected_index(), input.value());
+            callback.emit(input.value());
+        }
+    })
+}
+
 #[function_component(MarketsSelect)]
 pub fn markets_select_component(props: &StrCbProps) -> Html {
     let callback = props.callback.clone();
@@ -45,6 +47,22 @@ pub fn markets_select_component(props: &StrCbProps) -> Html {
             <div class="container">
                 <h1 class="title">{"Market"}</h1>
                 <MarketsDatalist markets={app_context.clone().unwrap_or_default().markets} callback={callback}/>
+            </div>
+        </div>
+    }
+}
+
+#[function_component(MarketsPairSelect)]
+pub fn markets_pair_select_component(props: &StrCbPairProps) -> Html {
+    let callback1 = props.callback1.clone();
+    let callback2 = props.callback2.clone();
+    let app_context = use_context::<AppState>();
+    html! {
+        <div class="section">
+            <div class="container">
+                <h1 class="title">{"Markets"}</h1>
+                <MarketsDatalist markets={app_context.clone().unwrap_or_default().markets} callback={callback1}/>
+                <MarketsDatalist markets={app_context.clone().unwrap_or_default().markets} callback={callback2}/>
             </div>
         </div>
     }

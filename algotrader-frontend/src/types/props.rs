@@ -20,6 +20,12 @@ pub struct StrCbProps {
 }
 
 #[derive(Properties, PartialEq)]
+pub struct StrCbPairProps {
+    pub callback1: Callback<String>,
+    pub callback2: Callback<String>,
+}
+
+#[derive(Properties, PartialEq)]
 pub struct MarketsProps {
     pub markets: Vec<String>,
     pub callback: Callback<String>,

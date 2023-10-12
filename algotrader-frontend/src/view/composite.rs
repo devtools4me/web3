@@ -2,7 +2,7 @@ use yew::prelude::*;
 use log::info;
 use crate::types::props::OhlcProps;
 use crate::view::ohlc::*;
-use crate::view::markets::MarketsSelect;
+use crate::view::markets::{MarketsPairSelect, MarketsSelect};
 use crate::view::average::*;
 use crate::view::cointegration::*;
 use crate::view::indicator::*;
@@ -33,8 +33,7 @@ pub fn cointegration_with_market_component(props: &CointegrationProps) -> Html {
     };
     html! {
         <div>
-            <MarketsSelect callback={callback1} />
-            <MarketsSelect callback={callback2} />
+            <MarketsPairSelect callback1={callback1} callback2={callback2}/>
             <CointegrationView market1={(*current_market1).clone()} market2={(*current_market2).clone()} resolution={props.resolution.clone()}  />
         </div>
     }
