@@ -15,6 +15,11 @@ pub fn get_market() -> String {
     String::from(market)
 }
 
+pub fn get_market2() -> String {
+    let market = dotenv!("MARKET2");
+    String::from(market)
+}
+
 pub fn get_markets() -> Vec<String> {
     let market = dotenv!("MARKETS");
     String::from(market)

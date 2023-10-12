@@ -6,10 +6,9 @@ use yew_router::prelude::*;
 
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
-use crate::view::cointegration::CointegrationView;
 
 use crate::view::ohlc::OhlcChartView;
-use crate::view::composite::{OhlcWithAverageChartView, OhlcWithIndicatorChartView, OhlcWithMarketView};
+use crate::view::composite::*;
 
 #[derive(Clone, Routable, PartialEq, Display, EnumString, EnumIter)]
 pub enum Route {
@@ -85,13 +84,14 @@ impl Route {
 
 pub fn switch(route: Route) -> Html {
     let market = env_utils::get_market();
+    let market2 = env_utils::get_market2();
     let resolution = env_utils::get_resolution();
     match route {
         Route::Home => html! { <OhlcWithMarketView market={market} resolution={resolution} /> },
         Route::Ohlc => html! { <OhlcChartView market={market} resolution={resolution}  /> },
-        Route::Cointegration => html! { <CointegrationView market1={"BTC-USD"} market2={"ETH-USD"} resolution={resolution}  /> },
-        Route::Spread => html! { <CointegrationView market1={"BTC-USD"} market2={"ETH-USD"} resolution={resolution}  /> },
-        Route::Trends => html! { <CointegrationView market1={"BTC-USD"} market2={"ETH-USD"} resolution={resolution}  /> },
+        Route::Cointegration => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
+        Route::Spread => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
+        Route::Trends => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
         //Methods
         Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} market={market} resolution={resolution} /> },
         Route::HMA => html! { <OhlcWithAverageChartView average_type={AverageType::HMA} market={market} resolution={resolution} /> },
