@@ -19,6 +19,8 @@ mod view;
 mod route;
 mod js;
 mod types;
+mod struct_app;
+mod stores;
 
 #[function_component(App)]
 fn app() -> Html {

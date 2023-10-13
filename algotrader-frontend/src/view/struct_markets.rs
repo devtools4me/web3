@@ -1,22 +1,33 @@
+use log::info;
 use yew::prelude::*;
 
-use algotrader_common::utils::env_utils;
-
-use crate::utils::ui_utils::on_select_element;
+use wasm_bindgen::JsCast;
+use web_sys::HtmlSelectElement;
 
 pub struct StructMarkets {
     pub markets: Vec<String>,
     pub selected_market: String,
 }
 
+pub enum StructMarketsMessage {
+    MarketSelected(Event)
+}
+
+#[derive(Properties, PartialEq)]
+pub struct Props {
+    pub markets: Vec<String>,
+    pub selected_market: String,
+}
+
 impl Component for StructMarkets {
-    type Message = ();
-    type Properties = ();
+    type Message = StructMarketsMessage;
+    type Properties = Props;
 
     fn create(ctx: &Context<Self>) -> Self {
-        StructMarkets {
-            markets: env_utils::get_markets(),
-            selected_market: env_utils::get_market()
+        let props = ctx.props().clone();
+        Self {
+            markets: props.markets.clone(),
+            selected_market: props.selected_market.clone()
         }
     }
 
@@ -25,7 +36,8 @@ impl Component for StructMarkets {
 
         });
 
-        let on_market_change = on_select_element(callback);
+        //let on_market_change = on_select_element(callback);
+        let on_market_change = ctx.link().callback(|e| StructMarketsMessage::MarketSelected(e));
         let market_data_html = self.markets.iter().map(|x| {
             let selected = x.eq(self.selected_market.as_str());
             html! {
@@ -38,6 +50,23 @@ impl Component for StructMarkets {
                     {for market_data_html}
                 </select>
             </div>
+        }
+    }
+
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            StructMarketsMessage::MarketSelected(event) => {
+                let input = event.target()
+                    .and_then(|t| t.dyn_into::<HtmlSelectElement>().ok());
+                if let Some(input) = input {
+                    info!("index={}, value={}", input.selected_index(), input.value());
+                    self.selected_market = input.value().clone();
+                    //callback.emit(input.value());
+                    true
+                } else {
+                    false
+                }
+            }
         }
     }
 }
