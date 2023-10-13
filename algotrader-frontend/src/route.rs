@@ -9,6 +9,7 @@ use algotrader_common::utils::env_utils;
 
 use crate::view::ohlc::OhlcChartView;
 use crate::view::composite::*;
+use crate::view::struct_markets::StructMarkets;
 
 #[derive(Clone, Routable, PartialEq, Display, EnumString, EnumIter)]
 pub enum Route {
@@ -91,7 +92,8 @@ pub fn switch(route: Route) -> Html {
         Route::Ohlc => html! { <OhlcChartView market={market} resolution={resolution}  /> },
         Route::Cointegration => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
         Route::Spread => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
-        Route::Trends => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
+        //Route::Trends => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
+        Route::Trends => html! { <StructMarkets /> },
         //Methods
         Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} market={market} resolution={resolution} /> },
         Route::HMA => html! { <OhlcWithAverageChartView average_type={AverageType::HMA} market={market} resolution={resolution} /> },

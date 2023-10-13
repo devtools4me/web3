@@ -1,11 +1,10 @@
-use wasm_bindgen::JsCast;
-use web_sys::HtmlSelectElement;
 use yew::prelude::*;
 
 use algotrader_api::types::*;
 
 use crate::types::props::{MarketsProps, StrCbPairProps, StrCbProps};
 use crate::types::AppState;
+use crate::utils::ui_utils::on_select_element;
 
 #[function_component(MarketsDatalist)]
 fn markets_datalist(props: &MarketsProps) -> Html {
@@ -25,17 +24,6 @@ fn markets_datalist(props: &MarketsProps) -> Html {
             </select>
         </div>
     }
-}
-
-pub fn on_select_element(callback: Callback<String>) -> Callback<Event> {
-    Callback::from(move |e: Event| {
-        let input = e.target()
-            .and_then(|t| t.dyn_into::<HtmlSelectElement>().ok());
-        if let Some(input) = input {
-            //info!("index={}, value={}", input.selected_index(), input.value());
-            callback.emit(input.value());
-        }
-    })
 }
 
 #[function_component(MarketsSelect)]
