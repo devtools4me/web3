@@ -17,7 +17,7 @@ pub struct CointegrationDataProps {
 }
 
 #[function_component(CointegrationDataView)]
-fn cointegration_data_component(CointegrationDataProps { data }: &CointegrationDataProps) -> Html {
+pub fn cointegration_data_component(CointegrationDataProps { data }: &CointegrationDataProps) -> Html {
     let CointegrationData {p_value, coint_t, c_value, hedge_ratio, zero_crossings} = data;
     let data = vec![
         ("p_value", p_value.to_string()),

@@ -28,5 +28,6 @@ pub struct StrCbPairProps {
 #[derive(Properties, PartialEq)]
 pub struct MarketsProps {
     pub markets: Vec<String>,
+    pub selected_market: String,
     pub callback: Callback<String>,
 }
