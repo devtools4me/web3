@@ -92,7 +92,7 @@ pub fn cointegration_component() -> Html {
             <div class="container">
                 <h1 class="title">{"Cointegration"}</h1>
                 <MarketsDatalist markets={store.markets.clone()} selected_market={store.market1.clone()} callback={callback1}/>
-                <MarketsDatalist markets={store.markets.clone()} selected_market={store.market1.clone()} callback={callback2}/>
+                <MarketsDatalist markets={store.markets.clone()} selected_market={store.market2.clone()} callback={callback2}/>
                 <CointegrationDataView data={store.data.clone()}/>
             </div>
         </div>
