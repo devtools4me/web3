@@ -60,11 +60,11 @@ pub fn set_data(data: CointegrationData, dispatch: Dispatch<CointStore>) {
     })
 }
 
-#[function_component(App)]
-pub fn app() -> Html {
+#[function_component(CointegrationView)]
+pub fn cointegration_component() -> Html {
+    info!("cointegration_component");
     let (store, dispatch) = use_store::<CointStore>();
-    //fetch_markets(dispatch.clone());
-    fetch_coint_with_dispatch(dispatch.clone());
+    fetch_cointegration(dispatch.clone());
 
     let callback1: Callback<String> = {
         let dispatch = dispatch.clone();
@@ -72,7 +72,6 @@ pub fn app() -> Html {
             move |market_value: String, _| {
                 info!("market1_value={}", market_value);
                 set_market1(market_value.clone(), dispatch.clone());
-                fetch_coint_with_dispatch(dispatch.clone());
             },
             (),
         )
@@ -83,7 +82,6 @@ pub fn app() -> Html {
             move |market_value: String, _| {
                 info!("market2_value={}", market_value);
                 set_market2(market_value.clone(), dispatch.clone());
-                fetch_coint_with_dispatch(dispatch.clone());
             },
             (),
         )
@@ -92,21 +90,20 @@ pub fn app() -> Html {
     html! {
         <div class="section">
             <div class="container">
-                <h1 class="title">{"Markets"}</h1>
+                <h1 class="title">{"Cointegration"}</h1>
                 <MarketsDatalist markets={store.markets.clone()} selected_market={store.market1.clone()} callback={callback1}/>
-                <MarketsDatalist markets={store.markets.clone()} selected_market={store.market2.clone()} callback={callback2}/>
+                <MarketsDatalist markets={store.markets.clone()} selected_market={store.market1.clone()} callback={callback2}/>
+                <CointegrationDataView data={store.data.clone()}/>
             </div>
-            <CointegrationDataView data={store.data.clone()}/>
         </div>
     }
 }
 
-fn fetch_coint_with_dispatch(dispatch: Dispatch<CointStore>) {
+fn fetch_cointegration(dispatch: Dispatch<CointStore>) {
     let store: Rc<CointStore> = dispatch.get();
-    fetch_coint(store.market1.clone(), store.market2.clone(), store.resolution.clone(), dispatch);
-}
-
-fn fetch_coint(market1: String, market2: String, resolution: String, dispatch: Dispatch<CointStore>) {
+    let market1 = store.market1.clone();
+    let market2 = store.market2.clone();
+    let resolution = store.resolution.clone();
     spawn_local(async move {
         let endpoint = endpoints::cointegration(market1.as_str(), market2.as_str(), resolution.as_str());
         match fetch_single_api_response::<CointegrationData>(endpoint.as_str())
@@ -115,23 +112,6 @@ fn fetch_coint(market1: String, market2: String, resolution: String, dispatch: D
             Ok(fetched_data) => {
                 info!("fetched_data={:?}", fetched_data);
                 set_data(fetched_data, dispatch);
-            }
-            Err(e) => {
-                error!("{e}")
-            }
-        };
-    });
-}
-
-fn fetch_markets(dispatch: Dispatch<CointStore>) {
-    let endpoint = endpoints::markets();
-    spawn_local(async move {
-        match fetch_single_api_response::<Vec<String>>(endpoint.as_str())
-            .await
-        {
-            Ok(fetched_data) => {
-                info!("fetched_data={:?}", fetched_data);
-                set_markets(fetched_data, dispatch);
             }
             Err(e) => {
                 error!("{e}")

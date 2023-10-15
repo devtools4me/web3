@@ -8,6 +8,7 @@ use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
 
 use crate::view::composite::*;
+use crate::view::coint::CointegrationView;
 use crate::view::ohlc::OhlcChartView;
 use crate::view::struct_markets::StructMarkets;
 
@@ -91,7 +92,7 @@ pub fn switch(route: Route) -> Html {
     match route {
         Route::Home => html! { <OhlcWithMarketView market={market} resolution={resolution} /> },
         Route::Ohlc => html! { <OhlcChartView market={market} resolution={resolution}  /> },
-        Route::Cointegration => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
+        Route::Cointegration => html! { <CointegrationView /> },
         Route::Spread => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
         //Route::Trends => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
         Route::Trends => html! { <StructMarkets markets={markets} selected_market={market2}/> },

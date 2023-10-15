@@ -19,7 +19,6 @@ mod view;
 mod route;
 mod js;
 mod types;
-mod struct_app;
 mod stores;
 
 #[function_component(App)]
@@ -63,5 +62,5 @@ fn app() -> Html {
 
 fn main() {
     wasm_logger::init(wasm_logger::Config::default());
-    yew::Renderer::<struct_app::App>::new().render();
+    yew::Renderer::<App>::new().render();
 }

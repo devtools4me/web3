@@ -6,3 +6,4 @@ pub mod composite;
 pub mod markets;
 pub mod cointegration;
 pub mod struct_markets;
+pub mod coint;
