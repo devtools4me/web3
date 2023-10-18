@@ -128,7 +128,7 @@ fn fetch_cointegration(dispatch: Dispatch<CointStore>) {
         {
             Ok(fetched_data) => {
                 info!("fetched_data={:?}", fetched_data);
-                set_data(fetched_data, dispatch);
+                set_cointegration_data(fetched_data, dispatch);
             }
             Err(e) => {
                 error!("{e}")
