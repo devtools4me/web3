@@ -57,7 +57,7 @@ pub fn indicator_chart_component(IndicatorChartProps { indicator_type, market, r
 }
 
 fn indicator_plot(indicator_type: IndicatorType, v: Vec<Indicator>) -> Plot {
-    let traces = scatter(&indicator_type, v);
+    let traces: Vec<Box<Scatter<String, f64>>> = scatter(&indicator_type, v);
     let mut plot = Plot::new();
     for t in traces.iter() {
         plot.add_trace(t.clone());

@@ -110,7 +110,7 @@ pub fn cointegration_component() -> Html {
                 <MarketsDatalist markets={store.markets.clone()} selected_market={store.market1.clone()} callback={callback1}/>
                 <MarketsDatalist markets={store.markets.clone()} selected_market={store.market2.clone()} callback={callback2}/>
                 <CointegrationDataView data={store.cointegration_data.clone()}/>
-                <SpreadZScoreDataView data={store.spread_zscore_data.clone()}/>
+                <SpreadZScoreDataView market1={store.market1.clone()} market2={store.market2.clone()} data={store.spread_zscore_data.clone()}/>
             </div>
         </div>
     }
