@@ -113,18 +113,17 @@ impl DydxService {
         eyre(result)
     }
 
-    pub async fn get_spread_zscore(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<SpreadResponse, String> {
+    pub async fn get_spread_zscore(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<SpreadZScoreData, String> {
         let client = self.dydx_client();
         let result = client.get_spread_zscore(market1, market2, resolution, None, None, None)
             .await;
         eyre(result)
     }
 
-    pub async fn get_trends(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<Vec<Timeseries>, String> {
+    pub async fn get_trends(&self, market1: &str, market2: &str, resolution: &str) -> eyre::Result<TrendsData, String> {
         let client = self.dydx_client();
-        let result = client.get_spread_zscore(market1, market2, resolution, None, None, None)
-            .await
-            .map(|x| sread_vec_to_spread_ts_vec(x));
+        let result = client.get_trends(market1, market2, resolution, None, None, None)
+            .await;
         eyre(result)
     }
 }

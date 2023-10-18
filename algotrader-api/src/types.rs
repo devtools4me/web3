@@ -103,6 +103,12 @@ pub struct Timeseries {
     pub timestamp: String,
 }
 
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct TimeseriesF32 {
+    pub value: f32,
+    pub timestamp: String,
+}
+
 #[derive(Debug, Eq, PartialEq, Clone, Display, EnumString, EnumIter)]
 pub enum IndicatorType {
     #[strum(serialize = "MACD")]
@@ -227,4 +233,29 @@ pub struct SpreadZScoreData {
     pub spread: Vec<String>,
     pub z_score: Vec<String>,
     pub timestamp: Vec<String>,
+}
+
+impl Default for SpreadZScoreData {
+    fn default() -> Self {
+        Self {
+            spread: vec![],
+            z_score: vec![],
+            timestamp: vec![],
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct TrendsData {
+    pub cointegration_data: CointegrationData,
+    pub spread_zscore_data: SpreadZScoreData,
+}
+
+impl Default for TrendsData {
+    fn default() -> Self {
+        Self {
+            cointegration_data: CointegrationData::default(),
+            spread_zscore_data: SpreadZScoreData::default(),
+        }
+    }
 }

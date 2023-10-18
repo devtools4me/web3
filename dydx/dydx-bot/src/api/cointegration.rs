@@ -30,6 +30,6 @@ pub async fn get_cointegration_trends(req: HttpRequest) -> impl Responder {
     let market2 = req.match_info().get("market2").unwrap();
     let resolution = req.match_info().get("resolution").unwrap();
     let app_data = req.app_data::<Data<AppData>>().unwrap();
-    let res = app_data.dydx.get_spread_zscore(market1, market2, resolution).await;
+    let res = app_data.dydx.get_trends(market1, market2, resolution).await;
     http_response(res)
 }

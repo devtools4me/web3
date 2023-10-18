@@ -31,7 +31,7 @@ pub fn sread_vec_to_zscore_ts_vec(other: SpreadResponse) -> Vec<Timeseries> {
     })
 }
 
-pub fn sread_vec_to_spread_ts_vec(other: SpreadResponse) -> Vec<Timeseries> {
+pub fn sread_vec_to_spread_ts_vec(other: SpreadZScoreData) -> Vec<Timeseries> {
     convert(other.spread, |x| Timeseries {
         value: x,
         timestamp: String::from(""),
