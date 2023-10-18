@@ -41,13 +41,21 @@ impl CointegrationOps<'_> for DydxClient<'_> {
         };
         let coint = with_std_err(algotrader_num::num::get_cointegration(request))?;
         let request = SpreadRequest {
-            series_1: close1,
-            series_2: close2,
+            series_1: close1.clone(),
+            series_2: close2.clone(),
             hedge_ratio: coint.hedge_ratio,
             z_score_window: 21,
         };
         let response = algotrader_num::num::get_spread_z_score(request)
-            .map(|x| spread_zscore(&x, &timestamp1));
+            .map(|x| {
+                SpreadZScoreData {
+                    series_1: close1.clone(),
+                    series_2: close2.clone(),
+                    spread: x.spread.clone(),
+                    z_score: x.z_score.clone(),
+                    timestamp: timestamp1.clone(),
+                }
+            });
         with_std_err(response)
     }
 
@@ -89,13 +97,5 @@ fn cointegration_data(other: &CointResponse) -> CointegrationData {
         c_value: other.c_value,
         hedge_ratio: other.hedge_ratio,
         zero_crossings: other.zero_crossings,
-    }
-}
-
-fn spread_zscore(other: &SpreadResponse, timestamp: &Vec<String>) -> SpreadZScoreData {
-    SpreadZScoreData {
-        spread: other.spread.clone(),
-        z_score: other.z_score.clone(),
-        timestamp: timestamp.clone(),
     }
 }

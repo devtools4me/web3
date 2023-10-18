@@ -1,3 +1,5 @@
+use std::convert;
+use std::ops::Div;
 use std::str::FromStr;
 
 use plotly::{Plot, Scatter};
@@ -12,12 +14,23 @@ use algotrader_common::utils::vec_utils::convert;
 pub struct SpreadZScoreDataProps {
     pub market1: String,
     pub market2: String,
-    pub data: SpreadZScoreData
+    pub data: SpreadZScoreData,
 }
 
 #[function_component(SpreadZScoreDataView)]
 pub fn spread_zscore_component(SpreadZScoreDataProps { market1, market2, data }: &SpreadZScoreDataProps) -> Html {
-    let SpreadZScoreData { spread, z_score, timestamp } = data;
+    let SpreadZScoreData { series_1, series_2, spread, z_score, timestamp } = data;
+    let percentage_title = format!("Percentage {} {}", market1, market2);
+    let percentage_plot = plot_with_scatters(
+        timestamp.clone(),
+        vec![
+            (
+                percentage(series_1), market1.clone(), NamedColor::Blue
+            ),
+            (
+                percentage(series_2), market2.clone(), NamedColor::Red
+            ),
+        ]);
     let spread_title = format!("Spread {} {}", market1, market2);
     let spread_plot = plot_with_scatter(
         timestamp.clone(),
@@ -37,12 +50,32 @@ pub fn spread_zscore_component(SpreadZScoreDataProps { market1, market2, data }:
         NamedColor::Blue);
     html! {
         <div>
+            <h1 class="title">{percentage_title.as_str()}</h1>
+            <Plotly plot={percentage_plot}/>
             <h1 class="title">{spread_title.as_str()}</h1>
             <Plotly plot={spread_plot}/>
             <h1 class="title">{zscore_title.as_str()}</h1>
             <Plotly plot={zscore_plot}/>
         </div>
     }
+}
+
+fn percentage(v: &Vec<f32>) -> Vec<f64> {
+    if v.is_empty() {
+        vec![]
+    } else {
+        let head = f64::from(v.first().unwrap().clone());
+        convert(v.clone(), |x: f32| f64::from(x).div(head))
+    }
+}
+
+fn plot_with_scatters(x: Vec<String>, y: Vec<(Vec<f64>, String, NamedColor)>) -> Plot {
+    let scatters = convert(y, |t: (Vec<f64>, String, NamedColor)| {
+        Scatter::new(x.clone(), t.0)
+            .name(t.1.as_str())
+            .line(plotly::common::Line::new().color(t.2))
+    });
+    scatters_to_plot(scatters)
 }
 
 fn plot_with_scatter(x: Vec<String>, y: Vec<f64>, name: String, color: NamedColor) -> Plot {

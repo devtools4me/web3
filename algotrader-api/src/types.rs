@@ -230,6 +230,8 @@ impl Default for CointegrationData {
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct SpreadZScoreData {
+    pub series_1: Vec<f32>,
+    pub series_2: Vec<f32>,
     pub spread: Vec<String>,
     pub z_score: Vec<String>,
     pub timestamp: Vec<String>,
@@ -238,6 +240,8 @@ pub struct SpreadZScoreData {
 impl Default for SpreadZScoreData {
     fn default() -> Self {
         Self {
+            series_1: vec![],
+            series_2: vec![],
             spread: vec![],
             z_score: vec![],
             timestamp: vec![],
