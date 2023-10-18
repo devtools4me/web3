@@ -9,7 +9,7 @@ use dydx_v3_rust::{
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
 use algotrader_common::utils::vec_utils::*;
-use algotrader_num::types::{CointResponse, SpreadResponse};
+use algotrader_num::types::CointResponse;
 use algotrader_ta::indicators;
 use algotrader_ta::methods;
 
