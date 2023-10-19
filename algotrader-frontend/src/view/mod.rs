@@ -8,3 +8,5 @@ pub mod cointegration;
 pub mod struct_markets;
 pub mod coint;
 pub mod trend;
+pub mod avg;
+pub mod select;

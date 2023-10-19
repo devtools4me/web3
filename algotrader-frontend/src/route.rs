@@ -6,6 +6,7 @@ use yew_router::prelude::*;
 
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
+use crate::view::avg::AvgView;
 
 use crate::view::composite::*;
 use crate::view::coint::CointegrationView;
@@ -97,7 +98,8 @@ pub fn switch(route: Route) -> Html {
         //Route::Trends => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
         Route::Trends => html! { <StructMarkets markets={markets} selected_market={market2}/> },
         //Methods
-        Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} market={market} resolution={resolution} /> },
+        Route::EMA => html! { <AvgView /> },
+        //Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} market={market} resolution={resolution} /> },
         Route::HMA => html! { <OhlcWithAverageChartView average_type={AverageType::HMA} market={market} resolution={resolution} /> },
         Route::DEMA => html! { <OhlcWithAverageChartView average_type={AverageType::DEMA} market={market} resolution={resolution} /> },
         Route::DMA => html! { <OhlcWithAverageChartView average_type={AverageType::DMA} market={market} resolution={resolution} /> },

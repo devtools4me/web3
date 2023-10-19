@@ -21,8 +21,8 @@ pub fn get_market2() -> String {
 }
 
 pub fn get_markets() -> Vec<String> {
-    let market = dotenv!("MARKETS");
-    String::from(market)
+    let markets = dotenv!("MARKETS");
+    String::from(markets)
         .split(",")
         .map(|x| String::from(x))
         .collect()
@@ -31,6 +31,19 @@ pub fn get_markets() -> Vec<String> {
 pub fn get_resolution() -> String {
     let resolution = dotenv!("RESOLUTION");
     String::from(resolution)
+}
+
+pub fn get_method() -> String {
+    let market = dotenv!("METHOD");
+    String::from(market)
+}
+
+pub fn get_methods() -> Vec<String> {
+    let methods = dotenv!("METHODS");
+    String::from(methods)
+        .split(",")
+        .map(|x| String::from(x))
+        .collect()
 }
 
 pub fn get_telegram_api_token() -> String {
