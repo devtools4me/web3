@@ -1,19 +1,21 @@
 use std::rc::Rc;
+use std::str::FromStr;
 
 use log::{error, info};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
+use yew_plotly::Plotly;
+use yew_plotly::plotly::color::NamedColor;
 use yewdux::prelude::*;
-use yewdux::prelude::use_store;
 
 use algotrader_api::endpoints;
 use algotrader_api::types::*;
 use algotrader_common::utils::env_utils;
+use algotrader_common::utils::vec_utils::convert;
 
 use crate::utils::api_utils::fetch_single_api_response;
-use crate::view::cointegration::CointegrationDataView;
-use crate::view::trend::SpreadZScoreDataView;
+use crate::utils::ui_utils::plot_with_scatter;
 use crate::view::select::SelectView;
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Store)]
@@ -69,13 +71,41 @@ pub fn set_data(data: Vec<Timeseries>, dispatch: Dispatch<AverageStore>) {
     })
 }
 
+#[derive(Properties, PartialEq)]
+pub struct AvgDataProps {
+    pub market: String,
+    pub method: String,
+    pub data: Vec<Timeseries>,
+}
+
+#[function_component(AvgChartView)]
+pub fn avg_chart_component(AvgDataProps { market, method, data }: &AvgDataProps) -> Html {
+    let title = format!("{} {}", method, market);
+    let avg_plot = plot_with_scatter(
+        convert(data.clone(), |x| x.timestamp),
+        convert(data.clone(), |x| {
+            match x.value.parse::<f64>() {
+                Ok(v) => v,
+                Err(_) => f64::NAN
+            }
+        }),
+        method.to_owned(),
+        NamedColor::Blue);
+    html! {
+        <div>
+            <h1 class="title">{title.as_str()}</h1>
+            <Plotly plot={avg_plot}/>
+        </div>
+    }
+}
+
 #[function_component(AvgView)]
 pub fn avg_component() -> Html {
     info!("avg_component");
     let (store, dispatch) = use_store::<AverageStore>();
-    //fetch_cointegration_trends(dispatch.clone());
+    fetch_avg(dispatch.clone());
 
-    let callback1: Callback<String> = {
+    let mkt_callback: Callback<String> = {
         let dispatch = dispatch.clone();
         use_callback(
             move |market_value: String, _| {
@@ -85,7 +115,7 @@ pub fn avg_component() -> Html {
             (),
         )
     };
-    let callback2: Callback<String> = {
+    let method_callback: Callback<String> = {
         let dispatch = dispatch.clone();
         use_callback(
             move |method_value: String, _| {
@@ -100,30 +130,31 @@ pub fn avg_component() -> Html {
         <div class="section">
             <div class="container">
                 <h1 class="title">{"Cointegration"}</h1>
-                <SelectView values={store.markets.clone()} selected_value={store.market.clone()} callback={callback1}/>
-                <SelectView values={store.methods.clone()} selected_value={store.method.clone()} callback={callback2}/>
+                <SelectView values={store.markets.clone()} selected_value={store.market.clone()} callback={mkt_callback}/>
+                <SelectView values={store.methods.clone()} selected_value={store.method.clone()} callback={method_callback}/>
+                <AvgChartView market={store.market.clone()} method={store.method.clone()} data={store.data.clone()}/>
             </div>
         </div>
     }
 }
 
-// fn fetch_cointegration(dispatch: Dispatch<AverageStore>) {
-//     let store: Rc<AverageStore> = dispatch.get();
-//     let market = store.market.clone();
-//     let method = store.method.clone();
-//     let resolution = store.resolution.clone();
-//     spawn_local(async move {
-//         let endpoint = endpoints::cointegration(market1.as_str(), market2.as_str(), resolution.as_str());
-//         match fetch_single_api_response::<CointegrationData>(endpoint.as_str())
-//             .await
-//         {
-//             Ok(fetched_data) => {
-//                 info!("fetched_data={:?}", fetched_data);
-//                 set_cointegration_data(fetched_data, dispatch);
-//             }
-//             Err(e) => {
-//                 error!("{e}")
-//             }
-//         };
-//     });
-// }
+fn fetch_avg(dispatch: Dispatch<AverageStore>) {
+    let store: Rc<AverageStore> = dispatch.get();
+    let method = AverageType::from_str(&store.method).unwrap();
+    let market = store.market.clone();
+    let resolution = store.resolution.clone();
+    spawn_local(async move {
+        let endpoint = endpoints::methods(&method, market.as_str(), resolution.as_str());
+        match fetch_single_api_response::<Vec<Timeseries>>(endpoint.as_str())
+            .await
+        {
+            Ok(fetched_data) => {
+                info!("fetched_data={:?}", fetched_data);
+                set_data(fetched_data, dispatch);
+            }
+            Err(e) => {
+                error!("{e}")
+            }
+        };
+    });
+}

@@ -1,13 +1,14 @@
 use std::ops::Div;
 use std::str::FromStr;
 
-use plotly::{Plot, Scatter};
 use yew::prelude::*;
-use yew_plotly::{Plotly, plotly};
+use yew_plotly::Plotly;
 use yew_plotly::plotly::color::NamedColor;
 
 use algotrader_api::types::*;
 use algotrader_common::utils::vec_utils::convert;
+
+use crate::utils::ui_utils::*;
 
 #[derive(Properties, PartialEq)]
 pub struct SpreadZScoreDataProps {
@@ -66,28 +67,4 @@ fn percentage(v: &Vec<f32>) -> Vec<f64> {
         let head = f64::from(v.first().unwrap().clone());
         convert(v.clone(), |x: f32| f64::from(x).div(head))
     }
-}
-
-fn plot_with_scatters(x: Vec<String>, y: Vec<(Vec<f64>, String, NamedColor)>) -> Plot {
-    let scatters = convert(y, |t: (Vec<f64>, String, NamedColor)| {
-        Scatter::new(x.clone(), t.0)
-            .name(t.1.as_str())
-            .line(plotly::common::Line::new().color(t.2))
-    });
-    scatters_to_plot(scatters)
-}
-
-fn plot_with_scatter(x: Vec<String>, y: Vec<f64>, name: String, color: NamedColor) -> Plot {
-    let trace = Scatter::new(x.clone(), y)
-        .name(name.as_str())
-        .line(plotly::common::Line::new().color(color));
-    scatters_to_plot(vec![trace])
-}
-
-fn scatters_to_plot(traces: Vec<Box<Scatter<String, f64>>>) -> Plot {
-    let mut plot = Plot::new();
-    for t in traces.iter() {
-        plot.add_trace(t.clone());
-    }
-    plot
 }
