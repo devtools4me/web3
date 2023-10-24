@@ -16,6 +16,7 @@ use algotrader_common::utils::vec_utils::convert;
 
 use crate::utils::api_utils::fetch_single_api_response;
 use crate::utils::ui_utils::plot_with_scatter;
+use crate::view::ohlc::OhlcChartView2;
 use crate::view::select::SelectView;
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Store)]
@@ -25,6 +26,7 @@ pub struct AverageStore {
     pub markets: Vec<String>,
     pub market: String,
     pub resolution: String,
+    pub ohlc_data: Vec<Ohlc>,
     pub data: Vec<Timeseries>
 }
 
@@ -36,6 +38,7 @@ impl Default for AverageStore {
             markets: env_utils::get_markets(),
             market: env_utils::get_market(),
             resolution: env_utils::get_resolution(),
+            ohlc_data: vec![],
             data: vec![],
         }
     }
@@ -71,6 +74,13 @@ pub fn set_data(data: Vec<Timeseries>, dispatch: Dispatch<AverageStore>) {
     })
 }
 
+pub fn set_ohlc_avg(ohlc_data: Vec<Ohlc>, avg_data: Vec<Timeseries>, dispatch: Dispatch<AverageStore>) {
+    dispatch.reduce_mut(move |store| {
+        store.data = avg_data.clone();
+        store.ohlc_data = ohlc_data.clone();
+    })
+}
+
 #[derive(Properties, PartialEq)]
 pub struct AvgDataProps {
     pub market: String,
@@ -103,7 +113,7 @@ pub fn avg_chart_component(AvgDataProps { market, method, data }: &AvgDataProps)
 pub fn avg_component() -> Html {
     info!("avg_component");
     let (store, dispatch) = use_store::<AverageStore>();
-    fetch_avg(dispatch.clone());
+    fetch_ohlc_avg(dispatch.clone());
 
     let mkt_callback: Callback<String> = {
         let dispatch = dispatch.clone();
@@ -132,6 +142,7 @@ pub fn avg_component() -> Html {
                 <h1 class="title">{"Cointegration"}</h1>
                 <SelectView values={store.markets.clone()} selected_value={store.market.clone()} callback={mkt_callback}/>
                 <SelectView values={store.methods.clone()} selected_value={store.method.clone()} callback={method_callback}/>
+                <OhlcChartView2 market={store.market.clone()} data={store.ohlc_data.clone()}/>
                 <AvgChartView market={store.market.clone()} method={store.method.clone()} data={store.data.clone()}/>
             </div>
         </div>
@@ -153,6 +164,31 @@ fn fetch_avg(dispatch: Dispatch<AverageStore>) {
                 set_data(fetched_data, dispatch);
             }
             Err(e) => {
+                error!("{e}")
+            }
+        };
+    });
+}
+
+fn fetch_ohlc_avg(dispatch: Dispatch<AverageStore>) {
+    let store: Rc<AverageStore> = dispatch.get();
+    let method = AverageType::from_str(&store.method).unwrap();
+    let market = store.market.clone();
+    let resolution = store.resolution.clone();
+    spawn_local(async move {
+        let ohlc_endpoint = endpoints::candles( market.as_str(), resolution.as_str());
+        let ohlc_response = fetch_single_api_response::<Vec<Ohlc>>(ohlc_endpoint.as_str());
+        let avg_endpoint = endpoints::methods(&method, market.as_str(), resolution.as_str());
+        let avg_response = fetch_single_api_response::<Vec<Timeseries>>(avg_endpoint.as_str());
+        match futures::join!(ohlc_response, avg_response)
+        {
+            (Ok(ohlc_data), Ok(avg_data)) => {
+                set_ohlc_avg(ohlc_data, avg_data,dispatch);
+            }
+            (Err(e), _) => {
+                error!("{e}")
+            }
+            (_, Err(e)) => {
                 error!("{e}")
             }
         };

@@ -120,6 +120,24 @@ pub fn ohlc_chart_component(props: &OhlcProps) -> Html {
     }
 }
 
+#[derive(Properties, PartialEq)]
+pub struct OhlcDataProps {
+    pub market: String,
+    pub data: Vec<Ohlc>,
+}
+
+#[function_component(OhlcChartView2)]
+pub fn ohlc_chart_component_2(OhlcDataProps { market, data }: &OhlcDataProps) -> Html {
+    let title = format!("OHLC {}", market);
+    let ohlc_plot = ohlc_plot(data.clone());
+    html! {
+        <div>
+            <h1 class="title">{title.as_str()}</h1>
+            <Plotly plot={ohlc_plot}/>
+        </div>
+    }
+}
+
 fn ohlc_plot(fetched_data: Vec<Ohlc>) -> Plot {
     let x = fetched_data.iter()
         .map(|x| x.timestamp.clone())
