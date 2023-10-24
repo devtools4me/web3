@@ -90,7 +90,10 @@ pub struct AvgDataProps {
 
 #[function_component(AvgChartView)]
 pub fn avg_chart_component(AvgDataProps { market, method, data }: &AvgDataProps) -> Html {
-    let title = format!("{} {}", method, market);
+    let desc = AverageType::from_str(method)
+        .map(|x| String::from(AverageType::description(&x.clone())))
+        .unwrap();
+    let title = format!("{} {}", desc, market);
     let avg_plot = plot_with_scatter(
         convert(data.clone(), |x| x.timestamp),
         convert(data.clone(), |x| {
@@ -139,7 +142,7 @@ pub fn avg_component() -> Html {
     html! {
         <div class="section">
             <div class="container">
-                <h1 class="title">{"Cointegration"}</h1>
+                <h1 class="title">{"Methods"}</h1>
                 <SelectView values={store.markets.clone()} selected_value={store.market.clone()} callback={mkt_callback}/>
                 <SelectView values={store.methods.clone()} selected_value={store.method.clone()} callback={method_callback}/>
                 <OhlcChartView2 market={store.market.clone()} data={store.ohlc_data.clone()}/>

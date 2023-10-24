@@ -1,23 +1,13 @@
+use strum::IntoEnumIterator;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
+use algotrader_api::types::IndicatorType;
+
 use crate::route::Route;
-use algotrader_api::types::{AverageType, IndicatorType};
-use strum::IntoEnumIterator;
 
 #[function_component(Header)]
 pub fn header() -> Html {
-    let methods_html = AverageType::iter()
-        .map(|x| Route::from_average_type(&x))
-        .map(|x| {
-            let route = x.clone();
-            let s = route.to_string();
-            html! {
-                <Link<Route> to={ route } classes="navbar-item">
-                    { s }
-                </Link<Route>>
-            }
-        });
     let indicators_html = IndicatorType::iter()
         .map(|x| Route::from_indicator_type(&x))
         .map(|x| {
@@ -48,6 +38,9 @@ pub fn header() -> Html {
                     <Link<Route> to={ Route::Ohlc } classes="navbar-link">
                         { "OHLC" }
                     </Link<Route>>
+                    <Link<Route> to={ Route::Methods } classes="navbar-link">
+                        { "Methods" }
+                    </Link<Route>>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
                             { "Cointegration" }
@@ -62,14 +55,6 @@ pub fn header() -> Html {
                             <Link<Route> to={ Route::Trends } classes="navbar-link">
                                 { "Trends" }
                             </Link<Route>>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            { "Methods" }
-                        </a>
-                        <div class="navbar-dropdown">
-                            {for methods_html}
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable">

@@ -26,6 +26,8 @@ pub enum Route {
     #[at("/trends")]
     Trends,
     // Methods
+    #[at("/methods")]
+    Methods,
     #[at("/ema")]
     EMA,
     #[at("/hma")]
@@ -98,6 +100,7 @@ pub fn switch(route: Route) -> Html {
         //Route::Trends => html! { <CointegrationWithMarketView market1={market} market2={market2} resolution={resolution}  /> },
         Route::Trends => html! { <StructMarkets markets={markets} selected_market={market2}/> },
         //Methods
+        Route::Methods => html! { <AvgView /> },
         Route::EMA => html! { <AvgView /> },
         //Route::EMA => html! { <OhlcWithAverageChartView average_type={AverageType::EMA} market={market} resolution={resolution} /> },
         Route::HMA => html! { <OhlcWithAverageChartView average_type={AverageType::HMA} market={market} resolution={resolution} /> },
