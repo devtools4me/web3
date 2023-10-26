@@ -10,3 +10,5 @@ pub mod coint;
 pub mod trend;
 pub mod avg;
 pub mod select;
+pub mod indi;
+pub mod plots;

@@ -46,6 +46,19 @@ pub fn get_methods() -> Vec<String> {
         .collect()
 }
 
+pub fn get_indicator() -> String {
+    let market = dotenv!("INDICATOR");
+    String::from(market)
+}
+
+pub fn get_indicators() -> Vec<String> {
+    let methods = dotenv!("INDICATORS");
+    String::from(methods)
+        .split(",")
+        .map(|x| String::from(x))
+        .collect()
+}
+
 pub fn get_telegram_api_token() -> String {
     let token = dotenv!("TELEGRAM_API_TOKEN");
     String::from(token)

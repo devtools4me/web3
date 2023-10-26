@@ -38,31 +38,20 @@ pub fn header() -> Html {
                     <Link<Route> to={ Route::Ohlc } classes="navbar-link">
                         { "OHLC" }
                     </Link<Route>>
-                    <Link<Route> to={ Route::Methods } classes="navbar-link">
-                        { "Methods" }
-                    </Link<Route>>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
-                            { "Cointegration" }
+                            { "Analysis" }
                         </a>
                         <div class="navbar-dropdown">
-                            <Link<Route> to={ Route::Cointegration } classes="navbar-link">
+                            <Link<Route> to={ Route::Methods } classes="navbar-item">
+                                { "Methods" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::Indicators } classes="navbar-item">
+                                { "Indicators" }
+                            </Link<Route>>
+                            <Link<Route> to={ Route::Cointegration } classes="navbar-item">
                                 { "Cointegration" }
                             </Link<Route>>
-                            <Link<Route> to={ Route::Spread } classes="navbar-link">
-                                { "Spread & Z-Score" }
-                            </Link<Route>>
-                            <Link<Route> to={ Route::Trends } classes="navbar-link">
-                                { "Trends" }
-                            </Link<Route>>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            { "Indicators" }
-                        </a>
-                        <div class="navbar-dropdown">
-                            {for indicators_html}
                         </div>
                     </div>
                     <Link<Route> to={ Route::About } classes="navbar-link">
