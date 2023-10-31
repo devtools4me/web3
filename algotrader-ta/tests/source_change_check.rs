@@ -6,7 +6,6 @@ mod test {
     use yata::core::Source;
     use yata::helpers::MA;
     use algotrader_api::types::{*, SourceChangeIndicator};
-    use algotrader_api::types::New;
     use algotrader_common::utils::vec_utils::*;
     use algotrader_ta::ops::ToIndicator;
     use algotrader_ta::source_change::*;
@@ -39,9 +38,9 @@ mod test {
     #[test]
     fn test_source_change_volume() {
         let v = vec![
-            Ohlc::new(("10", "20", "9", "15", "100", "2023-08-28T23:30:40.468Z")),
-            Ohlc::new(("10", "20", "9", "15", "200", "2023-08-28T23:31:40.468Z")),
-            Ohlc::new(("10", "20", "9", "15", "100", "2023-08-28T23:32:40.468Z")),
+            Ohlc::from(("10", "20", "9", "15", "100", "2023-08-28T23:30:40.468Z")),
+            Ohlc::from(("10", "20", "9", "15", "200", "2023-08-28T23:31:40.468Z")),
+            Ohlc::from(("10", "20", "9", "15", "100", "2023-08-28T23:32:40.468Z")),
         ];
         let mut sut = SourceChange {
             ma: MA::EMA(20),
@@ -54,7 +53,7 @@ mod test {
         assert_eq!(result.len(), 3);
 
         let result: Vec<ActionType> = convert(result, |x| {
-            let i: SourceChangeIndicator = SourceChangeIndicator::new(&x);
+            let i: SourceChangeIndicator = SourceChangeIndicator::from(&x);
             i.signal
         });
         println!("{:?}", result);
@@ -65,9 +64,9 @@ mod test {
     #[test]
     fn test_source_change_close() {
         let v = vec![
-            Ohlc::new(("10", "20", "9", "10", "100", "2023-08-28T23:30:40.468Z")),
-            Ohlc::new(("10", "20", "9", "20", "100", "2023-08-28T23:31:40.468Z")),
-            Ohlc::new(("10", "20", "9", "10", "100", "2023-08-28T23:32:40.468Z")),
+            Ohlc::from(("10", "20", "9", "10", "100", "2023-08-28T23:30:40.468Z")),
+            Ohlc::from(("10", "20", "9", "20", "100", "2023-08-28T23:31:40.468Z")),
+            Ohlc::from(("10", "20", "9", "10", "100", "2023-08-28T23:32:40.468Z")),
         ];
         let mut sut = SourceChange {
             ma: MA::EMA(20),
@@ -80,7 +79,7 @@ mod test {
         assert_eq!(result.len(), 3);
 
         let result: Vec<ActionType> = convert(result, |x| {
-            let i: SourceChangeIndicator = SourceChangeIndicator::new(&x);
+            let i: SourceChangeIndicator = SourceChangeIndicator::from(&x);
             i.signal
         });
         println!("{:?}", result);

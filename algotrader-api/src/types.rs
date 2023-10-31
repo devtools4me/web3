@@ -1,10 +1,6 @@
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumIter, EnumString};
 
-pub trait New<T> {
-    fn new(value: T) -> Self;
-}
-
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct OhlcResponse {
     pub list: Vec<Ohlc>,
@@ -22,8 +18,8 @@ pub struct Ohlc {
 
 type OhlcTuple<'a> = (&'a str, &'a str, &'a str, &'a str, &'a str, &'a str);
 
-impl New<OhlcTuple<'_>> for Ohlc {
-    fn new(t: OhlcTuple) -> Self {
+impl From<OhlcTuple<'_>> for Ohlc {
+    fn from(t: OhlcTuple) -> Self {
         Ohlc {
             open: String::from(t.0),
             high: String::from(t.1),
@@ -153,8 +149,8 @@ pub struct MacdIndicator {
     pub timestamp: String,
 }
 
-impl New<&Indicator> for MacdIndicator {
-    fn new(i: &Indicator) -> Self {
+impl From<&Indicator> for MacdIndicator {
+    fn from(i: &Indicator) -> Self {
         Self {
             macd_value: i.values.get(0).unwrap().clone(),
             sigline_value: i.values.get(1).unwrap().clone(),
@@ -171,8 +167,8 @@ pub struct RsiIndicator {
     pub timestamp: String,
 }
 
-impl New<&Indicator> for RsiIndicator {
-    fn new(i: &Indicator) -> Self {
+impl From<&Indicator> for RsiIndicator {
+    fn from(i: &Indicator) -> Self {
         Self {
             enter_over_zone_signal: i.signals.get(0).unwrap().clone(),
             leave_over_zone_signal: i.signals.get(1).unwrap().clone(),
@@ -189,8 +185,8 @@ pub struct SourceChangeIndicator {
     pub timestamp: String,
 }
 
-impl New<&Indicator> for SourceChangeIndicator {
-    fn new(i: &Indicator) -> Self {
+impl From<&Indicator> for SourceChangeIndicator {
+    fn from(i: &Indicator) -> Self {
         Self {
             signal: i.signals.get(0).unwrap().clone(),
             value: i.values.get(0).unwrap().clone(),

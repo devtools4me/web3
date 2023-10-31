@@ -27,11 +27,11 @@ pub fn scatter_macd(fetched_data: Vec<Indicator>) -> Vec<Box<Scatter<String, f64
         .map(|x| x.timestamp.clone())
         .collect();
     let macd_value = fetched_data.iter()
-        .map(|x| MacdIndicator::new(x))
+        .map(|x| MacdIndicator::from(x))
         .map(|x| x.macd_value.parse::<f64>().unwrap())
         .collect();
     let sigline_value = fetched_data.iter()
-        .map(|x| MacdIndicator::new(x))
+        .map(|x| MacdIndicator::from(x))
         .map(|x| x.sigline_value.parse::<f64>().unwrap())
         .collect();
     vec![
@@ -47,7 +47,7 @@ pub fn scatter_rsi(fetched_data: Vec<Indicator>) -> Vec<Box<Scatter<String, f64>
         .map(|x| x.timestamp.clone())
         .collect();
     let value = fetched_data.iter()
-        .map(|x| RsiIndicator::new(x))
+        .map(|x| RsiIndicator::from(x))
         .map(|x| x.value.parse::<f64>().unwrap() * 100.0)
         .collect();
     vec![Scatter::new(date, value)]
