@@ -1,0 +1,79 @@
+[package]
+name = "algotrader-web3"
+
+[package.edition]
+workspace = true
+
+[package.version]
+workspace = true
+
+[dependencies.yata]
+workspace = true
+
+[dependencies.serde]
+workspace = true
+
+[dependencies.serde_json]
+workspace = true
+
+[dependencies.ethers]
+features = ["rustls"]
+workspace = true
+
+[dependencies.eyre]
+workspace = true
+
+[dependencies.log]
+workspace = true
+
+[dependencies.log4rs]
+workspace = true
+
+[dependencies.tokio]
+features = ["macros"]
+workspace = true
+
+[dependencies.clap]
+workspace = true
+
+[dependencies.dialoguer]
+workspace = true
+
+[dependencies]
+algotrader-api = { version = "0.0.1", path = "../algotrader-api" }
+algotrader-common = { version = "0.0.1", path = "../algotrader-common" }
+
+[lib]
+path = "src/lib.rs"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
+[[bin]]
+path = "src/main.rs"
+name = "algotrader-web3"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []
+
+[[test]]
+path = "tests/run_together_check.rs"
+name = "run_together_check"
+test = true
+doctest = true
+bench = true
+doc = true
+plugin = false
+proc-macro = false
+harness = true
+required-features = []

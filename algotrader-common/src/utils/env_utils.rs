@@ -68,3 +68,38 @@ pub fn get_telegram_chat_id() -> String {
     let chat_id = dotenv!("TELEGRAM_CHAT_ID");
     String::from(chat_id)
 }
+
+pub fn get_eth_url() -> String {
+    let res = dotenv!("ETH_URL");
+    String::from(res)
+}
+
+pub fn get_weth_addr() -> String {
+    let res = dotenv!("WETH_ADDR");
+    String::from(res)
+}
+
+pub fn get_usdc_addr() -> String {
+    let res = dotenv!("USDC_ADDR");
+    String::from(res)
+}
+
+pub fn get_wallet_addr() -> String {
+    let res = dotenv!("WALLET_ADDR");
+    String::from(res)
+}
+
+pub fn get_wallet_priv_key() -> String {
+    let res = dotenv!("WALLET_PRIV_KEY");
+    String::from(res)
+}
+
+pub fn get_usdc_whale() -> String {
+    let res = dotenv!("USDC_WHALE");
+    String::from(res)
+}
+
+pub fn get_addr_router() -> String {
+    let res = dotenv!("ADDR_ROUTER");
+    String::from(res)
+}
