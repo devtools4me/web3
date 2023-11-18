@@ -8,6 +8,7 @@ members = [
     "algotrader-frontend",
     "algotrader-telegram",
     "algotrader-web3",
+    "algotrader-web3-cli",
     "dydx/dydx-bot",
     "examples/dydx",
     "examples/ethers",
